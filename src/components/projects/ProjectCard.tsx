@@ -1,174 +1,150 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Users, Building, Calendar } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import * as Icons from "lucide-react";
+import JoinProjectDialog from "./JoinProjectDialog";
 import ProjectDetailsDialog from "./ProjectDetailsDialog";
-import OpenPositions from "./OpenPositions";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { optimizeImage } from "@/utils/imageOptimizer";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
+import { ProjectData } from "@/types/project";
 
-interface ProjectCardProps {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  teamSize: number;
-  stage: string;
-  location?: string;
-  collaborationType?: string;
-  isHiring?: boolean;
-}
-
-const ProjectCard = ({
+const ProjectCard = ({ 
   id,
-  title,
-  description,
-  category,
-  teamSize,
-  stage,
-  location,
-  collaborationType,
-  isHiring,
-}: ProjectCardProps) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const navigate = useNavigate();
-
-  const handleChatClick = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        toast.error("Please sign in to join the chat");
-        return;
-      }
-
-      // First check if a group chat already exists for this company
-      const { data: existingChat } = await supabase
-        .from('company_group_chats')
-        .select('chat_group_id')
-        .eq('company_id', id)
-        .single();
-
-      let chatGroupId;
-
-      if (existingChat) {
-        chatGroupId = existingChat.chat_group_id;
-      } else {
-        // Create a new chat group
-        const { data: newGroup, error: groupError } = await supabase
-          .from('chat_groups')
-          .insert({
-            name: `${title} Team Chat`,
-            description: `Group chat for ${title} team members and founders`,
-            created_by: user.id,
-          })
-          .select()
-          .single();
-
-        if (groupError) throw groupError;
-
-        // Link the chat group to the company
-        const { error: linkError } = await supabase
-          .from('company_group_chats')
-          .insert({
-            company_id: id,
-            chat_group_id: newGroup.id,
-          });
-
-        if (linkError) throw linkError;
-
-        // Add the current user as a member and admin
-        const { error: memberError } = await supabase
-          .from('group_members')
-          .insert({
-            group_id: newGroup.id,
-            user_id: user.id,
-            is_admin: true,
-          });
-
-        if (memberError) throw memberError;
-
-        chatGroupId = newGroup.id;
-      }
-
-      // Navigate to messages with the group chat selected
-      navigate(`/messages?group=${chatGroupId}`);
-    } catch (error) {
-      console.error('Error handling chat:', error);
-      toast.error("Failed to open chat");
-    }
-  };
+  name, 
+  category, 
+  description, 
+  seeking, 
+  funding, 
+  impact, 
+  image,
+  iconName
+}: ProjectData) => {
+  const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
+  const optimizedImageUrl = optimizeImage(image || '');
 
   return (
-    <Card className="relative overflow-hidden">
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
+    <>
+      <Card className="hover:shadow-lg transition-shadow">
+        <div 
+          className="relative h-48 overflow-hidden rounded-t-lg bg-gray-100 cursor-pointer"
+          onClick={() => setIsDetailsDialogOpen(true)}
+        >
+          {!imageLoaded && (
+            <Skeleton className="w-full h-full absolute top-0 left-0" />
+          )}
+          <img 
+            src={optimizedImageUrl}
+            alt={name}
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            loading="lazy"
+          />
+        </div>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <span className="flex items-center gap-2">
+              <DynamicIcon className="w-6 h-6" />
+              {name}
+            </span>
+            <Badge variant="secondary">{category}</Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-gray-600 line-clamp-2">{description}</p>
+          
           <div>
-            <h3 className="text-xl font-semibold mb-2">{title}</h3>
-            <p className="text-gray-600 mb-4 line-clamp-2">{description}</p>
+            <h4 className="font-semibold mb-2">Looking for:</h4>
+            <div className="flex flex-wrap gap-2">
+              {seeking.map((role, idx) => (
+                <Badge key={idx} variant="outline">{role}</Badge>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Badge variant="outline" className="flex items-center gap-1">
-            <Building className="w-3 h-3" />
-            {category}
-          </Badge>
-          <Badge variant="outline" className="flex items-center gap-1">
-            <Users className="w-3 h-3" />
-            {teamSize} members
-          </Badge>
-          <Badge variant="outline">{stage}</Badge>
-          {location && (
-            <Badge variant="outline" className="flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
-              {location}
-            </Badge>
-          )}
-          {collaborationType && (
-            <Badge variant="outline">{collaborationType}</Badge>
-          )}
-          {isHiring && (
-            <Badge variant="default" className="bg-green-500">
-              Hiring
-            </Badge>
-          )}
-        </div>
+          <div className="flex justify-between items-center pt-4">
+            <div className="text-sm">
+              <span className="font-semibold">Funding:</span>
+              <span className="text-green-600 ml-2">{funding}</span>
+            </div>
+            <Button 
+              variant="default"
+              onClick={() => setIsJoinDialogOpen(true)}
+            >
+              Join Project
+            </Button>
+          </div>
 
-        <div className="flex justify-end">
-          <Button variant="outline" onClick={() => setShowDetails(true)}>
-            View Details
+          <div className="text-sm text-gray-600">
+            <span className="font-semibold">Impact:</span>
+            <span className="ml-2">{impact}</span>
+          </div>
+
+          <Button
+            variant="ghost"
+            className="w-full mt-2 flex items-center justify-center gap-2"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            {isExpanded ? 'Show Less' : 'Show More'}
           </Button>
-        </div>
-      </div>
 
-      {/* Floating chat button */}
-      <Button
-        className="absolute bottom-4 left-4 rounded-full shadow-lg"
-        size="icon"
-        onClick={handleChatClick}
-      >
-        <MessageSquare className="w-4 h-4" />
-      </Button>
+          {isExpanded && (
+            <div className="space-y-4 pt-2 border-t">
+              <div>
+                <h4 className="font-semibold mb-2">Company Info</h4>
+                <p className="text-sm text-gray-600">
+                  A pioneering startup in the {category.toLowerCase()} sector, focused on creating sustainable solutions.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2">Contact</h4>
+                <Button 
+                  variant="outline" 
+                  className="w-full flex items-center justify-center gap-2"
+                  onClick={() => window.location.href = '/messages'}
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  Chat with Team
+                </Button>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <JoinProjectDialog
+        isOpen={isJoinDialogOpen}
+        onClose={() => setIsJoinDialogOpen(false)}
+        projectName={name}
+        projectId={id}
+      />
 
       <ProjectDetailsDialog
-        open={showDetails}
-        onOpenChange={setShowDetails}
         project={{
           id,
-          title,
-          description,
+          name,
           category,
-          teamSize,
-          stage,
-          location,
-          collaborationType,
-          isHiring,
+          description,
+          seeking,
+          funding,
+          impact,
+          image,
+          iconName
         }}
+        isOpen={isDetailsDialogOpen}
+        onClose={() => setIsDetailsDialogOpen(false)}
       />
-    </Card>
+    </>
   );
 };
 
