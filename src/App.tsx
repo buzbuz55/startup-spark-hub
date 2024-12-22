@@ -22,6 +22,7 @@ import FAQ from "./pages/FAQ";
 import ProfileSettings from "./pages/ProfileSettings";
 import StartupOpportunities from "./pages/StartupOpportunities";
 import Internships from "./pages/Internships";
+import Startups from "./pages/Startups";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
@@ -59,6 +60,7 @@ const App = () => {
               <Route path="/profile/settings" element={<ProfileSettings />} />
               <Route path="/startup-opportunities" element={<StartupOpportunities />} />
               <Route path="/internships" element={<Internships />} />
+              <Route path="/startups" element={<Startups />} />
             </Routes>
           </BrowserRouter>
         </div>
