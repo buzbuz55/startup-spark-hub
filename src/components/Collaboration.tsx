@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Rocket, Users, Trophy } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Collaboration = () => {
   return (
@@ -31,10 +32,12 @@ const Collaboration = () => {
             </div>
           </div>
           
-          <Button size="lg" className="bg-white text-purple-900 hover:bg-purple-100 group">
-            Join the Movement
-            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <Link to="/signup">
+            <Button size="lg" className="bg-white text-purple-900 hover:bg-purple-100 group">
+              Join the Movement
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
