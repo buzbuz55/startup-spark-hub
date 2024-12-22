@@ -1,7 +1,9 @@
-import { Heart, Book, Camera, Gamepad, Music, Smile } from "lucide-react";
+import { Heart, Book, Camera, Gamepad, Music, Smile, Github } from "lucide-react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { InternProfile as InternProfileType } from "@/types/intern";
 
 interface Hobby {
   icon: React.ReactNode;
@@ -17,17 +19,15 @@ const hobbies: Hobby[] = [
   { icon: <Smile className="w-4 h-4" />, name: "Art" },
 ];
 
-interface InternProfileProps {
-  name: string;
-  role: string;
-  about: string;
-  skills: string[];
-  hobbies: string[];
-  funFacts: string[];
-  avatar?: string;
-}
-
-export const InternProfile = ({ name, role, about, skills, funFacts, avatar }: InternProfileProps) => {
+export const InternProfile = ({ 
+  name, 
+  role, 
+  about, 
+  skills, 
+  funFacts, 
+  avatar,
+  githubUrl 
+}: InternProfileType) => {
   return (
     <Card className="w-full bg-white shadow-lg hover:shadow-xl transition-shadow">
       <CardHeader className="flex flex-row items-center gap-4">
@@ -54,6 +54,21 @@ export const InternProfile = ({ name, role, about, skills, funFacts, avatar }: I
             ))}
           </div>
         </div>
+
+        {githubUrl && (
+          <div>
+            <h4 className="text-lg font-semibold mb-2">GitHub Profile</h4>
+            <a 
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            >
+              <Github className="w-5 h-5" />
+              View GitHub Profile
+            </a>
+          </div>
+        )}
 
         <div>
           <h4 className="text-lg font-semibold mb-2">Hobbies & Interests 🎨</h4>
