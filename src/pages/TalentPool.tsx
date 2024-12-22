@@ -23,7 +23,6 @@ const TalentPool = () => {
   const { toast } = useToast();
   const [user, setUser] = useState(null);
 
-  // Check authentication status
   useState(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
@@ -63,31 +62,31 @@ const TalentPool = () => {
         <div className="max-w-6xl mx-auto">
           <TalentHeader onSearch={setSearchQuery} />
           
-          <div className="flex justify-center gap-4 mb-8">
-            <Button 
-              onClick={handlePostJob}
-              className="bg-primary hover:bg-primary/90"
-              size="lg"
-            >
-              <PlusCircle className="mr-2 h-5 w-5" />
-              Post a Job
-            </Button>
-            <Button 
-              onClick={handleSubmitProfile}
-              variant="outline"
-              size="lg"
-            >
-              Submit Your Profile
-            </Button>
-          </div>
+          <Button 
+            onClick={handlePostJob}
+            className="bg-primary hover:bg-primary/90 mb-6 w-full md:w-auto"
+            size="lg"
+          >
+            <PlusCircle className="mr-2 h-5 w-5" />
+            Post a Job Opening
+          </Button>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white shadow-sm rounded-xl p-4 md:p-6 mb-8"
+            className="bg-white shadow-sm rounded-xl p-4 mb-6"
           >
             <OpportunityCards onInternshipsClick={() => setShowInterns(true)} />
           </motion.div>
+
+          <Button 
+            onClick={handleSubmitProfile}
+            variant="outline"
+            size="lg"
+            className="mb-8 w-full md:w-auto"
+          >
+            Submit Your Profile
+          </Button>
 
           <AnimatePresence>
             {showInterns && (
