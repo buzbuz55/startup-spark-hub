@@ -35,27 +35,29 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/submit-idea" element={<SubmitIdea />} />
-              <Route path="/talent-pool" element={<TalentPool />} />
-              <Route path="/vc-dashboard" element={<VCDashboard />} />
-              <Route path="/messages" element={<Messages />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/about" element={<AboutUs />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/profile/settings" element={<ProfileSettings />} />
-            </Routes>
-          </BrowserRouter>
+          <div className="min-h-screen flex flex-col">
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/submit-idea" element={<SubmitIdea />} />
+                <Route path="/talent-pool" element={<TalentPool />} />
+                <Route path="/vc-dashboard" element={<VCDashboard />} />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/about" element={<AboutUs />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/profile/settings" element={<ProfileSettings />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

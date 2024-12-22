@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { useState } from "react";
 import InternGrid from "@/components/talent/InternGrid";
 import StartupIdeas from "@/components/talent/StartupIdeas";
@@ -56,9 +57,9 @@ const TalentPool = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Header />
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <main className="flex-grow container mx-auto px-4 pt-24 pb-16">
         <div className="max-w-6xl mx-auto">
           <TalentHeader onSearch={setSearchQuery} />
           
@@ -167,7 +168,8 @@ const TalentPool = () => {
             <StartupIdeas />
           </motion.section>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 };
