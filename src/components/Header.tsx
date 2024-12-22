@@ -28,10 +28,10 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b transition-all duration-300">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="text-xl font-bold text-primary">
+          <Link to="/" className="text-xl font-bold text-primary transition-colors duration-300">
             Startup Spark Hub ✨
           </Link>
           
@@ -44,15 +44,15 @@ const Header = () => {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="grid gap-3 p-4 w-[400px]">
-                    <Link to="/talent-pool" className="block p-2 hover:bg-slate-100 rounded-md">
+                    <Link to="/talent-pool" className="block p-2 hover:bg-accent rounded-md transition-colors duration-300">
                       <div className="font-medium mb-1">Talent Pool</div>
                       <p className="text-sm text-muted-foreground">Browse our talented community</p>
                     </Link>
-                    <Link to="/projects" className="block p-2 hover:bg-slate-100 rounded-md">
+                    <Link to="/projects" className="block p-2 hover:bg-accent rounded-md transition-colors duration-300">
                       <div className="font-medium mb-1">Projects</div>
                       <p className="text-sm text-muted-foreground">Browse and join startup projects</p>
                     </Link>
-                    <Link to="/vc-dashboard" className="block p-2 hover:bg-slate-100 rounded-md">
+                    <Link to="/vc-dashboard" className="block p-2 hover:bg-accent rounded-md transition-colors duration-300">
                       <div className="font-medium mb-1">VC Network</div>
                       <p className="text-sm text-muted-foreground">Connect with venture capitalists</p>
                     </Link>
@@ -67,11 +67,11 @@ const Header = () => {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="grid gap-3 p-4 w-[400px]">
-                    <Link to="/blog" className="block p-2 hover:bg-slate-100 rounded-md">
+                    <Link to="/blog" className="block p-2 hover:bg-accent rounded-md transition-colors duration-300">
                       <div className="font-medium mb-1">Startup Blog</div>
                       <p className="text-sm text-muted-foreground">Latest startup insights and news</p>
                     </Link>
-                    <Link to="/faq" className="block p-2 hover:bg-slate-100 rounded-md">
+                    <Link to="/faq" className="block p-2 hover:bg-accent rounded-md transition-colors duration-300">
                       <div className="font-medium mb-1">FAQ</div>
                       <p className="text-sm text-muted-foreground">Common questions answered</p>
                     </Link>
@@ -92,10 +92,14 @@ const Header = () => {
 
           <nav className="flex items-center gap-4">
             <motion.button
-              className="relative w-14 h-8 rounded-full bg-secondary p-1 shadow-inner"
+              className="relative w-14 h-8 rounded-full bg-secondary p-1 shadow-inner transition-colors duration-300"
               onClick={toggleTheme}
               animate={{
                 backgroundColor: theme === 'dark' ? '#1a1f2c' : '#f1f1f1'
+              }}
+              transition={{
+                duration: 0.3,
+                ease: "easeInOut"
               }}
             >
               <motion.div
@@ -107,7 +111,8 @@ const Header = () => {
                 transition={{
                   type: "spring",
                   stiffness: 300,
-                  damping: 15
+                  damping: 25,
+                  duration: 0.3
                 }}
               />
             </motion.button>
