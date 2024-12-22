@@ -105,6 +105,56 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_companies: {
+        Row: {
+          company_name: string
+          created_at: string
+          equity_percentage: number | null
+          id: string
+          investment_amount: number | null
+          investment_date: string
+          sector: string | null
+          stage: string | null
+          status: string | null
+          updated_at: string
+          vc_firm_id: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          equity_percentage?: number | null
+          id?: string
+          investment_amount?: number | null
+          investment_date: string
+          sector?: string | null
+          stage?: string | null
+          status?: string | null
+          updated_at?: string
+          vc_firm_id: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          equity_percentage?: number | null
+          id?: string
+          investment_amount?: number | null
+          investment_date?: string
+          sector?: string | null
+          stage?: string | null
+          status?: string | null
+          updated_at?: string
+          vc_firm_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_companies_vc_firm_id_fkey"
+            columns: ["vc_firm_id"]
+            isOneToOne: false
+            referencedRelation: "vc_firms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -147,6 +197,51 @@ export type Database = {
           twitter_url?: string | null
           updated_at?: string
           website_url?: string | null
+        }
+        Relationships: []
+      }
+      vc_firms: {
+        Row: {
+          created_at: string
+          firm_name: string
+          fund_size: string | null
+          geographic_focus: string[] | null
+          id: string
+          investment_stage: string[] | null
+          investment_thesis: string | null
+          max_check_size: number | null
+          min_check_size: number | null
+          preferred_sectors: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          firm_name: string
+          fund_size?: string | null
+          geographic_focus?: string[] | null
+          id?: string
+          investment_stage?: string[] | null
+          investment_thesis?: string | null
+          max_check_size?: number | null
+          min_check_size?: number | null
+          preferred_sectors?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          firm_name?: string
+          fund_size?: string | null
+          geographic_focus?: string[] | null
+          id?: string
+          investment_stage?: string[] | null
+          investment_thesis?: string | null
+          max_check_size?: number | null
+          min_check_size?: number | null
+          preferred_sectors?: string[] | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
