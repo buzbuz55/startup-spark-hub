@@ -8,8 +8,8 @@ import JoinProjectDialog from "./JoinProjectDialog";
 import ProjectDetailsDialog from "./ProjectDetailsDialog";
 import { optimizeImage } from "@/utils/imageOptimizer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 
-// Update the type to use string for id
 type ProjectCardProps = Omit<ProjectData, 'id'> & {
   id: string;
 };
@@ -28,6 +28,7 @@ const ProjectCard = ({
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
   const optimizedImageUrl = optimizeImage(image);
@@ -92,6 +93,38 @@ const ProjectCard = ({
             <span className="font-semibold">Impact:</span>
             <span className="ml-2">{impact}</span>
           </div>
+
+          <Button
+            variant="ghost"
+            className="w-full mt-2 flex items-center justify-center gap-2"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            {isExpanded ? 'Show Less' : 'Show More'}
+          </Button>
+
+          {isExpanded && (
+            <div className="space-y-4 pt-2 border-t">
+              <div>
+                <h4 className="font-semibold mb-2">Company Info</h4>
+                <p className="text-sm text-gray-600">
+                  A pioneering startup in the {category.toLowerCase()} sector, focused on creating sustainable solutions.
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold mb-2">Contact</h4>
+                <Button 
+                  variant="outline" 
+                  className="w-full flex items-center justify-center gap-2"
+                  onClick={() => window.location.href = '/messages'}
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  Chat with Team
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
