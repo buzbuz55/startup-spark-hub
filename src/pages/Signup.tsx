@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
+import ScheduleMeeting from "@/components/meetings/ScheduleMeeting";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -74,6 +75,9 @@ const Signup = () => {
             theme="light"
             redirectTo={window.location.origin}
           />
+          <div className="mt-6">
+            <ScheduleMeeting />
+          </div>
         </div>
         <div className="mt-8 text-center">
           <a 
