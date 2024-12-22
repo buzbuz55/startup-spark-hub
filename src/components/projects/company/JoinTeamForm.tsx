@@ -27,6 +27,12 @@ const JoinTeamForm = ({ projectId, position }: JoinTeamFormProps) => {
         return;
       }
 
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please sign in to apply");
+        return;
+      }
+
       // Upload resume to Supabase Storage
       const fileExt = resume.name.split('.').pop();
       const filePath = `${projectId}/${crypto.randomUUID()}.${fileExt}`;
@@ -40,6 +46,7 @@ const JoinTeamForm = ({ projectId, position }: JoinTeamFormProps) => {
       const { error: applicationError } = await supabase
         .from('team_applications')
         .insert({
+          applicant_id: user.id,
           position_id: projectId,
           portfolio_url: formData.get('portfolio'),
           cover_letter: formData.get('coverLetter'),
