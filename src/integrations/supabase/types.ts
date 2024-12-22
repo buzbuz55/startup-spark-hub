@@ -30,6 +30,33 @@ export type Database = {
         }
         Relationships: []
       }
+      meetings: {
+        Row: {
+          created_at: string
+          creator_id: string
+          id: string
+          room_id: string
+          scheduled_date: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          id?: string
+          room_id: string
+          scheduled_date: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          id?: string
+          room_id?: string
+          scheduled_date?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string

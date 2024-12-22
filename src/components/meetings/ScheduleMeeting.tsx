@@ -29,18 +29,19 @@ const ScheduleMeeting = () => {
       // Store the meeting in Supabase
       const { error } = await supabase
         .from('meetings')
-        .insert([
-          {
-            scheduled_date: date.toISOString(),
-            room_id: roomId,
-            creator_id: user.id,
-          }
-        ]);
+        .insert({
+          scheduled_date: date.toISOString(),
+          room_id: roomId,
+          creator_id: user.id,
+          status: 'scheduled'
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
 
       toast.success("Meeting scheduled successfully!");
-      // You could add navigation to the meeting room here
     } catch (error) {
       console.error("Error scheduling meeting:", error);
       toast.error("Failed to schedule meeting");
