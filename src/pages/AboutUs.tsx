@@ -1,41 +1,84 @@
 import Header from "@/components/Header";
+import { motion } from "framer-motion";
 
 const AboutUs = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-800 to-indigo-900">
       <Header />
-      <div className="container mx-auto px-4 py-24">
-        <div className="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-xl p-8 text-white">
-          <h1 className="text-4xl font-bold mb-8">About Startup Nation</h1>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 py-16 md:py-24"
+      >
+        <div className="max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-xl p-6 md:p-8 text-white mt-8">
+          <motion.h1 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-3xl md:text-4xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-pink-100"
+          >
+            About Startup Spark
+          </motion.h1>
           
           <div className="space-y-6">
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
-              <p className="text-lg text-gray-200">
-                Startup Nation is dedicated to empowering student entrepreneurs and fostering innovation in the academic community. We believe that great ideas can come from anywhere, and we're here to provide the platform, resources, and connections needed to turn those ideas into reality.
+            <motion.section
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="backdrop-blur-md bg-white/5 rounded-lg p-4 md:p-6"
+            >
+              <h2 className="text-xl md:text-2xl font-semibold mb-3 text-purple-200">Our Mission</h2>
+              <p className="text-base md:text-lg text-gray-200">
+                We empower student entrepreneurs and foster innovation in the academic community. Our platform connects visionaries with the resources and talent they need to transform ideas into successful ventures.
               </p>
-            </section>
+            </motion.section>
 
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">What We Do</h2>
-              <p className="text-lg text-gray-200">
-                We connect student entrepreneurs with mentors, investors, and fellow innovators. Our platform facilitates idea sharing, team building, and access to vital resources that can help transform concepts into successful ventures.
+            <motion.section
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="backdrop-blur-md bg-white/5 rounded-lg p-4 md:p-6"
+            >
+              <h2 className="text-xl md:text-2xl font-semibold mb-3 text-purple-200">What We Do</h2>
+              <p className="text-base md:text-lg text-gray-200">
+                We provide a comprehensive platform for idea sharing, team building, and accessing vital resources. Our community brings together entrepreneurs, mentors, and investors to create meaningful connections.
               </p>
-            </section>
+            </motion.section>
 
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">Our Values</h2>
-              <ul className="list-disc list-inside text-lg text-gray-200 space-y-2">
-                <li>Innovation and Creativity</li>
-                <li>Collaboration and Community</li>
-                <li>Education and Growth</li>
-                <li>Integrity and Transparency</li>
-                <li>Diversity and Inclusion</li>
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="backdrop-blur-md bg-white/5 rounded-lg p-4 md:p-6"
+            >
+              <h2 className="text-xl md:text-2xl font-semibold mb-3 text-purple-200">Our Values</h2>
+              <ul className="list-none space-y-2 text-base md:text-lg text-gray-200">
+                <li className="flex items-center">
+                  <span className="mr-2">✨</span>
+                  Innovation and Creativity
+                </li>
+                <li className="flex items-center">
+                  <span className="mr-2">🤝</span>
+                  Collaboration and Community
+                </li>
+                <li className="flex items-center">
+                  <span className="mr-2">📚</span>
+                  Education and Growth
+                </li>
+                <li className="flex items-center">
+                  <span className="mr-2">⚖️</span>
+                  Integrity and Transparency
+                </li>
+                <li className="flex items-center">
+                  <span className="mr-2">🌈</span>
+                  Diversity and Inclusion
+                </li>
               </ul>
-            </section>
+            </motion.section>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
