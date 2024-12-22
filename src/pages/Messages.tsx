@@ -8,6 +8,7 @@ import ContactsList from "@/components/messages/ContactsList";
 import ChatHeader from "@/components/messages/ChatHeader";
 import ChatInput from "@/components/messages/ChatInput";
 import MessageList from "@/components/messages/MessageList";
+import type { Message, MessageStatus } from "@/types/messages";
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
@@ -33,7 +34,6 @@ const Messages = () => {
     const channel = supabase.channel(`typing:${selectedChat}`)
       .on('broadcast', { event: 'typing' }, ({ payload }) => {
         setIsTyping(true);
-        // Reset typing indicator after 3 seconds
         setTimeout(() => setIsTyping(false), 3000);
       })
       .subscribe();
@@ -43,7 +43,7 @@ const Messages = () => {
     };
   }, [selectedChat]);
 
-  const messages = [
+  const messages: Message[] = [
     {
       id: "1",
       senderId: "1",
