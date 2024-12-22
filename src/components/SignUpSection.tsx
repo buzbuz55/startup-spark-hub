@@ -41,20 +41,19 @@ const SignUpSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-900 via-violet-800 to-indigo-900 text-white">
+    <section className="py-12 md:py-20 bg-gradient-to-br from-purple-900 via-violet-800 to-indigo-900 text-white">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto space-y-12">
+        <div className="max-w-4xl mx-auto space-y-8 md:space-y-12">
           <div className="text-center">
-            <h2 className="text-4xl font-bold mb-6">Join the Revolution! 🚀</h2>
-            <p className="text-xl text-purple-200 mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">Join the Revolution! 🚀</h2>
+            <p className="text-lg md:text-xl text-purple-200 mb-6 md:mb-8">
               Connect with fellow entrepreneurs, build your dream team, and launch your next big idea!
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Email Signup */}
+          <div className="grid gap-6 md:grid-cols-2 md:gap-8">
             <form onSubmit={handleEmailSignup} className="space-y-4">
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Input
                   type="email"
                   placeholder="Enter your email"
@@ -62,16 +61,15 @@ const SignUpSection = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 />
-                <Button type="submit" className="bg-white text-purple-700 hover:bg-purple-100">
-                  <Mail className="mr-2" />
+                <Button type="submit" className="w-full sm:w-auto bg-white text-purple-700 hover:bg-purple-100">
+                  <Mail className="mr-2 h-4 w-4" />
                   Sign Up
                 </Button>
               </div>
             </form>
 
-            {/* Phone Signup */}
             <form onSubmit={handlePhoneSignup} className="space-y-4">
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Input
                   type="tel"
                   placeholder="Enter your phone"
@@ -79,50 +77,49 @@ const SignUpSection = () => {
                   onChange={(e) => setPhone(e.target.value)}
                   className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 />
-                <Button type="submit" className="bg-white text-purple-700 hover:bg-purple-100">
-                  <Phone className="mr-2" />
+                <Button type="submit" className="w-full sm:w-auto bg-white text-purple-700 hover:bg-purple-100">
+                  <Phone className="mr-2 h-4 w-4" />
                   Sign Up
                 </Button>
               </div>
             </form>
           </div>
 
-          <div className="flex justify-center gap-4 pt-8">
-            <Button onClick={handleDownload} size="lg" className="bg-white text-purple-700 hover:bg-purple-100">
-              <Download className="mr-2" />
+          <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6 md:pt-8">
+            <Button onClick={handleDownload} size="lg" className="w-full sm:w-auto bg-white text-purple-700 hover:bg-purple-100">
+              <Download className="mr-2 h-4 w-4" />
               Download App
             </Button>
-            <Button onClick={handleShare} size="lg" className="bg-white text-purple-700 hover:bg-purple-100">
-              <Share2 className="mr-2" />
+            <Button onClick={handleShare} size="lg" className="w-full sm:w-auto bg-white text-purple-700 hover:bg-purple-100">
+              <Share2 className="mr-2 h-4 w-4" />
               Share
             </Button>
           </div>
 
-          {/* Social Media Buttons */}
-          <div className="flex justify-center gap-6 pt-8">
+          <div className="flex justify-center gap-4 md:gap-6 pt-6 md:pt-8">
             <a href="https://facebook.com/startupnation" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-                <Facebook className="w-6 h-6 text-white" />
+                <Facebook className="w-5 h-5 text-white" />
               </Button>
             </a>
             <a href="https://instagram.com/startupnation" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-                <Instagram className="w-6 h-6 text-white" />
+                <Instagram className="w-5 h-5 text-white" />
               </Button>
             </a>
             <a href="https://linkedin.com/company/startupnation" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-                <Linkedin className="w-6 h-6 text-white" />
+                <Linkedin className="w-5 h-5 text-white" />
               </Button>
             </a>
             <a href="https://twitter.com/startupnation" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-                <Twitter className="w-6 h-6 text-white" />
+                <Twitter className="w-5 h-5 text-white" />
               </Button>
             </a>
             <a href="https://youtube.com/startupnation" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-                <Youtube className="w-6 h-6 text-white" />
+                <Youtube className="w-5 h-5 text-white" />
               </Button>
             </a>
           </div>
