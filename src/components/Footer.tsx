@@ -14,7 +14,10 @@ const Footer = () => {
             </p>
             <div className="mt-4 space-y-2">
               <Link to="/about-startup-squad">
-                <Button variant="outline" className="text-white border-white hover:bg-white/10 w-full">
+                <Button 
+                  variant="default" 
+                  className="bg-purple-600 hover:bg-purple-700 text-white gap-2 w-full"
+                >
                   <Info className="w-4 h-4 mr-2" />
                   About Startup Squad
                 </Button>
