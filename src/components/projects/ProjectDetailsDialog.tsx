@@ -10,6 +10,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { ProjectData } from "@/types/project";
 import { Globe, MessageSquare, Copy, MoreVertical } from "lucide-react";
 import { useState } from "react";
+import ProjectComments from "./ProjectComments";
 
 interface ProjectDetailsDialogProps {
   project: ProjectData;
@@ -149,10 +150,7 @@ const ProjectDetailsDialog = ({ project, isOpen, onClose }: ProjectDetailsDialog
             </TabsContent>
 
             <TabsContent value="comments" className="mt-6">
-              <div className="flex items-center gap-4 p-4 rounded-lg border">
-                <MessageSquare className="h-5 w-5 text-muted-foreground" />
-                <p className="text-muted-foreground">No comments yet</p>
-              </div>
+              <ProjectComments projectId={project.id} />
             </TabsContent>
 
             <TabsContent value="posts" className="mt-6">
