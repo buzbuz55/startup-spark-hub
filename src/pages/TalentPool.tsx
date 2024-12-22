@@ -9,7 +9,7 @@ import TalentHeader from "@/components/talent/TalentHeader";
 import OpportunityCards from "@/components/talent/OpportunityCards";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -62,14 +62,26 @@ const TalentPool = () => {
         <div className="max-w-6xl mx-auto">
           <TalentHeader onSearch={setSearchQuery} />
           
-          <Button 
-            onClick={handlePostJob}
-            className="bg-primary hover:bg-primary/90 mb-6 w-full md:w-auto"
-            size="lg"
-          >
-            <PlusCircle className="mr-2 h-5 w-5" />
-            Post a Job Opening
-          </Button>
+          <div className="flex gap-4 mb-6">
+            <Button 
+              onClick={handlePostJob}
+              className="bg-primary hover:bg-primary/90"
+              size="lg"
+            >
+              <PlusCircle className="mr-2 h-5 w-5" />
+              Post a Job Opening
+            </Button>
+
+            <Button 
+              onClick={handleSubmitProfile}
+              variant="outline"
+              size="lg"
+              className="flex-shrink-0"
+            >
+              <UserPlus className="mr-2 h-5 w-5" />
+              Submit Your Profile
+            </Button>
+          </div>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -78,15 +90,6 @@ const TalentPool = () => {
           >
             <OpportunityCards onInternshipsClick={() => setShowInterns(true)} />
           </motion.div>
-
-          <Button 
-            onClick={handleSubmitProfile}
-            variant="outline"
-            size="lg"
-            className="mb-8 w-full md:w-auto"
-          >
-            Submit Your Profile
-          </Button>
 
           <AnimatePresence>
             {showInterns && (
