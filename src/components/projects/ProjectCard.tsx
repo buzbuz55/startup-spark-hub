@@ -2,19 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { LucideIcon } from "lucide-react";
+import * as Icons from "lucide-react";
+import { ProjectData } from "@/data/projectsData";
 
-interface ProjectCardProps {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-  seeking: string[];
-  funding: string;
-  impact: string;
-  image: string;
-  icon: LucideIcon;
-}
+type ProjectCardProps = Omit<ProjectData, 'id'>;
 
 const ProjectCard = ({ 
   name, 
@@ -23,9 +14,12 @@ const ProjectCard = ({
   seeking, 
   funding, 
   impact, 
-  image, 
-  icon: Icon 
+  image,
+  iconName
 }: ProjectCardProps) => {
+  // Dynamically get the icon component
+  const Icon = Icons[iconName as keyof typeof Icons];
+
   return (
     <Card className="hover:shadow-lg transition-shadow">
       <div className="h-48 overflow-hidden rounded-t-lg">
@@ -38,7 +32,7 @@ const ProjectCard = ({
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span className="flex items-center gap-2">
-            <Icon className="w-6 h-6" />
+            {Icon && <Icon className="w-6 h-6" />}
             {name}
           </span>
           <Badge variant="secondary">{category}</Badge>

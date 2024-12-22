@@ -1,10 +1,18 @@
-import { 
-  Leaf, Wind, Droplet, Trees, Waves, Globe, Sun, Zap, Cloud, Rocket,
-  Building, Car, Factory, Brain, Cpu, Plane, Battery, Fan, Truck,
-  Recycle, Container, Bot, Anchor, Car as CarIcon, Building2
-} from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
-export const projectsData = [
+export interface ProjectData {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+  seeking: string[];
+  funding: string;
+  impact: string;
+  image: string;
+  iconName: string;
+}
+
+export const projectsData: ProjectData[] = [
   {
     id: 1,
     name: "EcoVolt ⚡",
@@ -14,7 +22,7 @@ export const projectsData = [
     funding: "$2.5M",
     impact: "Reducing carbon emissions by 50,000 tons annually",
     image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-    icon: <Sun className="w-8 h-8 text-yellow-500" />
+    iconName: "Sun"
   },
   {
     id: 2,
@@ -25,7 +33,7 @@ export const projectsData = [
     funding: "$1.8M",
     impact: "Improving air quality for 1M+ city residents",
     image: "https://images.unsplash.com/photo-1439337153520-7082a56a81f4",
-    icon: <Wind className="w-8 h-8 text-blue-400" />
+    iconName: "Wind"
   },
   {
     id: 3,
@@ -36,7 +44,7 @@ export const projectsData = [
     funding: "$3.2M",
     impact: "Providing clean water to 500,000 people",
     image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-    icon: <Droplet className="w-8 h-8 text-blue-500" />
+    iconName: "Droplet"
   },
   {
     id: 4,
@@ -47,7 +55,7 @@ export const projectsData = [
     funding: "$1.5M",
     impact: "Planting 1M trees by 2024",
     image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9",
-    icon: <Trees className="w-8 h-8 text-green-600" />
+    iconName: "Trees"
   },
   {
     id: 5,
@@ -58,7 +66,7 @@ export const projectsData = [
     funding: "$2.1M",
     impact: "Cleaning 1000+ miles of coastline",
     image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
-    icon: <Waves className="w-8 h-8 text-blue-300" />
+    iconName: "Waves"
   },
   {
     id: 6,
@@ -69,7 +77,7 @@ export const projectsData = [
     funding: "$4.5M",
     impact: "Funded 100+ environmental projects",
     image: "https://images.unsplash.com/photo-1518495973542-4542c06a5843",
-    icon: <Globe className="w-8 h-8 text-green-400" />
+    iconName: "Globe"
   },
   {
     id: 7,
@@ -80,7 +88,7 @@ export const projectsData = [
     funding: "$3.8M",
     impact: "Powering 50,000 coastal homes",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    icon: <Zap className="w-8 h-8 text-blue-500" />
+    iconName: "Zap"
   },
   {
     id: 8,
@@ -91,7 +99,7 @@ export const projectsData = [
     funding: "$2.9M",
     impact: "90% less water usage in farming",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-    icon: <Leaf className="w-8 h-8 text-green-500" />
+    iconName: "Leaf"
   },
   {
     id: 9,
@@ -102,7 +110,7 @@ export const projectsData = [
     funding: "$2.3M",
     impact: "Restored rainfall in 5 regions",
     image: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
-    icon: <Cloud className="w-8 h-8 text-gray-400" />
+    iconName: "Cloud"
   },
   {
     id: 10,
@@ -113,7 +121,7 @@ export const projectsData = [
     funding: "$5.1M",
     impact: "24/7 global environmental monitoring",
     image: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b",
-    icon: <Rocket className="w-8 h-8 text-purple-500" />
+    iconName: "Rocket"
   },
   {
     id: 11,
@@ -124,7 +132,7 @@ export const projectsData = [
     funding: "$8.5M",
     impact: "Removing 100,000 tons of CO₂ annually",
     image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
-    icon: <Factory className="w-8 h-8 text-gray-600" />
+    iconName: "Factory"
   },
   {
     id: 12,
@@ -135,7 +143,7 @@ export const projectsData = [
     funding: "$12.2M",
     impact: "Powering 250,000 homes with space solar",
     image: "https://images.unsplash.com/photo-1485833077593-4278bba3f11f",
-    icon: <Sun className="w-8 h-8 text-yellow-500" />
+    iconName: "Sun"
   },
   {
     id: 13,
@@ -146,7 +154,7 @@ export const projectsData = [
     funding: "$15.8M",
     impact: "Zero-emission transport network spanning 50 cities",
     image: "https://images.unsplash.com/photo-1501286353178-1ec881214838",
-    icon: <Car className="w-8 h-8 text-blue-500" />
+    iconName: "Car"
   },
   {
     id: 14,
@@ -157,7 +165,7 @@ export const projectsData = [
     funding: "$9.3M",
     impact: "Enhanced CO₂ capture in 30 major cities",
     image: "https://images.unsplash.com/photo-1498936178812-4b2e558d2937",
-    icon: <Brain className="w-8 h-8 text-green-600" />
+    iconName: "Brain"
   },
   {
     id: 15,
@@ -168,7 +176,7 @@ export const projectsData = [
     funding: "$25.1M",
     impact: "First carbon-neutral city of 1M residents",
     image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
-    icon: <Building className="w-8 h-8 text-purple-500" />
+    iconName: "Building"
   },
   {
     id: 16,
@@ -179,7 +187,7 @@ export const projectsData = [
     funding: "$18.7M",
     impact: "50% reduction in aviation emissions",
     image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
-    icon: <Plane className="w-8 h-8 text-sky-500" />
+    iconName: "Plane"
   },
   {
     id: 17,
@@ -190,7 +198,7 @@ export const projectsData = [
     funding: "$14.5M",
     impact: "1GW clean energy storage deployed",
     image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-    icon: <Battery className="w-8 h-8 text-green-500" />
+    iconName: "Battery"
   },
   {
     id: 18,
@@ -201,7 +209,7 @@ export const projectsData = [
     funding: "$11.2M",
     impact: "Air quality improved for 10M+ people",
     image: "https://images.unsplash.com/photo-1439886183900-e79ec0057170",
-    icon: <Fan className="w-8 h-8 text-blue-400" />
+    iconName: "Fan"
   },
   {
     id: 19,
@@ -212,7 +220,7 @@ export const projectsData = [
     funding: "$20.3M",
     impact: "Carbon-neutral shipping across 3 continents",
     image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
-    icon: <Truck className="w-8 h-8 text-green-600" />
+    iconName: "Truck"
   },
   {
     id: 20,
@@ -223,7 +231,7 @@ export const projectsData = [
     funding: "$16.8M",
     impact: "1M tons of waste converted to energy",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1",
-    icon: <Recycle className="w-8 h-8 text-green-500" />
+    iconName: "Recycle"
   },
   {
     id: 21,
@@ -234,7 +242,7 @@ export const projectsData = [
     funding: "$13.4M",
     impact: "Clean water for 2M+ people",
     image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-    icon: <Container className="w-8 h-8 text-blue-500" />
+    iconName: "Container"
   },
   {
     id: 22,
@@ -245,7 +253,7 @@ export const projectsData = [
     funding: "$10.9M",
     impact: "90% reduction in water usage",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-    icon: <Bot className="w-8 h-8 text-orange-500" />
+    iconName: "Bot"
   },
   {
     id: 23,
@@ -256,7 +264,7 @@ export const projectsData = [
     funding: "$19.2M",
     impact: "Cleaned 1M tons of ocean plastic",
     image: "https://images.unsplash.com/photo-1518877593221-1f28583780b4",
-    icon: <Anchor className="w-8 h-8 text-blue-600" />
+    iconName: "Anchor"
   },
   {
     id: 24,
@@ -267,7 +275,7 @@ export const projectsData = [
     funding: "$22.5M",
     impact: "100K+ EVs in smart transport network",
     image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    icon: <CarIcon className="w-8 h-8 text-purple-500" />
+    iconName: "CarIcon"
   },
   {
     id: 25,
@@ -278,6 +286,6 @@ export const projectsData = [
     funding: "$17.6M",
     impact: "Created 50+ carbon-negative districts",
     image: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
-    icon: <Building2 className="w-8 h-8 text-green-600" />
+    iconName: "Building2"
   }
 ];
