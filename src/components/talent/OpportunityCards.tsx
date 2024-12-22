@@ -11,11 +11,13 @@ const OpportunityCards = ({ onInternshipsClick }: OpportunityCardsProps) => {
     <div className="grid md:grid-cols-3 gap-4 md:gap-6">
       <div className="bg-gradient-to-br from-purple-100 to-white p-4 md:p-6 rounded-lg shadow-sm hover:shadow-md transition-all">
         <Briefcase className="w-10 h-10 text-purple-600 mb-4" />
-        <h2 className="text-lg md:text-xl font-semibold mb-2">Full-time Positions</h2>
-        <p className="text-gray-600 mb-4 text-sm md:text-base">Join innovative startups and make an impact</p>
+        <h2 className="text-lg md:text-xl font-semibold mb-2">Hire Full-time Talent</h2>
+        <p className="text-gray-600 mb-4 text-sm md:text-base">
+          For companies looking to build their dream team
+        </p>
         <Link to="/vc-dashboard">
           <Button variant="outline" className="w-full">
-            View Positions
+            Browse Candidates
           </Button>
         </Link>
       </div>
