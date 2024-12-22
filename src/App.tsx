@@ -15,6 +15,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import Projects from "./pages/Projects";
 import Blog from "./pages/Blog";
+import FAQ from "./pages/FAQ";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/faq" element={<FAQ />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
