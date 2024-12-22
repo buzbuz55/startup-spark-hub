@@ -4,6 +4,7 @@ import Features from "@/components/Features";
 import Testimonials from "@/components/Testimonials";
 import Collaboration from "@/components/Collaboration";
 import SignUpSection from "@/components/SignUpSection";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <Collaboration />
       <Testimonials />
       <SignUpSection />
+      <Footer />
     </div>
   );
 };

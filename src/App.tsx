@@ -10,6 +10,9 @@ import VCDashboard from "./pages/VCDashboard";
 import Messages from "./pages/Messages";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AboutUs from "./pages/AboutUs";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +30,9 @@ const App = () => (
           <Route path="/messages" element={<Messages />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
