@@ -58,7 +58,10 @@ const Messages = () => {
 
       const { error } = await supabase.from("messages").insert(messageData);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error details:", error);
+        throw error;
+      }
 
       setMessage("");
       toast.success("Message sent!");
