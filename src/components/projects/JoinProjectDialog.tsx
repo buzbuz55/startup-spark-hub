@@ -9,7 +9,7 @@ interface JoinProjectDialogProps {
   isOpen: boolean;
   onClose: () => void;
   projectName: string;
-  projectId: number;
+  projectId: string;
 }
 
 const JoinProjectDialog = ({ isOpen, onClose, projectName, projectId }: JoinProjectDialogProps) => {

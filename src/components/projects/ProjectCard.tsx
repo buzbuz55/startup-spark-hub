@@ -84,7 +84,8 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       <JoinProjectDialog
         isOpen={isJoinDialogOpen}
         onClose={() => setIsJoinDialogOpen(false)}
-        project={project}
+        projectName={project.title}
+        projectId={project.id}
       />
     </Card>
   );
