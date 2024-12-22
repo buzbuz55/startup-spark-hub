@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar } from "@/components/ui/avatar";
 import { Search, Send } from "lucide-react";
+import { toast } from "sonner";
 
 const Messages = () => {
+  const [searchParams] = useSearchParams();
+  const projectId = searchParams.get("project");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
-  // Sample data - replace with actual data from your backend
+  useEffect(() => {
+    if (projectId) {
+      setSelectedChat(projectId);
+      toast.info("You can now discuss project details with the team!");
+    }
+  }, [projectId]);
+
   const contacts = [
     { id: "1", name: "Sarah Chen", role: "Software Engineer", lastMessage: "Hey, I saw your startup idea!", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330" },
     { id: "2", name: "Alex Kumar", role: "Product Designer", lastMessage: "Would love to collaborate!", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" },
