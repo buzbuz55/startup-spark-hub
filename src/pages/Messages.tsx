@@ -10,7 +10,7 @@ import ChatInput from "@/components/messages/ChatInput";
 import MessageList from "@/components/messages/MessageList";
 import { useMessaging } from "@/hooks/use-messaging";
 import { useChatRealtime } from "@/hooks/use-chat-realtime";
-import type { MessageData } from "@/types/messages";
+import { createMessageData } from "@/types/messages";
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
@@ -49,17 +49,12 @@ const Messages = () => {
         return;
       }
 
-      const messageData: MessageData = {
-        sender_id: user.id,
-        content: message,
-        status: "sent",
-      };
-
-      if (currentGroup) {
-        messageData.group_id = currentGroup.id;
-      } else {
-        messageData.receiver_id = selectedChat;
-      }
+      const messageData = createMessageData(
+        message,
+        user.id,
+        selectedChat,
+        currentGroup?.id
+      );
 
       const { error } = await supabase.from("messages").insert(messageData);
 
