@@ -10,30 +10,38 @@ export const useMessaging = (chatId: string | null) => {
     if (!chatId) return;
 
     const fetchMessages = async () => {
-      const { data, error } = await supabase
-        .from("messages")
-        .select("*")
-        .or(`sender_id.eq.${chatId},receiver_id.eq.${chatId}`)
-        .order("created_at", { ascending: true });
+      try {
+        const { data, error } = await supabase
+          .from("messages")
+          .select("*")
+          .or(`sender_id.eq.${chatId},receiver_id.eq.${chatId}`)
+          .order("created_at", { ascending: true });
 
-      if (error) {
-        console.error("Error fetching messages:", error);
-        return;
+        if (error) {
+          console.error("Error fetching messages:", error);
+          return;
+        }
+
+        if (!data) return;
+
+        setMessages(
+          data.map((msg) => ({
+            id: msg.id,
+            senderId: msg.sender_id,
+            text: msg.content,
+            timestamp: new Date(msg.created_at).toLocaleTimeString(),
+            status: (msg.status || "sent") as MessageStatus,
+          }))
+        );
+      } catch (error) {
+        console.error("Error in fetchMessages:", error);
+        toast.error("Failed to fetch messages");
       }
-
-      setMessages(
-        data.map((msg) => ({
-          id: msg.id,
-          senderId: msg.sender_id,
-          text: msg.content,
-          timestamp: new Date(msg.created_at).toLocaleTimeString(),
-          status: (msg.status || 'sent') as MessageStatus, // Cast to MessageStatus type
-        }))
-      );
     };
 
     fetchMessages();
 
+    // Set up realtime subscription
     const channel = supabase
       .channel("messages")
       .on(
@@ -44,7 +52,7 @@ export const useMessaging = (chatId: string | null) => {
           table: "messages",
         },
         (payload) => {
-          fetchMessages();
+          fetchMessages(); // Refresh messages when changes occur
         }
       )
       .subscribe();
@@ -64,9 +72,7 @@ export const useMessaging = (chatId: string | null) => {
       if (error) throw error;
 
       setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === id ? { ...msg, text: newText } : msg
-        )
+        prev.map((msg) => (msg.id === id ? { ...msg, text: newText } : msg))
       );
 
       toast.success("Message updated successfully");
