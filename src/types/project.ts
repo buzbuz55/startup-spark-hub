@@ -1,5 +1,5 @@
 export interface ProjectData {
-  id: string; // Change to string to match UUID format
+  id: string; // UUID format
   name: string;
   category: string;
   description: string;
