@@ -5,14 +5,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar } from "@/components/ui/avatar";
-import { Search, Send } from "lucide-react";
+import { Search, Send, Video } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import VideoChat from "@/components/video/VideoChat";
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
   const projectId = searchParams.get("project");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [videoSession, setVideoSession] = useState<{ roomId: string; userId: string } | null>(null);
 
   useEffect(() => {
     if (projectId) {
@@ -37,6 +40,42 @@ const Messages = () => {
     if (message.trim()) {
       // Add message sending logic here
       setMessage("");
+    }
+  };
+
+  const startVideoCall = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please sign in to start a video call");
+        return;
+      }
+
+      if (!selectedChat) {
+        toast.error("Please select a contact first");
+        return;
+      }
+
+      const roomId = `video-${Date.now()}`;
+      const { error } = await supabase
+        .from('video_sessions')
+        .insert({
+          creator_id: user.id,
+          participant_id: selectedChat,
+          room_id: roomId,
+        });
+
+      if (error) {
+        console.error("Error creating video session:", error);
+        toast.error("Failed to start video call");
+        return;
+      }
+
+      setVideoSession({ roomId, userId: user.id });
+      toast.success("Video call started!");
+    } catch (error) {
+      console.error("Error starting video call:", error);
+      toast.error("Failed to start video call");
     }
   };
 
@@ -89,22 +128,32 @@ const Messages = () => {
             {selectedChat ? (
               <>
                 <div className="p-4 border-b border-white/20">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10">
-                      <img
-                        src={contacts.find(c => c.id === selectedChat)?.avatar}
-                        alt={contacts.find(c => c.id === selectedChat)?.name}
-                        className="object-cover"
-                      />
-                    </Avatar>
-                    <div>
-                      <h3 className="text-sm font-medium text-white">
-                        {contacts.find(c => c.id === selectedChat)?.name}
-                      </h3>
-                      <p className="text-xs text-white/60">
-                        {contacts.find(c => c.id === selectedChat)?.role}
-                      </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-10 w-10">
+                        <img
+                          src={contacts.find(c => c.id === selectedChat)?.avatar}
+                          alt={contacts.find(c => c.id === selectedChat)?.name}
+                          className="object-cover"
+                        />
+                      </Avatar>
+                      <div>
+                        <h3 className="text-sm font-medium text-white">
+                          {contacts.find(c => c.id === selectedChat)?.name}
+                        </h3>
+                        <p className="text-xs text-white/60">
+                          {contacts.find(c => c.id === selectedChat)?.role}
+                        </p>
+                      </div>
                     </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={startVideoCall}
+                      className="text-white hover:text-white/80"
+                    >
+                      <Video className="w-5 h-5" />
+                    </Button>
                   </div>
                 </div>
 
@@ -162,6 +211,14 @@ const Messages = () => {
           </div>
         </div>
       </div>
+      
+      {videoSession && (
+        <VideoChat
+          roomId={videoSession.roomId}
+          userId={videoSession.userId}
+          onClose={() => setVideoSession(null)}
+        />
+      )}
     </div>
   );
 };

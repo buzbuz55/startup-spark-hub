@@ -144,6 +144,33 @@ export type Database = {
         }
         Relationships: []
       }
+      video_sessions: {
+        Row: {
+          created_at: string
+          creator_id: string
+          id: string
+          participant_id: string | null
+          room_id: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          id?: string
+          participant_id?: string | null
+          room_id: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          id?: string
+          participant_id?: string | null
+          room_id?: string
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
