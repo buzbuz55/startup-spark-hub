@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import * as Icons from "lucide-react";
 import { ProjectData } from "@/data/projectsData";
 import JoinProjectDialog from "./JoinProjectDialog";
+import ProjectDetailsDialog from "./ProjectDetailsDialog";
 import { optimizeImage } from "@/utils/imageOptimizer";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -21,19 +22,20 @@ const ProjectCard = ({
   image,
   iconName
 }: ProjectCardProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   
-  // Get the icon component from lucide-react
   const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
-
-  // Optimize image URL
   const optimizedImageUrl = optimizeImage(image);
 
   return (
     <>
       <Card className="hover:shadow-lg transition-shadow">
-        <div className="relative h-48 overflow-hidden rounded-t-lg bg-gray-100">
+        <div 
+          className="relative h-48 overflow-hidden rounded-t-lg bg-gray-100 cursor-pointer"
+          onClick={() => setIsDetailsDialogOpen(true)}
+        >
           {!imageLoaded && (
             <Skeleton className="w-full h-full absolute top-0 left-0" />
           )}
@@ -77,7 +79,7 @@ const ProjectCard = ({
             </div>
             <Button 
               variant="default"
-              onClick={() => setIsDialogOpen(true)}
+              onClick={() => setIsJoinDialogOpen(true)}
             >
               Join Project
             </Button>
@@ -91,10 +93,26 @@ const ProjectCard = ({
       </Card>
 
       <JoinProjectDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        isOpen={isJoinDialogOpen}
+        onClose={() => setIsJoinDialogOpen(false)}
         projectName={name}
         projectId={id}
+      />
+
+      <ProjectDetailsDialog
+        project={{
+          id,
+          name,
+          category,
+          description,
+          seeking,
+          funding,
+          impact,
+          image,
+          iconName
+        }}
+        isOpen={isDetailsDialogOpen}
+        onClose={() => setIsDetailsDialogOpen(false)}
       />
     </>
   );
