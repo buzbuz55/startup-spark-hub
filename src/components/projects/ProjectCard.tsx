@@ -20,7 +20,9 @@ const ProjectCard = ({
   iconName
 }: ProjectCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const Icon = Icons[iconName as keyof typeof Icons];
+  
+  // Dynamically get the icon component from lucide-react
+  const IconComponent = Icons[iconName as keyof typeof Icons];
 
   return (
     <>
@@ -35,7 +37,7 @@ const ProjectCard = ({
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center gap-2">
-              {Icon && <Icon className="w-6 h-6" />}
+              {IconComponent && <IconComponent className="w-6 h-6" />}
               {name}
             </span>
             <Badge variant="secondary">{category}</Badge>
