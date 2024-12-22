@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Video, Menu } from "lucide-react";
+import { MessageSquare, Video, Menu, Calendar } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -61,7 +61,22 @@ const Header = () => {
           <nav className="flex items-center gap-2 md:gap-4">
             {!isMobile && (
               <>
-                <ScheduleMeeting />
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="hidden md:flex relative group"
+                  onClick={() => {
+                    const scheduleMeetingModal = document.getElementById('schedule-meeting-modal');
+                    if (scheduleMeetingModal) {
+                      (scheduleMeetingModal as any).showModal();
+                    }
+                  }}
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
+                    Schedule Meeting
+                  </span>
+                </Button>
                 <Button 
                   variant="ghost" 
                   size="icon"
@@ -110,6 +125,8 @@ const Header = () => {
           </nav>
         </div>
       </div>
+
+      <ScheduleMeeting />
 
       {isVideoModalOpen && (
         <VideoChat
