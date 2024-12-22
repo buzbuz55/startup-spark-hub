@@ -92,7 +92,7 @@ const SignUpSection = () => {
               <Download className="mr-2" />
               Download App
             </Button>
-            <Button onClick={handleShare} size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-semibold">
+            <Button onClick={handleShare} size="lg" className="bg-white text-purple-700 hover:bg-purple-100">
               <Share2 className="mr-2" />
               Share
             </Button>
