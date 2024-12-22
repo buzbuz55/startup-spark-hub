@@ -34,13 +34,15 @@ const StartupOpportunities = () => {
       const { data, error } = await query;
       
       if (error) throw error;
+
+      const { data: { user } } = await supabase.auth.getUser();
       
       // Calculate vote counts
       const startupsWithVotes = data.map(startup => ({
         ...startup,
         voteCount: startup.startup_votes?.reduce((acc, vote) => 
           acc + (vote.vote_type === 'up' ? 1 : -1), 0) || 0,
-        userVote: startup.startup_votes?.find(vote => vote.user_id === supabase.auth.user()?.id)?.vote_type
+        userVote: startup.startup_votes?.find(vote => vote.user_id === user?.id)?.vote_type
       }));
 
       // Sort by votes if needed
