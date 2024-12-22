@@ -1,4 +1,4 @@
-import { MessageSquare, Video, ChartBarIcon, Users, Rocket, Globe, School, Share2, Zap } from "lucide-react";
+import { MessageSquare, Video, Users, Rocket, Globe, School, GraduationCap, BookOpen, Briefcase } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const Features = () => {
@@ -9,7 +9,7 @@ const Features = () => {
           Launch Your Dreams to the Moon! 🚀
         </h2>
         <p className="text-xl text-center text-gray-600 mb-16 max-w-2xl mx-auto">
-          Connect, collaborate, and conquer with fellow student entrepreneurs from top universities worldwide
+          Connect, collaborate, and gain real-world experience with fellow student entrepreneurs from top universities worldwide
         </p>
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
@@ -29,34 +29,49 @@ const Features = () => {
 
 const features = [
   {
-    icon: MessageSquare,
-    title: "Real-time Chat",
-    description: "Connect instantly with team members through rich messaging, file sharing, and threaded discussions.",
+    icon: GraduationCap,
+    title: "Student Entrepreneurs",
+    description: "Submit your innovative ideas and get matched with mentors, resources, and potential investors.",
   },
   {
-    icon: Video,
-    title: "Video Collaboration",
-    description: "Jump into HD video calls for brainstorming sessions, pitch practice, and team meetings.",
-  },
-  {
-    icon: Users,
-    title: "Team Sync",
-    description: "Build your dream team with talented students from universities worldwide.",
+    icon: Briefcase,
+    title: "Internship Opportunities",
+    description: "Find exciting internships at startups and gain hands-on experience in your field of interest.",
   },
   {
     icon: School,
-    title: "Campus Network",
-    description: "Connect with entrepreneurship clubs and incubators from top universities globally.",
+    title: "University Network",
+    description: "Connect with entrepreneurship clubs and programs from leading universities globally.",
   },
   {
-    icon: Share2,
-    title: "Resource Sharing",
-    description: "Share pitch decks, prototypes, and get instant feedback from mentors and peers.",
+    icon: BookOpen,
+    title: "Learning Experience",
+    description: "Access workshops, resources, and practical training to develop your entrepreneurial skills.",
   },
   {
-    icon: Zap,
-    title: "Quick Deploy",
-    description: "Launch your MVP in minutes with our integrated development and deployment tools.",
+    icon: Users,
+    title: "Peer Collaboration",
+    description: "Team up with talented students from diverse backgrounds and disciplines.",
+  },
+  {
+    icon: Rocket,
+    title: "Launch Your Career",
+    description: "Build your portfolio with real projects and kickstart your entrepreneurial journey.",
+  },
+  {
+    icon: MessageSquare,
+    title: "Mentorship Chat",
+    description: "Get guidance from experienced entrepreneurs and industry experts.",
+  },
+  {
+    icon: Video,
+    title: "Virtual Workshops",
+    description: "Attend online sessions to learn from successful founders and industry leaders.",
+  },
+  {
+    icon: Globe,
+    title: "Global Community",
+    description: "Join a worldwide network of student entrepreneurs and innovators.",
   },
 ];
 
