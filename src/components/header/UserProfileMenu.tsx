@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { UserCircle, LogIn, UserPlus, Settings, LogOut, Image } from "lucide-react";
+import { UserCircle, LogIn, UserPlus, Settings, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import { toast } from "sonner";
 interface Profile {
   full_name: string | null;
   email: string | null;
-  avatar_url?: string | null;
+  avatar_url: string | null;
 }
 
 const UserProfileMenu = () => {

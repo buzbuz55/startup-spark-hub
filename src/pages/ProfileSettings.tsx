@@ -63,6 +63,7 @@ const ProfileSettings = () => {
         .update({
           full_name: profile.full_name,
           phone_number: profile.phone_number,
+          avatar_url: profile.avatar_url
         })
         .eq('id', user.id);
 
