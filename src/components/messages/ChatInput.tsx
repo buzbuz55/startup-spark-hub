@@ -21,14 +21,53 @@ interface ChatInputProps {
 
 const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputProps) => {
   const [showEmojis, setShowEmojis] = useState(false);
+  const [showPollForm, setShowPollForm] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState("");
+  const [pollOptions, setPollOptions] = useState(["", ""]);
 
   const handleEmojiSelect = (emoji: any) => {
     setMessage(message + emoji.native);
     setShowEmojis(false);
   };
 
+  const handleAddOption = () => {
+    setPollOptions([...pollOptions, ""]);
+  };
+
+  const handleRemoveOption = (index: number) => {
+    setPollOptions(pollOptions.filter((_, i) => i !== index));
+  };
+
+  const handleOptionChange = (index: number, value: string) => {
+    const newOptions = [...pollOptions];
+    newOptions[index] = value;
+    setPollOptions(newOptions);
+  };
+
+  const handleCreatePoll = async () => {
+    if (!pollQuestion.trim()) {
+      toast.error("Please enter a question");
+      return;
+    }
+
+    const validOptions = pollOptions.filter(opt => opt.trim());
+    if (validOptions.length < 2) {
+      toast.error("Please add at least 2 options");
+      return;
+    }
+
+    setMessage(`/poll ${pollQuestion}\n${validOptions.join("\n")}`);
+    setShowPollForm(false);
+    setPollQuestion("");
+    setPollOptions(["", ""]);
+    onSendMessage();
+  };
+
   const handleActionSelect = (action: string, data?: any) => {
     switch (action) {
+      case "polls":
+        setShowPollForm(true);
+        break;
       case "camera":
         if (data instanceof MediaStream) {
           // Handle camera stream
@@ -79,42 +118,84 @@ const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputPr
           Contact is typing...
         </div>
       )}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSendMessage();
-        }}
-        className="flex gap-2 items-end"
-      >
-        <MessageActions onActionSelect={handleActionSelect} />
-        <Popover open={showEmojis} onOpenChange={setShowEmojis}>
-          <PopoverTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="h-10 w-10"
-            >
-              <Smile className="h-5 w-5" />
+      {showPollForm ? (
+        <div className="space-y-4">
+          <Input
+            value={pollQuestion}
+            onChange={(e) => setPollQuestion(e.target.value)}
+            placeholder="Enter your question..."
+          />
+          <div className="space-y-2">
+            {pollOptions.map((option, index) => (
+              <div key={index} className="flex gap-2">
+                <Input
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                  placeholder={`Option ${index + 1}`}
+                />
+                {pollOptions.length > 2 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleRemoveOption(index)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" onClick={handleAddOption}>
+              Add Option
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start" side="top">
-            <Picker
-              data={data}
-              onEmojiSelect={handleEmojiSelect}
-            />
-          </PopoverContent>
-        </Popover>
-        <Input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your message..."
-          className="bg-background"
-        />
-        <Button type="submit" size="icon" className="h-10 w-10">
-          <Send className="h-4 w-4" />
-        </Button>
-      </form>
+            <Button type="button" onClick={handleCreatePoll}>
+              Create Poll
+            </Button>
+            <Button type="button" variant="ghost" onClick={() => setShowPollForm(false)}>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSendMessage();
+          }}
+          className="flex gap-2 items-end"
+        >
+          <MessageActions onActionSelect={handleActionSelect} />
+          <Popover open={showEmojis} onOpenChange={setShowEmojis}>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10"
+              >
+                <Smile className="h-5 w-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0" align="start" side="top">
+              <Picker
+                data={data}
+                onEmojiSelect={handleEmojiSelect}
+              />
+            </PopoverContent>
+          </Popover>
+          <Input
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type your message..."
+            className="bg-background"
+          />
+          <Button type="submit" size="icon" className="h-10 w-10">
+            <Send className="h-4 w-4" />
+          </Button>
+        </form>
+      )}
     </div>
   );
 };

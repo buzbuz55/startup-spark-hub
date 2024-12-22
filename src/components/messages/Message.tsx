@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import PollMessage from "./PollMessage";
 
 interface MessageProps {
   id: string;
@@ -18,6 +19,46 @@ interface MessageProps {
 const Message = ({ id, senderId, text, timestamp, status, onEdit }: MessageProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(text);
+  const [poll, setPoll] = useState<any>(null);
+
+  useEffect(() => {
+    const checkForPoll = async () => {
+      if (text.startsWith("/poll ")) {
+        const [_, ...lines] = text.split("\n");
+        const question = lines[0];
+        const options = lines.slice(1);
+
+        const { data: existingPoll } = await supabase
+          .from("polls")
+          .select("*")
+          .eq("message_id", id)
+          .single();
+
+        if (!existingPoll) {
+          const { data: newPoll, error } = await supabase
+            .from("polls")
+            .insert({
+              message_id: id,
+              question,
+              options: JSON.stringify(options),
+            })
+            .select()
+            .single();
+
+          if (error) {
+            console.error("Error creating poll:", error);
+            return;
+          }
+
+          setPoll(newPoll);
+        } else {
+          setPoll(existingPoll);
+        }
+      }
+    };
+
+    checkForPoll();
+  }, [id, text]);
 
   const getStatusIcon = (status?: string) => {
     switch (status) {
@@ -87,7 +128,19 @@ const Message = ({ id, senderId, text, timestamp, status, onEdit }: MessageProps
           </div>
         ) : (
           <>
-            <p className="text-sm whitespace-pre-wrap break-words">{text}</p>
+            {poll ? (
+              <PollMessage
+                pollId={poll.id}
+                question={poll.question}
+                options={JSON.parse(poll.options)}
+                votes={[]} // You'll need to implement vote tracking
+                onVote={(optionIndex) => {
+                  // Handle vote
+                }}
+              />
+            ) : (
+              <p className="text-sm whitespace-pre-wrap break-words">{text}</p>
+            )}
             <div className="flex items-center justify-end gap-1 mt-1">
               <span className="text-xs opacity-60">{timestamp}</span>
               {senderId === "current-user" && (
