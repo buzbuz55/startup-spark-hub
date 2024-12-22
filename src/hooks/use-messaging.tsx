@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import type { Message } from "@/types/messages";
+import type { Message, MessageStatus } from "@/types/messages";
 
 export const useMessaging = (chatId: string | null) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -27,7 +27,7 @@ export const useMessaging = (chatId: string | null) => {
           senderId: msg.sender_id,
           text: msg.content,
           timestamp: new Date(msg.created_at).toLocaleTimeString(),
-          status: msg.status,
+          status: (msg.status || 'sent') as MessageStatus, // Cast to MessageStatus type
         }))
       );
     };
