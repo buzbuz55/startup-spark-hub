@@ -9,6 +9,14 @@ export const useMessaging = (chatId: string | null) => {
   useEffect(() => {
     if (!chatId) return;
 
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(chatId)) {
+      console.error("Invalid UUID format for chatId:", chatId);
+      toast.error("Invalid chat ID format");
+      return;
+    }
+
     const fetchMessages = async () => {
       try {
         const { data, error } = await supabase
@@ -53,7 +61,7 @@ export const useMessaging = (chatId: string | null) => {
           event: "*",
           schema: "public",
           table: "messages",
-          filter: `sender_id=eq.${chatId},receiver_id=eq.${chatId},group_id=eq.${chatId}`,
+          filter: `sender_id.eq.${chatId},receiver_id.eq.${chatId},group_id.eq.${chatId}`,
         },
         (payload) => {
           console.log("Message change received:", payload);
