@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Info } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -10,6 +12,14 @@ const Footer = () => {
             <p className="text-gray-400">
               Empowering student entrepreneurs to innovate and succeed.
             </p>
+            <div className="mt-4">
+              <Link to="/about">
+                <Button variant="outline" className="text-white border-white hover:bg-white/10">
+                  <Info className="w-4 h-4 mr-2" />
+                  About Us
+                </Button>
+              </Link>
+            </div>
           </div>
           
           <div>
