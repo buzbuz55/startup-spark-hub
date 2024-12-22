@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Rocket, Sparkles, Target, Users, Brain, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,8 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const SubmitIdea = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,6 +19,26 @@ const SubmitIdea = () => {
     email: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const checkUser = async () => {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        toast.error("Please sign in to submit your idea");
+        navigate("/login");
+        return;
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error checking auth status:", error);
+      navigate("/login");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,8 +50,9 @@ const SubmitIdea = () => {
         error: userError
       } = await supabase.auth.getUser();
 
-      if (userError) {
+      if (userError || !user) {
         toast.error("Please sign in to submit your idea");
+        navigate("/login");
         return;
       }
 
@@ -37,8 +60,8 @@ const SubmitIdea = () => {
         .from('messages')
         .insert([
           {
-            sender_id: user?.id,
-            receiver_id: user?.id, // For idea submissions, sender and receiver are the same
+            sender_id: user.id,
+            receiver_id: user.id, // For idea submissions, sender and receiver are the same
             content: JSON.stringify({
               type: 'startup_idea',
               ...formData,
@@ -75,6 +98,17 @@ const SubmitIdea = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-700">
+        <Header />
+        <div className="container mx-auto px-4 pt-24 text-center text-white">
+          Loading...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-700">
