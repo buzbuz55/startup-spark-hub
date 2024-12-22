@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MessageSquare, Video, Menu, ChevronDown, Calendar } from "lucide-react";
-import { useTheme } from "@/hooks/use-theme";
-import { motion } from "framer-motion";
 import { useState } from "react";
 import UserProfileMenu from "./header/UserProfileMenu";
 import MobileMenu from "./header/MobileMenu";
@@ -19,7 +17,6 @@ import {
 } from "@/components/ui/navigation-menu";
 
 const Header = () => {
-  const { theme, toggleTheme } = useTheme();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const isMobile = useIsMobile();
 
@@ -121,27 +118,6 @@ const Header = () => {
                 </Link>
               </>
             )}
-
-            <motion.button
-              className="relative w-12 h-6 rounded-full bg-secondary p-1 shadow-inner transition-colors duration-300"
-              onClick={toggleTheme}
-              animate={{
-                backgroundColor: theme === 'dark' ? '#1a1f2c' : '#f1f1f1'
-              }}
-            >
-              <motion.div
-                className="w-4 h-4 rounded-full bg-primary shadow-md"
-                animate={{
-                  x: theme === 'dark' ? 24 : 0,
-                  rotate: theme === 'dark' ? 45 : 0
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 25
-                }}
-              />
-            </motion.button>
 
             <div className="hidden md:block">
               <UserProfileMenu />

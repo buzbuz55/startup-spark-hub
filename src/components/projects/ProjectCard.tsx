@@ -27,7 +27,7 @@ const ProjectCard = ({
   const [isExpanded, setIsExpanded] = useState(false);
   
   const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
-  const optimizedImageUrl = optimizeImage(image);
+  const optimizedImageUrl = optimizeImage(image || '');
 
   return (
     <>
