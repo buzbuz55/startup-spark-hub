@@ -9,6 +9,7 @@ import {
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { useState } from "react";
+import MessageActions from "./MessageActions";
 
 interface ChatInputProps {
   message: string;
@@ -25,6 +26,11 @@ const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputPr
     setShowEmojis(false);
   };
 
+  const handleActionSelect = (action: string) => {
+    // This will be implemented in the future to handle different message actions
+    console.log("Selected action:", action);
+  };
+
   return (
     <div className="p-4 border-t">
       {isTyping && (
@@ -39,6 +45,7 @@ const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputPr
         }}
         className="flex gap-2 items-end"
       >
+        <MessageActions onActionSelect={handleActionSelect} />
         <Popover open={showEmojis} onOpenChange={setShowEmojis}>
           <PopoverTrigger asChild>
             <Button
@@ -57,14 +64,6 @@ const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputPr
             />
           </PopoverContent>
         </Popover>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="h-10 w-10"
-        >
-          <Paperclip className="h-5 w-5" />
-        </Button>
         <Input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
