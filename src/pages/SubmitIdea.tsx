@@ -37,7 +37,7 @@ const SubmitIdea = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-700">
         <Header />
-        <div className="container mx-auto px-4 pt-24 text-center text-white">
+        <div className="container mx-auto px-4 pt-16 text-center text-white">
           Loading...
         </div>
       </div>
@@ -47,26 +47,26 @@ const SubmitIdea = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-700">
       <Header />
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-2 right-2 md:top-4 md:right-4">
         <LanguageSelector />
       </div>
-      <div className="container mx-auto px-4 pt-24 pb-16">
+      <div className="container mx-auto px-3 pt-16 md:pt-24 pb-8 md:pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          <div className="text-center mb-6 md:mb-12">
+            <h1 className="text-3xl md:text-6xl font-bold text-white mb-3 md:mb-6">
               {t('submit.title')}
             </h1>
-            <p className="text-xl text-purple-100 mb-8">
+            <p className="text-lg md:text-xl text-purple-100 mb-4 md:mb-8 px-2">
               {t('submit.subtitle')}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-3 gap-2 md:gap-6 mb-6 md:mb-12">
             <StatsCard 
               icon={Rocket} 
               title="500+" 

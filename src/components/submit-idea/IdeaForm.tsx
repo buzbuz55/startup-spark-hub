@@ -73,66 +73,66 @@ const IdeaForm = () => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.3 }}
-      className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-xl"
+      className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 md:p-8 shadow-xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <label className="text-white text-lg font-medium">{t('submit.idea.label')}</label>
+          <label className="text-white text-base md:text-lg font-medium">{t('submit.idea.label')}</label>
           <Input
             name="title"
             value={formData.title}
             onChange={handleChange}
             placeholder={t('submit.idea.placeholder')}
-            className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+            className="bg-white/20 border-white/10 text-white placeholder:text-white/60 text-sm md:text-base"
             required
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-white text-lg font-medium">{t('submit.description.label')}</label>
+          <label className="text-white text-base md:text-lg font-medium">{t('submit.description.label')}</label>
           <Textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             placeholder={t('submit.description.placeholder')}
-            className="bg-white/20 border-white/10 text-white placeholder:text-white/60 min-h-[120px]"
+            className="bg-white/20 border-white/10 text-white placeholder:text-white/60 min-h-[80px] md:min-h-[120px] text-sm md:text-base"
             required
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-white text-lg font-medium">{t('submit.market.label')}</label>
+          <label className="text-white text-base md:text-lg font-medium">{t('submit.market.label')}</label>
           <Input
             name="market"
             value={formData.market}
             onChange={handleChange}
             placeholder={t('submit.market.placeholder')}
-            className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+            className="bg-white/20 border-white/10 text-white placeholder:text-white/60 text-sm md:text-base"
             required
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-white text-lg font-medium">{t('submit.team.label')}</label>
+          <label className="text-white text-base md:text-lg font-medium">{t('submit.team.label')}</label>
           <Input
             name="team"
             value={formData.team}
             onChange={handleChange}
             placeholder={t('submit.team.placeholder')}
-            className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+            className="bg-white/20 border-white/10 text-white placeholder:text-white/60 text-sm md:text-base"
             required
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-white text-lg font-medium">{t('submit.email.label')}</label>
+          <label className="text-white text-base md:text-lg font-medium">{t('submit.email.label')}</label>
           <Input
             name="email"
             type="email"
             value={formData.email}
             onChange={handleChange}
             placeholder={t('submit.email.placeholder')}
-            className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+            className="bg-white/20 border-white/10 text-white placeholder:text-white/60 text-sm md:text-base"
             required
           />
         </div>
@@ -141,9 +141,9 @@ const IdeaForm = () => {
           type="submit"
           size="lg"
           disabled={isSubmitting}
-          className="w-full bg-white text-purple-700 hover:bg-purple-100 font-semibold text-lg"
+          className="w-full bg-white text-purple-700 hover:bg-purple-100 font-semibold text-base md:text-lg h-10 md:h-12"
         >
-          <Sparkles className="mr-2" />
+          <Sparkles className="mr-2 w-4 h-4 md:w-5 md:h-5" />
           {isSubmitting ? "Submitting..." : t('submit.button')}
         </Button>
       </form>
