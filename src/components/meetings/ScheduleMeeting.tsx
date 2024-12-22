@@ -5,9 +5,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Input } from "@/components/ui/input";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
+import { format } from "date-fns";
 
 const ScheduleMeeting = () => {
   const [selectedContact, setSelectedContact] = useState<string>("");
+  const [guestEmail, setGuestEmail] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedTime, setSelectedTime] = useState<string>("10:00");
+  const [isNewGuest, setIsNewGuest] = useState(false);
 
   const contacts = [
     {
@@ -27,6 +34,11 @@ const ScheduleMeeting = () => {
     }
   ];
 
+  const generateZoomLink = () => {
+    // In a real application, this would integrate with Zoom API
+    return `https://zoom.us/j/${Math.random().toString(36).substring(7)}`;
+  };
+
   const handleScheduleMeeting = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -35,39 +47,57 @@ const ScheduleMeeting = () => {
         return;
       }
 
-      if (!selectedContact) {
+      if (!selectedDate) {
+        toast.error("Please select a date");
+        return;
+      }
+
+      if (!isNewGuest && !selectedContact) {
         toast.error("Please select a contact");
         return;
       }
 
-      // Generate a unique meeting room ID
-      const roomId = `meeting-${Math.random().toString(36).substring(7)}`;
-      const scheduledDate = new Date();
-      
+      if (isNewGuest && !guestEmail) {
+        toast.error("Please enter guest email");
+        return;
+      }
+
+      // Combine date and time
+      const meetingDateTime = new Date(selectedDate);
+      const [hours, minutes] = selectedTime.split(':');
+      meetingDateTime.setHours(parseInt(hours), parseInt(minutes));
+
+      // Generate Zoom link
+      const zoomLink = generateZoomLink();
+
       // Store the meeting in Supabase
       const { error: meetingError } = await supabase
         .from('meetings')
         .insert({
-          scheduled_date: scheduledDate.toISOString(),
-          room_id: roomId,
+          scheduled_date: meetingDateTime.toISOString(),
+          room_id: `meeting-${Math.random().toString(36).substring(7)}`,
           creator_id: user.id,
-          status: 'scheduled'
+          status: 'scheduled',
+          guest_email: isNewGuest ? guestEmail : null,
+          meeting_link: zoomLink
         });
 
       if (meetingError) throw meetingError;
 
-      // Send a message to the contact
-      const { error: messageError } = await supabase
-        .from('messages')
-        .insert({
-          sender_id: user.id,
-          receiver_id: selectedContact,
-          content: `Hi! I'd like to schedule a meeting with you. Here's the meeting link: ${roomId}. Looking forward to our discussion!`
-        });
+      // If selecting existing contact, send them a message
+      if (!isNewGuest) {
+        const { error: messageError } = await supabase
+          .from('messages')
+          .insert({
+            sender_id: user.id,
+            receiver_id: selectedContact,
+            content: `Hi! I've scheduled a meeting with you on ${format(meetingDateTime, 'PPpp')}. Here's the Zoom link: ${zoomLink}. Looking forward to our discussion!`
+          });
 
-      if (messageError) throw messageError;
+        if (messageError) throw messageError;
+      }
 
-      toast.success("Meeting invitation sent!");
+      toast.success("Meeting scheduled successfully!");
     } catch (error) {
       console.error("Error scheduling meeting:", error);
       toast.error("Failed to schedule meeting");
@@ -88,27 +118,74 @@ const ScheduleMeeting = () => {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="space-y-2">
-            <label htmlFor="contact" className="text-sm font-medium">
-              Who would you like to meet with?
-            </label>
+            <label className="text-sm font-medium">Select Date</label>
+            <CalendarComponent
+              mode="single"
+              selected={selectedDate}
+              onSelect={setSelectedDate}
+              className="rounded-md border"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Select Time</label>
+            <Input
+              type="time"
+              value={selectedTime}
+              onChange={(e) => setSelectedTime(e.target.value)}
+              className="w-full"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Guest Type</label>
             <Select
-              value={selectedContact}
-              onValueChange={setSelectedContact}
+              value={isNewGuest ? "new" : "existing"}
+              onValueChange={(value) => setIsNewGuest(value === "new")}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select a contact" />
+                <SelectValue placeholder="Select guest type" />
               </SelectTrigger>
               <SelectContent>
-                {contacts.map((contact) => (
-                  <SelectItem key={contact.id} value={contact.id}>
-                    {contact.name} - {contact.role}
-                  </SelectItem>
-                ))}
+                <SelectItem value="existing">Existing Contact</SelectItem>
+                <SelectItem value="new">New Guest</SelectItem>
               </SelectContent>
             </Select>
           </div>
+
+          {isNewGuest ? (
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Guest Email</label>
+              <Input
+                type="email"
+                placeholder="Enter guest email"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+              />
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Select Contact</label>
+              <Select
+                value={selectedContact}
+                onValueChange={setSelectedContact}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a contact" />
+                </SelectTrigger>
+                <SelectContent>
+                  {contacts.map((contact) => (
+                    <SelectItem key={contact.id} value={contact.id}>
+                      {contact.name} - {contact.role}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           <Button onClick={handleScheduleMeeting} className="w-full">
-            Send Meeting Invitation
+            Schedule Meeting
           </Button>
         </div>
       </DialogContent>

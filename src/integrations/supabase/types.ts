@@ -34,7 +34,9 @@ export type Database = {
         Row: {
           created_at: string
           creator_id: string
+          guest_email: string | null
           id: string
+          meeting_link: string | null
           room_id: string
           scheduled_date: string
           status: string | null
@@ -42,7 +44,9 @@ export type Database = {
         Insert: {
           created_at?: string
           creator_id: string
+          guest_email?: string | null
           id?: string
+          meeting_link?: string | null
           room_id: string
           scheduled_date: string
           status?: string | null
@@ -50,7 +54,9 @@ export type Database = {
         Update: {
           created_at?: string
           creator_id?: string
+          guest_email?: string | null
           id?: string
+          meeting_link?: string | null
           room_id?: string
           scheduled_date?: string
           status?: string | null
