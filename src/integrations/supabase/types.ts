@@ -533,6 +533,38 @@ export type Database = {
         }
         Relationships: []
       }
+      startup_votes: {
+        Row: {
+          created_at: string
+          id: string
+          startup_id: string
+          user_id: string
+          vote_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          startup_id: string
+          user_id: string
+          vote_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          startup_id?: string
+          user_id?: string
+          vote_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "startup_votes_startup_id_fkey"
+            columns: ["startup_id"]
+            isOneToOne: false
+            referencedRelation: "startup_ideas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_applications: {
         Row: {
           applicant_id: string

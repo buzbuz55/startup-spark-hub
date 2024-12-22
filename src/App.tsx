@@ -20,6 +20,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import FAQ from "./pages/FAQ";
 import ProfileSettings from "./pages/ProfileSettings";
+import StartupOpportunities from "./pages/StartupOpportunities";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
@@ -55,6 +56,7 @@ const App = () => {
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/profile/settings" element={<ProfileSettings />} />
+              <Route path="/startup-opportunities" element={<StartupOpportunities />} />
             </Routes>
           </BrowserRouter>
         </div>
