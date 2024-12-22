@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import * as Icons from "lucide-react";
-import JoinProjectDialog from "./JoinProjectDialog";
-import ProjectDetailsDialog from "./ProjectDetailsDialog";
-import { optimizeImage } from "@/utils/imageOptimizer";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { ProjectData } from "@/types/project";
+import JoinProjectDialog from "./JoinProjectDialog";
+import ProjectDetailsDialog from "./ProjectDetailsDialog";
+import ProjectImage from "./ProjectImage";
+import ProjectHeader from "./ProjectHeader";
+import ProjectRoles from "./ProjectRoles";
 
 const ProjectCard = ({ 
   id,
@@ -23,52 +22,27 @@ const ProjectCard = ({
 }: ProjectData) => {
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  
-  const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
-  const optimizedImageUrl = optimizeImage(image || '');
 
   return (
     <>
       <Card className="hover:shadow-lg transition-shadow">
-        <div 
-          className="relative h-48 overflow-hidden rounded-t-lg bg-gray-100 cursor-pointer"
-          onClick={() => setIsDetailsDialogOpen(true)}
-        >
-          {!imageLoaded && (
-            <Skeleton className="w-full h-full absolute top-0 left-0" />
-          )}
-          <img 
-            src={optimizedImageUrl}
-            alt={name}
-            className={`w-full h-full object-cover transition-opacity duration-300 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            onLoad={() => setImageLoaded(true)}
-            loading="lazy"
-          />
-        </div>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span className="flex items-center gap-2">
-              <DynamicIcon className="w-6 h-6" />
-              {name}
-            </span>
-            <Badge variant="secondary">{category}</Badge>
-          </CardTitle>
-        </CardHeader>
+        <ProjectImage 
+          image={image} 
+          name={name} 
+          onClick={() => setIsDetailsDialogOpen(true)} 
+        />
+        
+        <ProjectHeader 
+          name={name} 
+          category={category} 
+          iconName={iconName} 
+        />
+
         <CardContent className="space-y-4">
           <p className="text-gray-600 line-clamp-2">{description}</p>
           
-          <div>
-            <h4 className="font-semibold mb-2">Looking for:</h4>
-            <div className="flex flex-wrap gap-2">
-              {seeking.map((role, idx) => (
-                <Badge key={idx} variant="outline">{role}</Badge>
-              ))}
-            </div>
-          </div>
+          <ProjectRoles seeking={seeking} />
 
           <div className="flex justify-between items-center pt-4">
             <div className="text-sm">
