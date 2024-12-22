@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { UserCircle, LogIn, UserPlus, Settings, LogOut, Image } from "lucide-react";
 import {
@@ -17,9 +17,11 @@ import { toast } from "sonner";
 interface Profile {
   full_name: string | null;
   email: string | null;
+  avatar_url?: string | null;
 }
 
 const UserProfileMenu = () => {
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -46,7 +48,7 @@ const UserProfileMenu = () => {
       if (user) {
         const { data, error } = await supabase
           .from('profiles')
-          .select('full_name, email')
+          .select('full_name, email, avatar_url')
           .eq('id', user.id)
           .single();
 
@@ -65,6 +67,7 @@ const UserProfileMenu = () => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       toast.success("Signed out successfully");
+      navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
       toast.error("Error signing out");
@@ -99,7 +102,7 @@ const UserProfileMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative gap-2 h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="" alt={profile.full_name || 'User'} />
+            <AvatarImage src={profile.avatar_url || ""} alt={profile.full_name || 'User'} />
             <AvatarFallback>
               <UserCircle className="w-6 h-6" />
             </AvatarFallback>
@@ -114,14 +117,12 @@ const UserProfileMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Image className="mr-2 h-4 w-4" />
-          Change Photo
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" />
-          Profile Settings
-        </DropdownMenuItem>
+        <Link to="/profile/settings">
+          <DropdownMenuItem>
+            <Settings className="mr-2 h-4 w-4" />
+            Profile Settings
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />

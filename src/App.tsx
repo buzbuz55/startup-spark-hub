@@ -19,12 +19,13 @@ import Projects from "./pages/Projects";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import FAQ from "./pages/FAQ";
+import ProfileSettings from "./pages/ProfileSettings";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60 * 1000, // 1 minute
+        staleTime: 60 * 1000,
         retry: 1,
       },
     },
@@ -52,6 +53,7 @@ const App = () => {
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/profile/settings" element={<ProfileSettings />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
