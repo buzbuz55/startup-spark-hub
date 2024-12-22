@@ -14,6 +14,7 @@ const Messages = () => {
   const projectId = searchParams.get("project");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const [videoSession, setVideoSession] = useState<{
     roomId: string;
     userId: string;
@@ -26,31 +27,87 @@ const Messages = () => {
     }
   }, [projectId]);
 
+  useEffect(() => {
+    if (!selectedChat) return;
+
+    const channel = supabase.channel(`typing:${selectedChat}`)
+      .on('broadcast', { event: 'typing' }, ({ payload }) => {
+        setIsTyping(true);
+        // Reset typing indicator after 3 seconds
+        setTimeout(() => setIsTyping(false), 3000);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedChat]);
+
   const messages = [
     {
       id: "1",
       senderId: "1",
-      text: "Hey, I saw your startup idea!",
+      text: "Hey, I saw your startup idea! 👋",
       timestamp: "10:30 AM",
+      status: "read",
     },
     {
       id: "2",
       senderId: "current-user",
-      text: "Thanks! Would you like to know more?",
+      text: "Thanks! Would you like to know more? 😊",
       timestamp: "10:32 AM",
+      status: "delivered",
     },
     {
       id: "3",
       senderId: "1",
-      text: "Absolutely! I think we could work together.",
+      text: "Absolutely! I think we could work together. 🚀",
       timestamp: "10:35 AM",
+      status: "sent",
     },
   ];
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      // Add message sending logic here
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      
+      if (!user || !selectedChat) {
+        toast.error("Unable to send message");
+        return;
+      }
+
+      const { error } = await supabase.from("messages").insert({
+        sender_id: user.id,
+        receiver_id: selectedChat,
+        content: message,
+        status: "sent",
+      });
+
+      if (error) throw error;
+
       setMessage("");
+      toast.success("Message sent!");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("Failed to send message");
+    }
+  };
+
+  const handleTyping = async () => {
+    if (!selectedChat) return;
+
+    try {
+      await supabase.channel(`typing:${selectedChat}`).send({
+        type: 'broadcast',
+        event: 'typing',
+        payload: { typing: true },
+      });
+    } catch (error) {
+      console.error("Error sending typing indicator:", error);
     }
   };
 
@@ -137,6 +194,7 @@ const Messages = () => {
                   message={message}
                   setMessage={setMessage}
                   onSendMessage={handleSendMessage}
+                  isTyping={isTyping}
                 />
               </>
             ) : (
