@@ -17,24 +17,24 @@ interface ContactsListProps {
 }
 
 const ContactsList = ({ selectedChat, onSelectChat }: ContactsListProps) => {
-  // Using proper UUIDs for contact IDs
+  // Using the actual user IDs from your auth.users table
   const contacts: Contact[] = [
     {
-      id: "123e4567-e89b-12d3-a456-426614174000",
+      id: "d7bed21c-5a38-4c44-87f5-7b8f3f3c2421",  // Replace with an actual user ID from your auth.users table
       name: "Sarah Chen",
       role: "Software Engineer",
       lastMessage: "Hey, I saw your startup idea!",
       avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330"
     },
     {
-      id: "223e4567-e89b-12d3-a456-426614174001",
+      id: "e9be0901-6a77-4b55-9644-3a25b56a90c9",  // Replace with an actual user ID from your auth.users table
       name: "Alex Kumar",
       role: "Product Designer",
       lastMessage: "Would love to collaborate!",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d"
     },
     {
-      id: "323e4567-e89b-12d3-a456-426614174002",
+      id: "f1c3a45b-2d89-4e67-8a31-9c45b7c8d3ef",  // Replace with an actual user ID from your auth.users table
       name: "Maria Garcia",
       role: "VC Associate",
       lastMessage: "Let's schedule a call",
