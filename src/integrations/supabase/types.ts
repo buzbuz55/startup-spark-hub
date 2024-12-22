@@ -401,6 +401,57 @@ export type Database = {
         }
         Relationships: []
       }
+      projects: {
+        Row: {
+          category: string
+          collaboration_type: string | null
+          created_at: string
+          created_by_username: string | null
+          description: string
+          id: string
+          is_hiring: boolean | null
+          location: string | null
+          stage: string
+          status: string | null
+          team_size: number
+          title: string
+          user_id: string
+          website_url: string | null
+        }
+        Insert: {
+          category: string
+          collaboration_type?: string | null
+          created_at?: string
+          created_by_username?: string | null
+          description: string
+          id?: string
+          is_hiring?: boolean | null
+          location?: string | null
+          stage: string
+          status?: string | null
+          team_size: number
+          title: string
+          user_id: string
+          website_url?: string | null
+        }
+        Update: {
+          category?: string
+          collaboration_type?: string | null
+          created_at?: string
+          created_by_username?: string | null
+          description?: string
+          id?: string
+          is_hiring?: boolean | null
+          location?: string | null
+          stage?: string
+          status?: string | null
+          team_size?: number
+          title?: string
+          user_id?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       team_applications: {
         Row: {
           applicant_id: string

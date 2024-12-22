@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { useState } from "react";
 import Index from "./pages/Index";
+import Search from "./pages/Search";
 import SubmitIdea from "./pages/SubmitIdea";
 import TalentPool from "./pages/TalentPool";
 import VCDashboard from "./pages/VCDashboard";
@@ -41,6 +42,7 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/search" element={<Search />} />
                 <Route path="/submit-idea" element={<SubmitIdea />} />
                 <Route path="/talent-pool" element={<TalentPool />} />
                 <Route path="/vc-dashboard" element={<VCDashboard />} />
