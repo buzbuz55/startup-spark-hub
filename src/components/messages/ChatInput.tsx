@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Smile } from "lucide-react";
+import { Send, Smile, X } from "lucide-react";
 import {
   Popover,
   PopoverContent,

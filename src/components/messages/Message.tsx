@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Check, CheckCheck, Edit2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,9 +24,7 @@ const Message = ({ id, senderId, text, timestamp, status, onEdit }: MessageProps
   useEffect(() => {
     const checkForPoll = async () => {
       if (text.startsWith("/poll ")) {
-        const [_, ...lines] = text.split("\n");
-        const question = lines[0];
-        const options = lines.slice(1);
+        const [_, question, ...options] = text.split("\n");
 
         const { data: existingPoll } = await supabase
           .from("polls")
@@ -35,12 +33,19 @@ const Message = ({ id, senderId, text, timestamp, status, onEdit }: MessageProps
           .single();
 
         if (!existingPoll) {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) {
+            console.error("No authenticated user found");
+            return;
+          }
+
           const { data: newPoll, error } = await supabase
             .from("polls")
             .insert({
               message_id: id,
               question,
               options: JSON.stringify(options),
+              created_by: user.id
             })
             .select()
             .single();

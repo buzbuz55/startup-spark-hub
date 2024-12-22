@@ -17,11 +17,18 @@ interface PollMessageProps {
 const PollMessage = ({ pollId, question, options, votes, userVote, onVote }: PollMessageProps) => {
   const handleVote = async (optionIndex: number) => {
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("You must be logged in to vote");
+        return;
+      }
+
       const { error } = await supabase
         .from('poll_votes')
         .insert({
           poll_id: pollId,
           option_index: optionIndex,
+          user_id: user.id
         });
 
       if (error) throw error;
