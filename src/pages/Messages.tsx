@@ -49,21 +49,21 @@ const Messages = () => {
       senderId: "1",
       text: "Hey, I saw your startup idea! 👋",
       timestamp: "10:30 AM",
-      status: "read",
+      status: "read" as MessageStatus,
     },
     {
       id: "2",
       senderId: "current-user",
       text: "Thanks! Would you like to know more? 😊",
       timestamp: "10:32 AM",
-      status: "delivered",
+      status: "delivered" as MessageStatus,
     },
     {
       id: "3",
       senderId: "1",
       text: "Absolutely! I think we could work together. 🚀",
       timestamp: "10:35 AM",
-      status: "sent",
+      status: "sent" as MessageStatus,
     },
   ];
 
