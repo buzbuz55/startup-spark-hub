@@ -71,6 +71,7 @@ export type Database = {
           read_at: string | null
           receiver_id: string
           sender_id: string
+          status: string | null
         }
         Insert: {
           content: string
@@ -79,6 +80,7 @@ export type Database = {
           read_at?: string | null
           receiver_id: string
           sender_id: string
+          status?: string | null
         }
         Update: {
           content?: string
@@ -87,6 +89,7 @@ export type Database = {
           read_at?: string | null
           receiver_id?: string
           sender_id?: string
+          status?: string | null
         }
         Relationships: []
       }
