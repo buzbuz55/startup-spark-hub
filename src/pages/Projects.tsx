@@ -251,7 +251,7 @@ const Projects = () => {
       funding: "$10.9M",
       impact: "90% reduction in water usage",
       image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-      icon: <Robot className="w-8 h-8 text-orange-500" />
+      icon: <Bot className="w-8 h-8 text-orange-500" />
     },
     {
       id: 23,
