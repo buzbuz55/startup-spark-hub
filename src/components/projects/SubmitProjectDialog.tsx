@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Upload, Image as ImageIcon } from "lucide-react";
 
 interface SubmitProjectDialogProps {
   isOpen: boolean;
@@ -24,7 +25,27 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
     is_hiring: false,
   });
 
+  const [projectImage, setProjectImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please upload an image file");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    setProjectImage(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,10 +59,29 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
         return;
       }
 
+      let imageUrl = null;
+      if (projectImage) {
+        const fileExt = projectImage.name.split('.').pop();
+        const filePath = `${user.id}/${crypto.randomUUID()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('project_images')
+          .upload(filePath, projectImage);
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('project_images')
+          .getPublicUrl(filePath);
+
+        imageUrl = publicUrl;
+      }
+
       const { error } = await supabase.from('projects').insert({
         ...formData,
         user_id: user.id,
-        status: 'active'
+        status: 'active',
+        image: imageUrl
       });
 
       if (error) throw error;
@@ -58,6 +98,8 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
         collaboration_type: "",
         is_hiring: false,
       });
+      setProjectImage(null);
+      setImagePreview(null);
     } catch (error: any) {
       console.error('Error:', error);
       toast.error(error.message || "Failed to submit project");
@@ -106,7 +148,6 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
                 <SelectItem value="Green Energy">Green Energy</SelectItem>
                 <SelectItem value="Clean Water">Clean Water</SelectItem>
                 <SelectItem value="Sustainable Agriculture">Sustainable Agriculture</SelectItem>
-                <SelectItem value="Waste Management">Waste Management</SelectItem>
                 <SelectItem value="Conservation">Conservation</SelectItem>
               </SelectContent>
             </Select>
@@ -158,6 +199,38 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
                 <SelectItem value="volunteer">Volunteer</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Project Image</label>
+            <div className="flex items-center gap-4">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                id="project-image"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => document.getElementById("project-image")?.click()}
+              >
+                <Upload className="mr-2 h-4 w-4" />
+                Upload Image
+              </Button>
+              {imagePreview && (
+                <div className="relative w-20 h-20">
+                  <img
+                    src={imagePreview}
+                    alt="Project preview"
+                    className="w-full h-full object-cover rounded-md"
+                  />
+                </div>
+              )}
+            </div>
+            <p className="text-sm text-gray-500">
+              Max file size: 5MB. Supported formats: PNG, JPG, JPEG
+            </p>
           </div>
           <div className="flex justify-end gap-4">
             <Button variant="outline" onClick={onClose} type="button">
