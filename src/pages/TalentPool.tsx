@@ -28,35 +28,39 @@ const TalentPool = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
+    <div className="min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto px-4 pt-24 pb-12">
-        <TalentHeader onSearch={setSearchQuery} />
-        
-        <div className="bg-white rounded-xl shadow-xl p-6 mb-8">
-          <OpportunityCards />
-        </div>
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <TalentHeader onSearch={setSearchQuery} />
+          
+          <div className="bg-white shadow-sm rounded-xl p-6 mb-8">
+            <OpportunityCards />
+          </div>
 
-        <div className="space-y-12">
-          <section>
-            <h2 className="text-3xl font-bold text-white mb-6">Featured Interns</h2>
-            <InternGrid />
-          </section>
+          <div className="space-y-12">
+            <section>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Featured Interns</h2>
+              <InternGrid />
+            </section>
 
-          <section>
-            <h2 className="text-3xl font-bold text-white mb-6">Hot Startup Opportunities</h2>
-            <StartupIdeas />
-          </section>
+            <section>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Hot Startup Opportunities</h2>
+              <StartupIdeas />
+            </section>
 
-          <JobPostingForm 
-            companyFormData={companyFormData}
-            setCompanyFormData={setCompanyFormData}
-          />
+            <section className="grid md:grid-cols-2 gap-8">
+              <JobPostingForm 
+                companyFormData={companyFormData}
+                setCompanyFormData={setCompanyFormData}
+              />
 
-          <CandidateForm 
-            candidateFormData={candidateFormData}
-            setCandidateFormData={setCandidateFormData}
-          />
+              <CandidateForm 
+                candidateFormData={candidateFormData}
+                setCandidateFormData={setCandidateFormData}
+              />
+            </section>
+          </div>
         </div>
       </div>
       <ChatBot />
