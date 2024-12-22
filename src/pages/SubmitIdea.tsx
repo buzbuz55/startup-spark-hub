@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Building2, Users, Briefcase } from "lucide-react";
+import { Upload, Building2, Users, Briefcase, Play } from "lucide-react";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const SubmitIdea = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,8 @@ const SubmitIdea = () => {
     projectDetails: "",
     lookingFor: [] as string[],
   });
+
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -54,6 +57,34 @@ const SubmitIdea = () => {
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <h1 className="text-4xl font-bold text-white">Submit Your Idea</h1>
           </div>
+        </div>
+
+        {/* Demo Video Button */}
+        <div className="p-4 text-center">
+          <Dialog open={isVideoModalOpen} onOpenChange={setIsVideoModalOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="gap-2">
+                <Play className="w-5 h-5" />
+                Watch Demo Video
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[625px]">
+              <DialogHeader>
+                <DialogTitle>Startup Spark Hub Demo</DialogTitle>
+              </DialogHeader>
+              <div className="aspect-video">
+                <iframe 
+                  width="100%" 
+                  height="100%" 
+                  src="https://www.youtube.com/embed/NnK-A7VQyVM" 
+                  title="Startup Spark Hub Demo" 
+                  frameBorder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-6">
