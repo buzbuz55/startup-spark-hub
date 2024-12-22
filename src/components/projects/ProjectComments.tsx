@@ -20,7 +20,8 @@ const ProjectComments = ({ projectId }: ProjectCommentsProps) => {
           created_at,
           file_url,
           file_type,
-          profiles!comments_user_id_fkey (
+          user_id,
+          profiles (
             full_name,
             avatar_url
           )
