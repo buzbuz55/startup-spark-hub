@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Video, Menu, ChevronDown, Calendar } from "lucide-react";
+import { MessageSquare, Video, Menu, Calendar } from "lucide-react";
 import { useState } from "react";
 import UserProfileMenu from "./header/UserProfileMenu";
 import MobileMenu from "./header/MobileMenu";
@@ -56,14 +56,31 @@ const Header = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Discover</NavigationMenuTrigger>
+                  <NavigationMenuTrigger>Opportunities</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-2 p-4 w-[200px]">
+                      <Link to="/internships" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        Internships
+                      </Link>
+                      <Link to="/projects" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        Projects
+                      </Link>
+                      <Link to="/startup-opportunities" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        Startup Ideas
+                      </Link>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Network</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid gap-2 p-4 w-[200px]">
                       <Link to="/talent-pool" className="block px-4 py-2 hover:bg-accent rounded-md">
                         Talent Pool
                       </Link>
-                      <Link to="/projects" className="block px-4 py-2 hover:bg-accent rounded-md">
-                        Projects
+                      <Link to="/vc-dashboard" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        VC Dashboard
                       </Link>
                     </div>
                   </NavigationMenuContent>
