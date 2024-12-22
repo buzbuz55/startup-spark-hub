@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import ProjectComments from "./ProjectComments";
 
 interface ProjectCardProps extends ProjectData {
-  id: string;
+  id: string; // Changed from number to string to match UUID type
   name: string;
   category: string;
   description: string;
@@ -126,7 +126,7 @@ const ProjectCard = ({
 
           <div className="border-t pt-4">
             <h4 className="font-semibold mb-4">Comments & Discussion</h4>
-            <ProjectComments projectId={id.toString()} />
+            <ProjectComments projectId={id} />
           </div>
 
           <Button
