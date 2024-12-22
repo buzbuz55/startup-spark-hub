@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, TrendingUp, TrendingDown, DollarSign } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
-const COLORS = ['#8B5CF6', '#EC4899', '#3B82F6', '#10B981', '#F59E0B'];
+import { Loader2 } from "lucide-react";
+import InvestmentTimeline from "./charts/InvestmentTimeline";
+import SectorDistribution from "./charts/SectorDistribution";
+import PortfolioStats from "./portfolio/PortfolioStats";
+import PortfolioList from "./portfolio/PortfolioList";
 
 const PortfolioOverview = () => {
   const [timeframe, setTimeframe] = useState("1Y");
@@ -24,6 +25,14 @@ const PortfolioOverview = () => {
     }
   });
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+      </div>
+    );
+  }
+
   const totalInvestment = portfolioCompanies?.reduce((sum, company) => 
     sum + (company.investment_amount || 0), 0
   ) || 0;
@@ -38,51 +47,15 @@ const PortfolioOverview = () => {
     value
   }));
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
-      </div>
-    );
-  }
+  const averageInvestment = Math.round(totalInvestment / (portfolioCompanies?.length || 1));
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">Total Investment</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center">
-              <DollarSign className="w-4 h-4 text-purple-400 mr-2" />
-              <span className="text-2xl font-bold">${totalInvestment.toLocaleString()}</span>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">Portfolio Companies</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {portfolioCompanies?.length || 0}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-400">Avg Investment</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${Math.round(totalInvestment / (portfolioCompanies?.length || 1)).toLocaleString()}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <PortfolioStats 
+        totalInvestment={totalInvestment}
+        companiesCount={portfolioCompanies?.length || 0}
+        averageInvestment={averageInvestment}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="bg-white/5 border-white/10">
@@ -105,29 +78,7 @@ const PortfolioOverview = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={portfolioCompanies}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                  <XAxis dataKey="investment_date" stroke="#9CA3AF" />
-                  <YAxis stroke="#9CA3AF" />
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#1F2937',
-                      border: 'none',
-                      borderRadius: '8px',
-                      color: '#F3F4F6'
-                    }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="investment_amount" 
-                    stroke="#8B5CF6" 
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+            <InvestmentTimeline data={portfolioCompanies || []} />
           </CardContent>
         </Card>
 
@@ -136,44 +87,7 @@ const PortfolioOverview = () => {
             <CardTitle>Sector Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#1F2937',
-                      border: 'none',
-                      borderRadius: '8px',
-                      color: '#F3F4F6'
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="grid grid-cols-2 gap-4 mt-4">
-                {pieData.map((entry, index) => (
-                  <div key={entry.name} className="flex items-center gap-2">
-                    <div 
-                      className="w-3 h-3 rounded-full" 
-                      style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                    />
-                    <span className="text-sm text-gray-400">{entry.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <SectorDistribution data={pieData} />
           </CardContent>
         </Card>
 
@@ -182,27 +96,7 @@ const PortfolioOverview = () => {
             <CardTitle>Portfolio Companies</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {portfolioCompanies?.map((company) => (
-                <div key={company.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
-                  <div>
-                    <p className="font-medium">{company.company_name}</p>
-                    <p className="text-sm text-gray-400">{company.sector}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-medium">${company.investment_amount?.toLocaleString()}</p>
-                    <div className="flex items-center gap-1 text-sm">
-                      {company.equity_percentage}% equity
-                      {company.status === 'up' ? (
-                        <TrendingUp className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <TrendingDown className="w-4 h-4 text-red-500" />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <PortfolioList companies={portfolioCompanies || []} />
           </CardContent>
         </Card>
       </div>
