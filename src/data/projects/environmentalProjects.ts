@@ -3,7 +3,7 @@ import { ProjectData } from "@/types/project";
 export const environmentalProjects: ProjectData[] = [
   {
     id: "423e4567-e89b-12d3-a456-426614174003",
-    name: "OceanClean Robotics",
+    name: "🌊 OceanClean Robotics",
     category: "Ocean Conservation",
     description: "Autonomous robots that collect and process ocean plastic waste. Our technology helps clean the oceans while recycling collected materials.",
     seeking: ["Robotics Engineers", "Marine Biologists", "Sustainability Experts"],
@@ -14,7 +14,7 @@ export const environmentalProjects: ProjectData[] = [
   },
   {
     id: "523e4567-e89b-12d3-a456-426614174004",
-    name: "NeuralFinance AI",
+    name: "🧠 NeuralFinance AI",
     category: "AI Finance",
     description: "Using advanced machine learning to democratize investment strategies. Our AI analyzes market patterns and provides institutional-grade insights to retail investors.",
     seeking: ["ML Engineers", "Quant Analysts", "Full-Stack Developers"],
