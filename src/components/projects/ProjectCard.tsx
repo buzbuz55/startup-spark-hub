@@ -9,7 +9,10 @@ import ProjectDetailsDialog from "./ProjectDetailsDialog";
 import { optimizeImage } from "@/utils/imageOptimizer";
 import { Skeleton } from "@/components/ui/skeleton";
 
-type ProjectCardProps = ProjectData;
+// Update the type to use string for id
+type ProjectCardProps = Omit<ProjectData, 'id'> & {
+  id: string;
+};
 
 const ProjectCard = ({ 
   id,
