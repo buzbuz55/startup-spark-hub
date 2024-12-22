@@ -5,11 +5,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar } from "@/components/ui/avatar";
-import { Search, Send, Video } from "lucide-react";
+import { Send, Video, Phone, MoreVertical } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import VideoChat from "@/components/video/VideoChat";
 import ContactsList from "@/components/messages/ContactsList";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
@@ -56,7 +62,7 @@ const Messages = () => {
         .from('video_sessions')
         .insert({
           creator_id: user.id,
-          participant_id: selectedChat, // selectedChat is now a proper UUID
+          participant_id: selectedChat,
           room_id: roomId,
         });
 
@@ -76,51 +82,74 @@ const Messages = () => {
 
   const getSelectedContact = () => {
     const contacts = [
-      { id: "123e4567-e89b-12d3-a456-426614174000", name: "Sarah Chen", role: "Software Engineer", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330" },
-      { id: "223e4567-e89b-12d3-a456-426614174001", name: "Alex Kumar", role: "Product Designer", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" },
-      { id: "323e4567-e89b-12d3-a456-426614174002", name: "Maria Garcia", role: "VC Associate", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80" },
+      { id: "d7bed21c-5a38-4c44-87f5-7b8f3f3c2421", name: "Sarah Chen", role: "Software Engineer", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330" },
+      { id: "e9be0901-6a77-4b55-9644-3a25b56a90c9", name: "Alex Kumar", role: "Product Designer", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" },
+      { id: "f1c3a45b-2d89-4e67-8a31-9c45b7c8d3ef", name: "Maria Garcia", role: "VC Associate", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80" },
     ];
     return contacts.find(c => c.id === selectedChat);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-800 to-indigo-900">
+    <div className="min-h-screen bg-background">
       <Header />
       <div className="container mx-auto px-4 pt-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 h-[calc(100vh-120px)]">
           <ContactsList selectedChat={selectedChat} onSelectChat={setSelectedChat} />
 
-          {/* Chat Area */}
-          <div className="md:col-span-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 flex flex-col">
+          <div className="md:col-span-2 bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg flex flex-col">
             {selectedChat ? (
               <>
-                <div className="p-4 border-b border-white/20">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <img
-                          src={getSelectedContact()?.avatar}
-                          alt={getSelectedContact()?.name}
-                          className="object-cover"
-                        />
-                      </Avatar>
-                      <div>
-                        <h3 className="text-sm font-medium text-white">
-                          {getSelectedContact()?.name}
-                        </h3>
-                        <p className="text-xs text-white/60">
-                          {getSelectedContact()?.role}
-                        </p>
-                      </div>
+                <div className="p-4 border-b flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-10 w-10 border-2 border-background">
+                      <img
+                        src={getSelectedContact()?.avatar}
+                        alt={getSelectedContact()?.name}
+                        className="object-cover"
+                      />
+                    </Avatar>
+                    <div>
+                      <h3 className="text-sm font-medium">
+                        {getSelectedContact()?.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        {getSelectedContact()?.role}
+                      </p>
                     </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => toast.info("Audio calls coming soon!")}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <Phone className="w-4 h-4" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={startVideoCall}
-                      className="text-white hover:text-white/80"
+                      className="text-muted-foreground hover:text-foreground"
                     >
-                      <Video className="w-5 h-5" />
+                      <Video className="w-4 h-4" />
                     </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground hover:text-foreground"
+                        >
+                          <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>View Profile</DropdownMenuItem>
+                        <DropdownMenuItem>Clear Chat</DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive">Block Contact</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
 
@@ -134,11 +163,12 @@ const Messages = () => {
                         }`}
                       >
                         <div
-                          className={`max-w-[70%] rounded-lg p-3 ${
+                          className={cn(
+                            "max-w-[70%] rounded-lg p-3",
                             msg.senderId === "current-user"
-                              ? "bg-purple-600 text-white"
-                              : "bg-white/20 text-white"
-                          }`}
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-muted"
+                          )}
                         >
                           <p className="text-sm">{msg.text}</p>
                           <span className="text-xs opacity-60 mt-1 block">
@@ -150,7 +180,7 @@ const Messages = () => {
                   </div>
                 </ScrollArea>
 
-                <div className="p-4 border-t border-white/20">
+                <div className="p-4 border-t">
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -162,16 +192,16 @@ const Messages = () => {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Type your message..."
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                      className="bg-background"
                     />
-                    <Button type="submit" size="icon" className="bg-purple-600 hover:bg-purple-700">
+                    <Button type="submit" size="icon">
                       <Send className="h-4 w-4" />
                     </Button>
                   </form>
                 </div>
               </>
             ) : (
-              <div className="flex-1 flex items-center justify-center text-white/60">
+              <div className="flex-1 flex items-center justify-center text-muted-foreground">
                 Select a conversation to start messaging
               </div>
             )}
