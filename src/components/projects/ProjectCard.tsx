@@ -10,8 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { ProjectData } from "@/types/project";
 
-type ProjectCardProps = ProjectData;
-
 const ProjectCard = ({ 
   id,
   name, 
@@ -22,7 +20,7 @@ const ProjectCard = ({
   impact, 
   image,
   iconName
-}: ProjectCardProps) => {
+}: ProjectData) => {
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
