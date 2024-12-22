@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import { useState } from "react";
@@ -14,6 +15,7 @@ const Projects = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="container mx-auto px-4 py-24">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Environmental Impact Projects</h1>
