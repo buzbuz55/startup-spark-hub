@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -41,6 +41,7 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
       const { error } = await supabase.from('projects').insert({
         ...formData,
         user_id: user.id,
+        status: 'active'
       });
 
       if (error) throw error;
@@ -57,9 +58,9 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
         collaboration_type: "",
         is_hiring: false,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
-      toast.error("Failed to submit project");
+      toast.error(error.message || "Failed to submit project");
     } finally {
       setIsSubmitting(false);
     }
@@ -70,6 +71,9 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Submit Your Impact Project</DialogTitle>
+          <DialogDescription>
+            Share your environmental impact project with our community.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -125,10 +129,11 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
                 <SelectValue placeholder="Project Stage" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Idea">Idea</SelectItem>
-                <SelectItem value="MVP">MVP</SelectItem>
-                <SelectItem value="Beta">Beta</SelectItem>
-                <SelectItem value="Live">Live</SelectItem>
+                <SelectItem value="concept">Concept</SelectItem>
+                <SelectItem value="prototype">Prototype</SelectItem>
+                <SelectItem value="development">Development</SelectItem>
+                <SelectItem value="launched">Launched</SelectItem>
+                <SelectItem value="scaling">Scaling</SelectItem>
               </SelectContent>
             </Select>
             <Input
@@ -147,10 +152,10 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
                 <SelectValue placeholder="Collaboration Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Full-time">Full-time</SelectItem>
-                <SelectItem value="Part-time">Part-time</SelectItem>
-                <SelectItem value="Contract">Contract</SelectItem>
-                <SelectItem value="Volunteer">Volunteer</SelectItem>
+                <SelectItem value="full-time">Full-time</SelectItem>
+                <SelectItem value="part-time">Part-time</SelectItem>
+                <SelectItem value="contract">Contract</SelectItem>
+                <SelectItem value="volunteer">Volunteer</SelectItem>
               </SelectContent>
             </Select>
           </div>
