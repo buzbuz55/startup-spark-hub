@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload, Video } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const StartupProgressForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const StartupProgressForm = () => {
     description: "",
     media: null as File | null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -25,15 +27,57 @@ const StartupProgressForm = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Progress submission:", formData);
-    toast.success("Thank you for sharing your startup progress!");
-    setFormData({
-      title: "",
-      description: "",
-      media: null,
-    });
+    setIsSubmitting(true);
+
+    try {
+      const {
+        data: { user },
+        error: userError
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        toast.error("Please sign in to share your progress");
+        return;
+      }
+
+      // First, send the message
+      const { error: messageError } = await supabase
+        .from('messages')
+        .insert([
+          {
+            sender_id: user.id,
+            receiver_id: user.id, // For blog posts, sender and receiver are the same
+            content: JSON.stringify({
+              type: 'startup_progress',
+              title: formData.title,
+              description: formData.description,
+              timestamp: new Date().toISOString()
+            })
+          }
+        ]);
+
+      if (messageError) {
+        console.error('Error submitting progress:', messageError);
+        toast.error("Failed to submit progress");
+        return;
+      }
+
+      // Reset form
+      setFormData({
+        title: "",
+        description: "",
+        media: null,
+      });
+      
+      toast.success("Thank you for sharing your startup progress!");
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error("An error occurred while submitting your progress");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -96,7 +140,13 @@ const StartupProgressForm = () => {
               Max file size: 100MB. Supported formats: images and videos
             </p>
           </div>
-          <Button type="submit" className="w-full">Submit Progress</Button>
+          <Button 
+            type="submit" 
+            className="w-full"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : "Submit Progress"}
+          </Button>
         </form>
       </DialogContent>
     </Dialog>
