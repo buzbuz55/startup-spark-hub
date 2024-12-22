@@ -100,21 +100,31 @@ const SignUpSection = () => {
 
           {/* Social Media Buttons */}
           <div className="flex justify-center gap-6 pt-8">
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-              <Facebook className="w-6 h-6 text-white" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-              <Instagram className="w-6 h-6 text-white" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-              <Linkedin className="w-6 h-6 text-white" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-              <Twitter className="w-6 h-6 text-white" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-              <Youtube className="w-6 h-6 text-white" />
-            </Button>
+            <a href="https://facebook.com/startupnation" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+                <Facebook className="w-6 h-6 text-white" />
+              </Button>
+            </a>
+            <a href="https://instagram.com/startupnation" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+                <Instagram className="w-6 h-6 text-white" />
+              </Button>
+            </a>
+            <a href="https://linkedin.com/company/startupnation" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+                <Linkedin className="w-6 h-6 text-white" />
+              </Button>
+            </a>
+            <a href="https://twitter.com/startupnation" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+                <Twitter className="w-6 h-6 text-white" />
+              </Button>
+            </a>
+            <a href="https://youtube.com/startupnation" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+                <Youtube className="w-6 h-6 text-white" />
+              </Button>
+            </a>
           </div>
         </div>
       </div>
