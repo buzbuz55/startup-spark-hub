@@ -12,6 +12,13 @@ const ProjectComments = ({ projectId }: ProjectCommentsProps) => {
   const { data: comments, refetch } = useQuery({
     queryKey: ['project-comments', projectId],
     queryFn: async () => {
+      // Validate UUID format
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(projectId)) {
+        console.error("Invalid UUID format for projectId:", projectId);
+        return [];
+      }
+
       const { data, error } = await supabase
         .from('comments')
         .select(`
@@ -28,7 +35,10 @@ const ProjectComments = ({ projectId }: ProjectCommentsProps) => {
         .eq('project_id', projectId)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching comments:", error);
+        return [];
+      }
 
       // Transform the data to match our Comment type
       const transformedData = data.map(comment => ({

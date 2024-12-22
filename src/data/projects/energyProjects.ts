@@ -2,7 +2,7 @@ import { ProjectData } from "@/types/project";
 
 export const energyProjects: ProjectData[] = [
   {
-    id: "1",
+    id: "123e4567-e89b-12d3-a456-426614174000",
     name: "EcoVolt ⚡",
     category: "Green Energy",
     description: "Revolutionary solar and wind energy storage solutions inspired by nature's own energy cycles. Our biomimetic batteries mimic how trees store energy, making renewable power accessible 24/7.",
@@ -13,7 +13,7 @@ export const energyProjects: ProjectData[] = [
     iconName: "Sun"
   },
   {
-    id: "2",
+    id: "223e4567-e89b-12d3-a456-426614174001",
     name: "Hydrogen Horizon 🚗",
     category: "Clean Transport",
     description: "Leading the revolution in hydrogen-powered autonomous vehicles, from cars to cargo ships. Building the future of clean transport with AI-driven hydrogen refueling networks.",
@@ -24,7 +24,7 @@ export const energyProjects: ProjectData[] = [
     iconName: "Car"
   },
   {
-    id: "17",
+    id: "323e4567-e89b-12d3-a456-426614174002",
     name: "Nexus Energy Solutions ⚡",
     category: "Energy Storage",
     description: "Creating AI-driven energy storage systems and smart grid management solutions. Our floating solar farms and wind islands are revolutionizing renewable energy generation.",
