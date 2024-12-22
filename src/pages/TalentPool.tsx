@@ -92,15 +92,17 @@ const TalentPool = () => {
             <h2 className="text-3xl font-bold text-white mb-6">Hot Startup Opportunities</h2>
             <StartupIdeas />
           </section>
-        <JobPostingForm 
-          companyFormData={companyFormData}
-          setCompanyFormData={setCompanyFormData}
-        />
 
-        <CandidateForm 
-          candidateFormData={candidateFormData}
-          setCandidateFormData={setCandidateFormData}
-        />
+          <JobPostingForm 
+            companyFormData={companyFormData}
+            setCompanyFormData={setCompanyFormData}
+          />
+
+          <CandidateForm 
+            candidateFormData={candidateFormData}
+            setCandidateFormData={setCandidateFormData}
+          />
+        </div>
       </div>
       <ChatBot />
     </div>
