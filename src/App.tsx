@@ -8,6 +8,8 @@ import SubmitIdea from "./pages/SubmitIdea";
 import TalentPool from "./pages/TalentPool";
 import VCDashboard from "./pages/VCDashboard";
 import Messages from "./pages/Messages";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/talent-pool" element={<TalentPool />} />
           <Route path="/vc-dashboard" element={<VCDashboard />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

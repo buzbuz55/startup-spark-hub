@@ -58,14 +58,18 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <div className="flex items-center gap-2">
-                <Button variant="ghost" className="gap-2">
-                  <LogIn className="w-4 h-4" />
-                  Login
-                </Button>
-                <Button variant="default" className="gap-2">
-                  <UserPlus className="w-4 h-4" />
-                  Sign Up
-                </Button>
+                <Link to="/login">
+                  <Button variant="ghost" className="gap-2">
+                    <LogIn className="w-4 h-4" />
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button variant="default" className="gap-2">
+                    <UserPlus className="w-4 h-4" />
+                    Sign Up
+                  </Button>
+                </Link>
               </div>
             )}
           </nav>
