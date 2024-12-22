@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, ArrowUpRight } from "lucide-react";
+import { MessageSquare, ArrowUpRight, Video, Calendar } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { motion } from "framer-motion";
 import UserProfileMenu from "./header/UserProfileMenu";
 import MobileMenu from "./header/MobileMenu";
+import ScheduleMeeting from "./meetings/ScheduleMeeting";
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
@@ -33,6 +34,12 @@ const Header = () => {
           </div>
 
           <nav className="flex items-center gap-4">
+            <ScheduleMeeting />
+            
+            <Button variant="ghost" size="icon" className="hidden sm:flex">
+              <Video className="w-4 h-4" />
+            </Button>
+
             <motion.button
               className="relative w-14 h-8 rounded-full bg-secondary p-1 shadow-inner transition-colors duration-300"
               onClick={toggleTheme}
