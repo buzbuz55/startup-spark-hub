@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { UserCircle, LogIn, UserPlus, MessageSquare, Info, FileText, ArrowUpRight, User } from "lucide-react";
+import { UserCircle, LogIn, UserPlus, MessageSquare, User, FileText, ArrowUpRight } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -35,25 +35,6 @@ const Header = () => {
           
           <NavigationMenu>
             <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>
-                  <Info className="w-4 h-4 mr-2" />
-                  About
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid gap-3 p-4 w-[400px]">
-                    <Link to="/about" className="block p-2 hover:bg-slate-100 rounded-md">
-                      <div className="font-medium mb-1">About Us</div>
-                      <p className="text-sm text-muted-foreground">Learn about our mission and vision</p>
-                    </Link>
-                    <Link to="/about-startup-squad" className="block p-2 hover:bg-slate-100 rounded-md">
-                      <div className="font-medium mb-1">About Startup Squad</div>
-                      <p className="text-sm text-muted-foreground">Discover our startup community</p>
-                    </Link>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
               <NavigationMenuItem>
                 <NavigationMenuTrigger>
                   <User className="w-4 h-4 mr-2" />
@@ -104,15 +85,13 @@ const Header = () => {
                   </Button>
                 </Link>
               </NavigationMenuItem>
-
             </NavigationMenuList>
           </NavigationMenu>
 
           <nav className="flex items-center gap-4">
             <Link to="/messages">
-              <Button variant="ghost">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Messages
+              <Button variant="ghost" size="icon">
+                <MessageSquare className="w-4 h-4" />
               </Button>
             </Link>
 

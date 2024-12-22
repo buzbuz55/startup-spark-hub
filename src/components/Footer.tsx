@@ -12,11 +12,17 @@ const Footer = () => {
             <p className="text-gray-400">
               Empowering student entrepreneurs to innovate and succeed.
             </p>
-            <div className="mt-4">
+            <div className="mt-4 space-y-2">
               <Link to="/about">
-                <Button variant="outline" className="text-white border-white hover:bg-white/10">
+                <Button variant="outline" className="text-white border-white hover:bg-white/10 w-full">
                   <Info className="w-4 h-4 mr-2" />
                   About Us
+                </Button>
+              </Link>
+              <Link to="/about-startup-squad">
+                <Button variant="outline" className="text-white border-white hover:bg-white/10 w-full">
+                  <Info className="w-4 h-4 mr-2" />
+                  About Startup Squad
                 </Button>
               </Link>
             </div>
@@ -25,11 +31,6 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
-                  About Us
-                </Link>
-              </li>
               <li>
                 <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">
                   Privacy Policy
