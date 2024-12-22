@@ -1,4 +1,4 @@
-import { ChartBarIcon } from "lucide-react";
+import { MessageSquare, Video, ChartBarIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const Features = () => {
