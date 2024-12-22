@@ -75,6 +75,16 @@ const Signup = () => {
             redirectTo={window.location.origin}
           />
         </div>
+        <div className="mt-8 text-center">
+          <a 
+            href="https://docs.startup-nation.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-block px-6 py-3 bg-white text-purple-700 rounded-lg shadow-lg hover:bg-purple-50 transition-colors"
+          >
+            Resources
+          </a>
+        </div>
       </div>
     </div>
   );
