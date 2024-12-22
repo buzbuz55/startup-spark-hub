@@ -3,12 +3,24 @@ import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import { useState } from "react";
 import { projectsData } from "@/data/projectsData";
+import type { Project } from "@/components/projects/ProjectCard";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredProjects = projectsData.filter(project => 
-    project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  const projects: Project[] = projectsData.map(project => ({
+    id: project.id.toString(),
+    title: project.name,
+    description: project.description,
+    category: project.category,
+    team_size: 1,
+    stage: "MVP",
+    created_at: new Date().toISOString(),
+    is_hiring: true
+  }));
+
+  const filteredProjects = projects.filter(project => 
+    project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     project.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
     project.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -29,7 +41,7 @@ const Projects = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} {...project} />
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
       </div>

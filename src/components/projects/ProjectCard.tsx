@@ -7,21 +7,23 @@ import ProjectImage from "./ProjectImage";
 import JoinProjectDialog from "./JoinProjectDialog";
 import { formatDistanceToNow } from "date-fns";
 
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  team_size: number;
+  stage: string;
+  location?: string;
+  collaboration_type?: string;
+  is_hiring?: boolean;
+  created_at: string;
+  created_by_username?: string;
+  website_url?: string;
+}
+
 interface ProjectCardProps {
-  project: {
-    id: string;
-    title: string;
-    description: string;
-    category: string;
-    team_size: number;
-    stage: string;
-    location?: string;
-    collaboration_type?: string;
-    is_hiring?: boolean;
-    created_at: string;
-    created_by_username?: string;
-    website_url?: string;
-  };
+  project: Project;
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
@@ -80,8 +82,8 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       </div>
 
       <JoinProjectDialog
-        open={isJoinDialogOpen}
-        onOpenChange={setIsJoinDialogOpen}
+        isOpen={isJoinDialogOpen}
+        onClose={() => setIsJoinDialogOpen(false)}
         project={project}
       />
     </Card>

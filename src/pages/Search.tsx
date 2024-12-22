@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Project } from "@/components/projects/ProjectCard";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,7 +24,7 @@ const Search = () => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+      return data as Project[];
     },
   });
 
@@ -47,18 +48,7 @@ const Search = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects?.map((project) => (
-              <ProjectCard
-                key={project.id}
-                id={project.id.toString()}
-                name={project.title}
-                category={project.category}
-                description={project.description}
-                seeking={["Co-founder", "Developer"]} // This should be dynamic based on your needs
-                funding="Seeking Investment"
-                impact="High Impact"
-                image="/placeholder.svg"
-                iconName="Rocket"
-              />
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         )}
