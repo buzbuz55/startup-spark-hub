@@ -5,4 +5,6 @@ export interface BlogPost {
   author: string;
   description: string;
   category: string;
+  imageUrl: string;
+  slug: string;
 }
