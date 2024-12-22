@@ -4,7 +4,8 @@ import { Search, Briefcase, GraduationCap, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import { useState } from "react";
-import InternProfile from "@/components/talent/InternProfile";
+import InternGrid from "@/components/talent/InternGrid";
+import StartupIdeas from "@/components/talent/StartupIdeas";
 import JobPostingForm from "@/components/talent/JobPostingForm";
 import CandidateForm from "@/components/talent/CandidateForm";
 
@@ -79,19 +80,27 @@ const TalentPool = () => {
           </div>
         </div>
 
-        <div className="mb-8">
-          <InternProfile />
+        <div className="space-y-12 mt-12">
+          <section>
+            <h2 className="text-3xl font-bold text-white mb-6">Featured Interns</h2>
+            <InternGrid />
+          </section>
+
+          <section>
+            <h2 className="text-3xl font-bold text-white mb-6">Hot Startup Opportunities</h2>
+            <StartupIdeas />
+          </section>
+
+          <JobPostingForm 
+            companyFormData={companyFormData}
+            setCompanyFormData={setCompanyFormData}
+          />
+
+          <CandidateForm 
+            candidateFormData={candidateFormData}
+            setCandidateFormData={setCandidateFormData}
+          />
         </div>
-
-        <JobPostingForm 
-          companyFormData={companyFormData}
-          setCompanyFormData={setCompanyFormData}
-        />
-
-        <CandidateForm 
-          candidateFormData={candidateFormData}
-          setCandidateFormData={setCandidateFormData}
-        />
       </div>
     </div>
   );
