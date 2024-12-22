@@ -20,7 +20,7 @@ export const environmentalProjects: ProjectData[] = [
     seeking: ["Drone Operators", "Environmental Scientists", "AI Specialists"],
     funding: "$2.9M",
     impact: "Planted 1 million trees",
-    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09",
+    image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86",
     iconName: "Trees"
   }
 ];

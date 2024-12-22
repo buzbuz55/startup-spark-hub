@@ -56,7 +56,8 @@ const Projects = () => {
                 is_hiring: true,
                 created_at: new Date().toISOString(),
                 created_by_username: "GreenTech",
-                website_url: "https://example.com"
+                website_url: "https://example.com",
+                image: project.image
               }} 
             />
           ))}

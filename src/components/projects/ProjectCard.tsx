@@ -20,6 +20,7 @@ export interface Project {
   created_at: string;
   created_by_username?: string;
   website_url?: string;
+  image?: string;
 }
 
 interface ProjectCardProps {
@@ -36,7 +37,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <Card className="overflow-hidden transition-all hover:shadow-lg">
       <ProjectImage
-        image="/placeholder.svg"
+        image={project.image || "/placeholder.svg"}
         name={project.title}
         onClick={handleJoinClick}
       />
