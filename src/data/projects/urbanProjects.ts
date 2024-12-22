@@ -2,25 +2,25 @@ import { ProjectData } from "@/types/project";
 
 export const urbanProjects: ProjectData[] = [
   {
-    id: "15",
-    name: "EcoSphere Cities 🌆",
-    category: "Smart Cities",
-    description: "Building carbon-neutral megacities with integrated smart grids, vertical farms, and AI-managed sustainable buildings. Creating the blueprint for future urban living.",
-    seeking: ["Urban Planners", "Sustainability Experts", "Smart Grid Engineers"],
-    funding: "$25.1M",
-    impact: "First carbon-neutral city of 1M residents",
-    image: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
-    iconName: "Building"
+    id: "623e4567-e89b-12d3-a456-426614174005",
+    name: "VerticalFarm AI",
+    category: "Urban Agriculture",
+    description: "AI-controlled vertical farming systems for urban environments. Our technology enables sustainable food production in cities.",
+    seeking: ["Agricultural Engineers", "AI Developers", "Plant Scientists"],
+    funding: "$6.3M",
+    impact: "Produces food for 5,000 families daily",
+    image: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8",
+    iconName: "Sprout"
   },
   {
-    id: "25",
-    name: "Smart Urban GreenTech 🌱",
-    category: "Urban Innovation",
-    description: "Implementing vertical forests and AI-managed green spaces in cities. Pioneering microbial carbon capture roads and intelligent traffic systems.",
-    seeking: ["Urban Planners", "Environmental Engineers", "AI Specialists"],
-    funding: "$17.6M",
-    impact: "Created 50+ carbon-negative districts",
-    image: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
-    iconName: "Building2"
+    id: "723e4567-e89b-12d3-a456-426614174006",
+    name: "SmartWaste Analytics",
+    category: "Waste Management",
+    description: "IoT-enabled waste management system that optimizes collection routes and increases recycling efficiency in cities.",
+    seeking: ["IoT Engineers", "Data Analysts", "Waste Management Experts"],
+    funding: "$3.5M",
+    impact: "30% reduction in waste collection costs",
+    image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b",
+    iconName: "Recycle"
   }
 ];

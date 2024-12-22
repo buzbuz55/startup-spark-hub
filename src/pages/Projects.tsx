@@ -4,40 +4,15 @@ import ProjectFilters from "@/components/projects/ProjectFilters";
 import SubmitProjectDialog from "@/components/projects/SubmitProjectDialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import type { Project } from "@/components/projects/ProjectCard";
+import { useState } from "react";
+import { projectsData } from "@/data/projectsData";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('status', 'active')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      setProjects(data || []);
-    } catch (error) {
-      console.error('Error fetching projects:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filteredProjects = projects.filter(project => 
-    project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  const filteredProjects = projectsData.filter(project => 
+    project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     project.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
     project.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -65,27 +40,32 @@ const Projects = () => {
           onSearchChange={setSearchQuery}
         />
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((n) => (
-              <div key={n} className="h-96 bg-gray-100 animate-pulse rounded-lg"></div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProjects.map((project) => (
+            <ProjectCard 
+              key={project.id} 
+              project={{
+                id: project.id,
+                title: project.name,
+                description: project.description,
+                category: project.category,
+                team_size: 1,
+                stage: "Development",
+                location: "Global",
+                collaboration_type: "Remote",
+                is_hiring: true,
+                created_at: new Date().toISOString(),
+                created_by_username: "GreenTech",
+                website_url: "https://example.com"
+              }} 
+            />
+          ))}
+        </div>
       </div>
 
       <SubmitProjectDialog
         isOpen={isSubmitDialogOpen}
-        onClose={() => {
-          setIsSubmitDialogOpen(false);
-          fetchProjects(); // Refresh the projects list after submission
-        }}
+        onClose={() => setIsSubmitDialogOpen(false)}
       />
     </div>
   );
