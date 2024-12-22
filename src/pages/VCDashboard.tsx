@@ -2,25 +2,21 @@ import Header from "@/components/Header";
 import QuickStats from "@/components/vc-dashboard/QuickStats";
 import VCProfileForm from "@/components/vc-dashboard/VCProfileForm";
 import TopTechSchools from "@/components/vc-dashboard/TopTechSchools";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 const VCDashboard = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <Header />
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Dashboard Header */}
-          <div className="flex items-center justify-between pt-20">
-            <div className="text-center flex-1">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Venture Capital Dashboard
-              </h1>
-              <p className="text-lg md:text-xl text-muted-foreground">
-                Manage your portfolio and discover promising opportunities
-              </p>
-            </div>
-            <ThemeToggle />
+          <div className="text-center pt-20">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Venture Capital Dashboard
+            </h1>
+            <p className="text-lg text-gray-300">
+              Manage your portfolio and discover promising opportunities
+            </p>
           </div>
 
           {/* Quick Stats */}
@@ -31,8 +27,34 @@ const VCDashboard = () => {
             <div className="lg:col-span-2">
               <VCProfileForm />
             </div>
-            <div>
+            <div className="space-y-8">
               <TopTechSchools />
+              {/* Resources Section */}
+              <div className="bg-white/10 border border-white/20 rounded-lg p-6 backdrop-blur-sm">
+                <h2 className="text-xl font-semibold mb-4">Resources</h2>
+                <div className="space-y-3">
+                  <a 
+                    href="/blog"
+                    className="block p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    Startup Blog
+                  </a>
+                  <a 
+                    href="/faq"
+                    className="block p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    FAQ
+                  </a>
+                  <a 
+                    href="https://docs.startup-nation.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    Documentation
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
