@@ -1,11 +1,12 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ArrowRight, BookOpen, Calendar, Clock, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import BlogCard from "@/components/blog/BlogCard";
+import BlogHeader from "@/components/blog/BlogHeader";
+import StartupProgressForm from "@/components/blog/StartupProgressForm";
+import { BlogPost } from "@/types/blog";
 
 const Blog = () => {
-  const blogPosts = [
+  const blogPosts: BlogPost[] = [
     {
       title: "Why Startup Squad is the Best App for University Students to Raise VC Funding",
       date: "March 20, 2024",
@@ -214,53 +215,15 @@ const Blog = () => {
       
       <main className="flex-1 container mx-auto px-4 py-24">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16 animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
-              Empowering the Next Generation of Startups
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Join the community that has helped launch over 500 successful startups and raised millions in funding
-            </p>
+          <BlogHeader />
+          
+          <div className="flex justify-center">
+            <StartupProgressForm />
           </div>
 
           <div className="grid gap-8">
             {blogPosts.map((post, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="inline-block px-3 py-1 text-sm font-medium text-purple-600 bg-purple-100 rounded-full">
-                      {post.category}
-                    </span>
-                  </div>
-                  <CardTitle className="text-2xl font-bold hover:text-purple-600 transition-colors">
-                    {post.title}
-                  </CardTitle>
-                  <CardDescription>
-                    <div className="flex items-center gap-4 text-sm text-gray-600 mt-2">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {post.date}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {post.readTime}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <User className="w-4 h-4" />
-                        {post.author}
-                      </span>
-                    </div>
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    {post.description}
-                  </p>
-                  <Button variant="link" className="group p-0">
-                    Read More <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </CardContent>
-              </Card>
+              <BlogCard key={index} post={post} />
             ))}
           </div>
         </div>
