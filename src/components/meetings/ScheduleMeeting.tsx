@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar } from "lucide-react";
+import { Calendar, Video } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,7 @@ const ScheduleMeeting = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string>("10:00");
   const [isNewGuest, setIsNewGuest] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const contacts = [
     {
@@ -33,11 +34,6 @@ const ScheduleMeeting = () => {
       role: "VC Associate"
     }
   ];
-
-  const generateZoomLink = () => {
-    // In a real application, this would integrate with Zoom API
-    return `https://zoom.us/j/${Math.random().toString(36).substring(7)}`;
-  };
 
   const handleScheduleMeeting = async () => {
     try {
@@ -67,19 +63,18 @@ const ScheduleMeeting = () => {
       const [hours, minutes] = selectedTime.split(':');
       meetingDateTime.setHours(parseInt(hours), parseInt(minutes));
 
-      // Generate Zoom link
-      const zoomLink = generateZoomLink();
+      // Generate unique room ID
+      const roomId = `meeting-${Math.random().toString(36).substring(7)}`;
 
       // Store the meeting in Supabase
       const { error: meetingError } = await supabase
         .from('meetings')
         .insert({
           scheduled_date: meetingDateTime.toISOString(),
-          room_id: `meeting-${Math.random().toString(36).substring(7)}`,
+          room_id: roomId,
           creator_id: user.id,
           status: 'scheduled',
-          guest_email: isNewGuest ? guestEmail : null,
-          meeting_link: zoomLink
+          guest_email: isNewGuest ? guestEmail : null
         });
 
       if (meetingError) throw meetingError;
@@ -91,13 +86,14 @@ const ScheduleMeeting = () => {
           .insert({
             sender_id: user.id,
             receiver_id: selectedContact,
-            content: `Hi! I've scheduled a meeting with you on ${format(meetingDateTime, 'PPpp')}. Here's the Zoom link: ${zoomLink}. Looking forward to our discussion!`
+            content: `Hi! I've scheduled a video meeting with you on ${format(meetingDateTime, 'PPpp')}. The meeting will be available in the messages tab when it's time. Looking forward to our discussion!`
           });
 
         if (messageError) throw messageError;
       }
 
       toast.success("Meeting scheduled successfully!");
+      setIsOpen(false);
     } catch (error) {
       console.error("Error scheduling meeting:", error);
       toast.error("Failed to schedule meeting");
@@ -105,16 +101,16 @@ const ScheduleMeeting = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="gap-2">
-          <Calendar className="w-4 h-4" />
+          <Video className="w-4 h-4" />
           Schedule Meeting
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Schedule a Meeting</DialogTitle>
+          <DialogTitle>Schedule a Video Meeting</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="space-y-2">

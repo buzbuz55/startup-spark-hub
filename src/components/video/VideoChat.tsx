@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Video, PhoneOff } from "lucide-react";
+import { Video, Mic, MicOff, VideoOff, PhoneOff } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -14,6 +14,8 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
   const [peerConnection, setPeerConnection] = useState<RTCPeerConnection | null>(null);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
 
@@ -32,7 +34,14 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
 
         // Initialize WebRTC peer connection
         const pc = new RTCPeerConnection({
-          iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+          iceServers: [
+            { urls: "stun:stun.l.google.com:19302" },
+            {
+              urls: "turn:numb.viagenie.ca",
+              username: "webrtc@live.com",
+              credential: "muazkh"
+            }
+          ],
         });
         setPeerConnection(pc);
 
@@ -49,6 +58,13 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
           }
         };
 
+        // Handle ICE candidates
+        pc.onicecandidate = (event) => {
+          if (event.candidate) {
+            sendSignalingData({ candidate: event.candidate });
+          }
+        };
+
         // Subscribe to signaling channel
         const channel = supabase
           .channel(`video-${roomId}`)
@@ -58,6 +74,11 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
             }
           })
           .subscribe();
+
+        // Create and send offer
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        sendSignalingData(offer);
 
         return () => {
           channel.unsubscribe();
@@ -108,6 +129,24 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
     });
   };
 
+  const toggleAudio = () => {
+    if (localStream) {
+      localStream.getAudioTracks().forEach(track => {
+        track.enabled = !isAudioEnabled;
+      });
+      setIsAudioEnabled(!isAudioEnabled);
+    }
+  };
+
+  const toggleVideo = () => {
+    if (localStream) {
+      localStream.getVideoTracks().forEach(track => {
+        track.enabled = !isVideoEnabled;
+      });
+      setIsVideoEnabled(!isVideoEnabled);
+    }
+  };
+
   const handleEndCall = () => {
     if (localStream) {
       localStream.getTracks().forEach(track => track.stop());
@@ -146,14 +185,30 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
             </span>
           </div>
         </div>
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-4">
+          <Button
+            variant={isAudioEnabled ? "outline" : "destructive"}
+            size="icon"
+            className="rounded-full"
+            onClick={toggleAudio}
+          >
+            {isAudioEnabled ? <Mic className="w-4 h-4" /> : <MicOff className="w-4 h-4" />}
+          </Button>
+          <Button
+            variant={isVideoEnabled ? "outline" : "destructive"}
+            size="icon"
+            className="rounded-full"
+            onClick={toggleVideo}
+          >
+            {isVideoEnabled ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
+          </Button>
           <Button
             variant="destructive"
-            size="lg"
+            size="icon"
             className="rounded-full"
             onClick={handleEndCall}
           >
-            <PhoneOff className="w-6 h-6" />
+            <PhoneOff className="w-4 h-4" />
           </Button>
         </div>
       </div>
