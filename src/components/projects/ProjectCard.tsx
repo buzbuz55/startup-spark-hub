@@ -9,10 +9,6 @@ import { optimizeImage } from "@/utils/imageOptimizer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { ProjectData } from "@/types/project";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import ProjectComments from "./ProjectComments";
 
 const ProjectCard = ({ 
   id,
@@ -25,7 +21,6 @@ const ProjectCard = ({
   image,
   iconName
 }: ProjectData) => {
-  const navigate = useNavigate();
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -33,25 +28,6 @@ const ProjectCard = ({
   
   const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
   const optimizedImageUrl = optimizeImage(image);
-
-  const handleChatClick = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        toast.error("Please sign in to start a chat");
-        navigate("/login");
-        return;
-      }
-      navigate(`/messages?project=${id}`);
-    } catch (error) {
-      console.error("Error navigating to chat:", error);
-      toast.error("Failed to open chat");
-    }
-  };
-
-  const handleApplyNow = () => {
-    setIsJoinDialogOpen(true);
-  };
 
   return (
     <>
@@ -101,20 +77,15 @@ const ProjectCard = ({
             </div>
             <Button 
               variant="default"
-              onClick={handleApplyNow}
+              onClick={() => setIsJoinDialogOpen(true)}
             >
-              Apply Now
+              Join Project
             </Button>
           </div>
 
           <div className="text-sm text-gray-600">
             <span className="font-semibold">Impact:</span>
             <span className="ml-2">{impact}</span>
-          </div>
-
-          <div className="border-t pt-4">
-            <h4 className="font-semibold mb-4">Comments & Discussion</h4>
-            <ProjectComments projectId={id} />
           </div>
 
           <Button
@@ -140,7 +111,7 @@ const ProjectCard = ({
                 <Button 
                   variant="outline" 
                   className="w-full flex items-center justify-center gap-2"
-                  onClick={handleChatClick}
+                  onClick={() => window.location.href = '/messages'}
                 >
                   <MessageSquare className="h-4 w-4" />
                   Chat with Team

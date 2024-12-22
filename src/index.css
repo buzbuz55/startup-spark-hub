@@ -8,9 +8,7 @@
   }
   
   body {
-    @apply bg-background text-foreground transition-colors duration-300 touch-manipulation;
-    -webkit-tap-highlight-color: transparent;
-    overscroll-behavior-y: none;
+    @apply bg-background text-foreground transition-colors duration-300;
   }
 
   :root {
@@ -59,7 +57,6 @@
   }
 }
 
-/* App-specific animations */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -73,38 +70,4 @@
 
 .animate-fade-in {
   animation: fade-in 1s ease-out forwards;
-}
-
-/* Mobile optimizations */
-@media (max-width: 768px) {
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  input, 
-  button {
-    font-size: 16px; /* Prevent zoom on iOS */
-  }
-}
-
-/* Hide scrollbar but keep functionality */
-.scrollbar-hide {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Safe area insets for modern iOS devices */
-@supports (padding: max(0px)) {
-  .safe-bottom {
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-  
-  .safe-top {
-    padding-top: max(1rem, env(safe-area-inset-top));
-  }
 }

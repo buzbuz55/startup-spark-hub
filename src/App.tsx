@@ -36,7 +36,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
-          <div className="min-h-screen flex flex-col bg-background">
+          <div className="min-h-screen flex flex-col">
             <Toaster />
             <Sonner />
             <BrowserRouter>
