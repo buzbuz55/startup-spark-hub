@@ -21,6 +21,10 @@ interface ProjectDetailsDialogProps {
 const ProjectDetailsDialog = ({ project, isOpen, onClose }: ProjectDetailsDialogProps) => {
   const [showJoinForm, setShowJoinForm] = useState(false);
 
+  const handleCloseJoinForm = () => {
+    setShowJoinForm(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background">
@@ -54,7 +58,10 @@ const ProjectDetailsDialog = ({ project, isOpen, onClose }: ProjectDetailsDialog
           {showJoinForm ? (
             <div className="mt-6">
               <h3 className="text-xl font-semibold mb-4">Join the Team</h3>
-              <JoinTeamForm projectId={project.id} />
+              <JoinTeamForm 
+                positionId={project.id} 
+                onClose={handleCloseJoinForm}
+              />
             </div>
           ) : (
             <ProjectTabs project={project} />
