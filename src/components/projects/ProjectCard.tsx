@@ -14,6 +14,18 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import ProjectComments from "./ProjectComments";
 
+interface ProjectCardProps extends ProjectData {
+  id: string; // Change this to string to match UUID format
+  name: string;
+  category: string;
+  description: string;
+  seeking: string[];
+  funding: string;
+  impact: string;
+  image: string;
+  iconName: string;
+}
+
 const ProjectCard = ({ 
   id,
   name, 
@@ -24,7 +36,7 @@ const ProjectCard = ({
   impact, 
   image,
   iconName
-}: ProjectData) => {
+}: ProjectCardProps) => {
   const navigate = useNavigate();
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
