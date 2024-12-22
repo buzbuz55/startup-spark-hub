@@ -4,30 +4,56 @@ import InternGrid from "@/components/talent/InternGrid";
 import StartupIdeas from "@/components/talent/StartupIdeas";
 import JobPostingForm from "@/components/talent/JobPostingForm";
 import CandidateForm from "@/components/talent/CandidateForm";
-import ChatBot from "@/components/talent/ChatBot";
 import TalentHeader from "@/components/talent/TalentHeader";
 import OpportunityCards from "@/components/talent/OpportunityCards";
 import { AnimatePresence, motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const TalentPool = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showInterns, setShowInterns] = useState(false);
-  const [companyFormData, setCompanyFormData] = useState({
-    position: "",
-    description: "",
-    requirements: "",
-    salary: ""
+  const [showJobForm, setShowJobForm] = useState(false);
+  const [showCandidateForm, setShowCandidateForm] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [user, setUser] = useState(null);
+
+  // Check authentication status
+  useState(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
   });
 
-  const [candidateFormData, setCandidateFormData] = useState({
-    fullName: "",
-    email: "",
-    experience: "",
-    portfolio: "",
-    expectedSalary: "",
-    resume: null as File | null,
-    githubUrl: ""
-  });
+  const handlePostJob = () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to post a job",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+    setShowJobForm(true);
+  };
+
+  const handleSubmitProfile = () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign up to submit your profile",
+        variant: "destructive",
+      });
+      navigate("/signup");
+      return;
+    }
+    setShowCandidateForm(true);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -36,6 +62,24 @@ const TalentPool = () => {
         <div className="max-w-6xl mx-auto">
           <TalentHeader onSearch={setSearchQuery} />
           
+          <div className="flex justify-center gap-4 mb-8">
+            <Button 
+              onClick={handlePostJob}
+              className="bg-primary hover:bg-primary/90"
+              size="lg"
+            >
+              <PlusCircle className="mr-2 h-5 w-5" />
+              Post a Job
+            </Button>
+            <Button 
+              onClick={handleSubmitProfile}
+              variant="outline"
+              size="lg"
+            >
+              Submit Your Profile
+            </Button>
+          </div>
+
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -45,7 +89,7 @@ const TalentPool = () => {
           </motion.div>
 
           <AnimatePresence>
-            {showInterns ? (
+            {showInterns && (
               <motion.section
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
@@ -55,17 +99,63 @@ const TalentPool = () => {
                 <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 mb-8">
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-semibold text-gray-900">Available Interns</h2>
-                    <button 
+                    <Button 
+                      variant="ghost"
                       onClick={() => setShowInterns(false)}
                       className="text-gray-500 hover:text-gray-700"
                     >
                       Close
-                    </button>
+                    </Button>
                   </div>
                   <InternGrid />
                 </div>
               </motion.section>
-            ) : null}
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {showJobForm && (
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+              >
+                <JobPostingForm 
+                  companyFormData={{
+                    position: "",
+                    description: "",
+                    requirements: "",
+                    salary: ""
+                  }}
+                  setCompanyFormData={() => {}}
+                  onClose={() => setShowJobForm(false)}
+                />
+              </motion.section>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {showCandidateForm && (
+              <motion.section
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+              >
+                <CandidateForm 
+                  candidateFormData={{
+                    fullName: "",
+                    email: "",
+                    experience: "",
+                    portfolio: "",
+                    expectedSalary: "",
+                    resume: null,
+                    githubUrl: ""
+                  }}
+                  setCandidateFormData={() => {}}
+                  onClose={() => setShowCandidateForm(false)}
+                />
+              </motion.section>
+            )}
           </AnimatePresence>
 
           <motion.section
@@ -76,25 +166,8 @@ const TalentPool = () => {
             <h2 className="text-2xl font-semibold text-gray-900 mb-6">Startup Opportunities</h2>
             <StartupIdeas />
           </motion.section>
-
-          <motion.section 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="grid md:grid-cols-2 gap-8"
-          >
-            <JobPostingForm 
-              companyFormData={companyFormData}
-              setCompanyFormData={setCompanyFormData}
-            />
-
-            <CandidateForm 
-              candidateFormData={candidateFormData}
-              setCandidateFormData={setCandidateFormData}
-            />
-          </motion.section>
         </div>
       </div>
-      <ChatBot />
     </div>
   );
 };

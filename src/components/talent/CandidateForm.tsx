@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { X } from "lucide-react";
 import { toast } from "sonner";
 
 interface CandidateFormProps {
@@ -22,10 +23,11 @@ interface CandidateFormProps {
     resume: File | null;
     githubUrl: string;
   }>>;
+  onClose: () => void;
 }
 
-const CandidateForm = ({ candidateFormData, setCandidateFormData }: CandidateFormProps) => {
-  const handleCandidateSubmit = (e: React.FormEvent) => {
+const CandidateForm = ({ candidateFormData, setCandidateFormData, onClose }: CandidateFormProps) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success("Profile submitted successfully!");
     setCandidateFormData({
@@ -37,18 +39,27 @@ const CandidateForm = ({ candidateFormData, setCandidateFormData }: CandidateFor
       resume: null,
       githubUrl: ""
     });
+    onClose();
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-xl p-6">
+    <div className="bg-white rounded-xl shadow-xl p-6 mb-8 relative">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute right-4 top-4"
+        onClick={onClose}
+      >
+        <X className="h-4 w-4" />
+      </Button>
       <h2 className="text-2xl font-bold mb-6">Submit Your Profile</h2>
-      <form onSubmit={handleCandidateSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Full Name</label>
           <Input
             value={candidateFormData.fullName}
             onChange={(e) => setCandidateFormData({...candidateFormData, fullName: e.target.value})}
-            placeholder="Your full name"
+            placeholder="John Doe"
             required
           />
         </div>
@@ -58,7 +69,7 @@ const CandidateForm = ({ candidateFormData, setCandidateFormData }: CandidateFor
             type="email"
             value={candidateFormData.email}
             onChange={(e) => setCandidateFormData({...candidateFormData, email: e.target.value})}
-            placeholder="your.email@example.com"
+            placeholder="john@example.com"
             required
           />
         </div>
@@ -77,7 +88,7 @@ const CandidateForm = ({ candidateFormData, setCandidateFormData }: CandidateFor
             type="url"
             value={candidateFormData.portfolio}
             onChange={(e) => setCandidateFormData({...candidateFormData, portfolio: e.target.value})}
-            placeholder="https://your-portfolio.com"
+            placeholder="https://yourportfolio.com"
           />
         </div>
         <div>
@@ -90,11 +101,11 @@ const CandidateForm = ({ candidateFormData, setCandidateFormData }: CandidateFor
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Expected Hourly Rate</label>
+          <label className="block text-sm font-medium mb-1">Expected Salary</label>
           <Input
             value={candidateFormData.expectedSalary}
             onChange={(e) => setCandidateFormData({...candidateFormData, expectedSalary: e.target.value})}
-            placeholder="e.g., $25/hour"
+            placeholder="e.g., $60,000 - $80,000"
             required
           />
         </div>
@@ -102,16 +113,20 @@ const CandidateForm = ({ candidateFormData, setCandidateFormData }: CandidateFor
           <label className="block text-sm font-medium mb-1">Resume</label>
           <Input
             type="file"
-            onChange={(e) => setCandidateFormData({
-              ...candidateFormData,
-              resume: e.target.files ? e.target.files[0] : null
-            })}
+            onChange={(e) => {
+              const file = e.target.files?.[0] || null;
+              setCandidateFormData({...candidateFormData, resume: file});
+            }}
             accept=".pdf,.doc,.docx"
             required
           />
-          <p className="text-sm text-gray-500 mt-1">Upload your resume (PDF, DOC, or DOCX)</p>
         </div>
-        <Button type="submit" className="w-full">Submit Profile</Button>
+        <div className="flex justify-end gap-4">
+          <Button type="button" variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit">Submit Profile</Button>
+        </div>
       </form>
     </div>
   );

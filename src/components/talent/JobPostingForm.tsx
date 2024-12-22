@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { X } from "lucide-react";
 import { toast } from "sonner";
 
 interface JobPostingFormProps {
@@ -16,9 +17,10 @@ interface JobPostingFormProps {
     requirements: string;
     salary: string;
   }>>;
+  onClose: () => void;
 }
 
-const JobPostingForm = ({ companyFormData, setCompanyFormData }: JobPostingFormProps) => {
+const JobPostingForm = ({ companyFormData, setCompanyFormData, onClose }: JobPostingFormProps) => {
   const handleCompanySubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success("Job posting submitted successfully!");
@@ -28,10 +30,19 @@ const JobPostingForm = ({ companyFormData, setCompanyFormData }: JobPostingFormP
       requirements: "",
       salary: ""
     });
+    onClose();
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-xl p-6 mb-8">
+    <div className="bg-white rounded-xl shadow-xl p-6 mb-8 relative">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute right-4 top-4"
+        onClick={onClose}
+      >
+        <X className="h-4 w-4" />
+      </Button>
       <h2 className="text-2xl font-bold mb-6">Post a Job Opening</h2>
       <form onSubmit={handleCompanySubmit} className="space-y-4">
         <div>
@@ -70,7 +81,12 @@ const JobPostingForm = ({ companyFormData, setCompanyFormData }: JobPostingFormP
             required
           />
         </div>
-        <Button type="submit" className="w-full">Post Job Opening</Button>
+        <div className="flex justify-end gap-4">
+          <Button type="button" variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit">Post Job Opening</Button>
+        </div>
       </form>
     </div>
   );
