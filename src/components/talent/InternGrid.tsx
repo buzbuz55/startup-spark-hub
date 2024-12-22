@@ -7,6 +7,7 @@ const interns = [
     about: "Passionate about creating innovative solutions and learning new technologies! Currently exploring web development and AI. 🚀",
     skills: ["React.js", "TypeScript", "Node.js", "Python", "UI/UX Design"],
     hobbies: ["Fitness", "Reading", "Photography", "Gaming", "Music", "Art"],
+    avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
     funFacts: [
       "Can solve a Rubik's cube in under 2 minutes! 🎲",
       "Amateur coffee connoisseur ☕",
@@ -19,6 +20,7 @@ const interns = [
     about: "Data enthusiast with a passion for machine learning and statistical analysis. Love turning data into actionable insights! 📊",
     skills: ["Python", "R", "TensorFlow", "SQL", "Data Visualization"],
     hobbies: ["Chess", "Hiking", "Photography", "Cooking", "Piano", "Robotics"],
+    avatar: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
     funFacts: [
       "Won a national chess tournament 🏆",
       "Makes amazing homemade pasta 🍝",
@@ -127,7 +129,7 @@ const InternGrid = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {interns.map((intern, index) => (
-        <InternProfile key={index} {...intern} />
+        <InternProfile key={index} {...intern} avatar={intern.avatar} />
       ))}
     </div>
   );

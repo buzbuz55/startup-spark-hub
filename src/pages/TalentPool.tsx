@@ -8,6 +8,7 @@ import InternGrid from "@/components/talent/InternGrid";
 import StartupIdeas from "@/components/talent/StartupIdeas";
 import JobPostingForm from "@/components/talent/JobPostingForm";
 import CandidateForm from "@/components/talent/CandidateForm";
+import ChatBot from "@/components/talent/ChatBot";
 
 const TalentPool = () => {
   const [companyFormData, setCompanyFormData] = useState({
@@ -102,6 +103,7 @@ const TalentPool = () => {
           />
         </div>
       </div>
+      <ChatBot />
     </div>
   );
 };

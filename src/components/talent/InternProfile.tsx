@@ -24,14 +24,15 @@ interface InternProfileProps {
   skills: string[];
   hobbies: string[];
   funFacts: string[];
+  avatar?: string;
 }
 
-export const InternProfile = ({ name, role, about, skills, funFacts }: InternProfileProps) => {
+export const InternProfile = ({ name, role, about, skills, funFacts, avatar }: InternProfileProps) => {
   return (
     <Card className="w-full bg-white shadow-lg hover:shadow-xl transition-shadow">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar className="w-16 h-16">
-          <AvatarImage src="/placeholder.svg" alt={`${name}'s profile`} />
+          <AvatarImage src={avatar || "/placeholder.svg"} alt={`${name}'s profile`} />
           <AvatarFallback>{name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
