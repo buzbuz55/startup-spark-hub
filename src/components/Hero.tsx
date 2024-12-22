@@ -1,5 +1,6 @@
 import { MessageSquare, Video, Users, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -14,9 +15,11 @@ const Hero = () => {
           The ultimate platform for young entrepreneurs to collaborate, build, and launch their next big idea. Connect with VCs, get feedback, and ship fast! 🚀
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-100">
-            Start Building Free
-          </Button>
+          <Link to="/submit-idea">
+            <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-100">
+              Submit Your Idea
+            </Button>
+          </Link>
           <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
             Watch Demo
           </Button>
