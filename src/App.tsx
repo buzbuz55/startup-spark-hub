@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, Globe, Search, Calendar, Video } from "lucide-react";
+import { LogIn, UserPlus, Globe, Search as SearchIcon, Calendar, Video } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Search from "./pages/Search";
@@ -58,7 +58,7 @@ const App = () => {
                     <div className="hidden md:flex items-center gap-4">
                       <Button variant="ghost" size="icon" asChild>
                         <Link to="/search">
-                          <Search className="h-5 w-5" />
+                          <SearchIcon className="h-5 w-5" />
                         </Link>
                       </Button>
                       <Button variant="ghost" size="icon" asChild>
