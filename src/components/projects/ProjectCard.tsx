@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import * as Icons from "lucide-react";
 import { ProjectData } from "@/data/projectsData";
 import JoinProjectDialog from "./JoinProjectDialog";
-import { LucideIcon } from "lucide-react";
 
 type ProjectCardProps = ProjectData;
 
@@ -22,8 +21,8 @@ const ProjectCard = ({
 }: ProjectCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
-  // Properly type the icon component as a LucideIcon
-  const IconComponent = Icons[iconName as keyof typeof Icons] as LucideIcon;
+  // Get the icon component from lucide-react
+  const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
 
   return (
     <>
@@ -38,7 +37,7 @@ const ProjectCard = ({
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span className="flex items-center gap-2">
-              {IconComponent && <IconComponent className="w-6 h-6" />}
+              <DynamicIcon className="w-6 h-6" />
               {name}
             </span>
             <Badge variant="secondary">{category}</Badge>
