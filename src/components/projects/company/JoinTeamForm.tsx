@@ -4,63 +4,48 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { Upload } from "lucide-react";
 
 interface JoinTeamFormProps {
-  projectId: string;
-  position?: string;
+  positionId: string;
+  onClose: () => void;
 }
 
-const JoinTeamForm = ({ projectId, position }: JoinTeamFormProps) => {
+const JoinTeamForm = ({ positionId, onClose }: JoinTeamFormProps) => {
+  const [portfolioUrl, setPortfolioUrl] = useState("");
+  const [coverLetter, setCoverLetter] = useState("");
+  const [resumeUrl, setResumeUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [resume, setResume] = useState<File | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData(e.currentTarget);
-      
-      if (!resume) {
-        toast.error("Please upload your resume");
-        return;
-      }
-
       const { data: { user } } = await supabase.auth.getUser();
+      
       if (!user) {
-        toast.error("Please sign in to apply");
+        toast.error("Please sign in to submit your application");
         return;
       }
 
-      // Upload resume to Supabase Storage
-      const fileExt = resume.name.split('.').pop();
-      const filePath = `${projectId}/${crypto.randomUUID()}.${fileExt}`;
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('resumes')
-        .upload(filePath, resume);
-
-      if (uploadError) throw uploadError;
-
-      const { error: applicationError } = await supabase
+      const { error } = await supabase
         .from('team_applications')
-        .insert({
+        .insert([{
+          position_id: positionId,
           applicant_id: user.id,
-          position_id: projectId,
-          portfolio_url: formData.get('portfolio'),
-          cover_letter: formData.get('coverLetter'),
-          resume_url: uploadData?.path
-        });
+          portfolio_url: portfolioUrl,
+          cover_letter: coverLetter,
+          resume_url: resumeUrl,
+          status: 'pending'
+        }]);
 
-      if (applicationError) throw applicationError;
+      if (error) throw error;
 
       toast.success("Application submitted successfully!");
-      e.currentTarget.reset();
-      setResume(null);
+      onClose();
     } catch (error) {
+      console.error('Error:', error);
       toast.error("Failed to submit application");
-      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -69,35 +54,31 @@ const JoinTeamForm = ({ projectId, position }: JoinTeamFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-1">Resume</label>
         <Input
-          type="file"
-          accept=".pdf,.doc,.docx"
-          onChange={(e) => setResume(e.target.files?.[0] || null)}
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Portfolio URL (optional)</label>
-        <Input
-          name="portfolio"
           type="url"
-          placeholder="https://your-portfolio.com"
+          placeholder="Portfolio URL (optional)"
+          value={portfolioUrl}
+          onChange={(e) => setPortfolioUrl(e.target.value)}
         />
       </div>
-
       <div>
-        <label className="block text-sm font-medium mb-1">Cover Letter</label>
+        <Input
+          type="url"
+          placeholder="Resume URL (optional)"
+          value={resumeUrl}
+          onChange={(e) => setResumeUrl(e.target.value)}
+        />
+      </div>
+      <div>
         <Textarea
-          name="coverLetter"
-          placeholder="Tell us why you're interested in joining the team..."
+          placeholder="Cover Letter"
+          value={coverLetter}
+          onChange={(e) => setCoverLetter(e.target.value)}
+          className="min-h-[100px]"
           required
         />
       </div>
-
-      <Button type="submit" disabled={isSubmitting} className="w-full">
-        <Upload className="w-4 h-4 mr-2" />
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? "Submitting..." : "Submit Application"}
       </Button>
     </form>
