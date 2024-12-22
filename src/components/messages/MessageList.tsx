@@ -10,22 +10,16 @@ import {
 } from "@/components/ui/popover";
 import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
+import type { Message as MessageType } from "@/types/messages";
 
-interface Message {
-  id: string;
-  senderId: string;
-  text: string;
-  timestamp: string;
-  status?: 'sent' | 'delivered' | 'read';
-}
-
-interface MessageListProps {
-  messages: Message[];
+export interface MessageListProps {
+  messages: MessageType[];
   onEmojiSelect?: (emoji: any) => void;
   onEditMessage?: (id: string, newText: string) => void;
+  onlineUsers?: string[];
 }
 
-const MessageList = ({ messages, onEmojiSelect, onEditMessage }: MessageListProps) => {
+const MessageList = ({ messages, onEmojiSelect, onEditMessage, onlineUsers }: MessageListProps) => {
   const [showEmojis, setShowEmojis] = useState(false);
 
   return (

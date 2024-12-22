@@ -12,14 +12,15 @@ import { useState } from "react";
 import MessageActions from "./MessageActions";
 import { toast } from "sonner";
 
-interface ChatInputProps {
+export interface ChatInputProps {
   message: string;
   setMessage: (message: string) => void;
   onSendMessage: () => void;
   isTyping?: boolean;
+  onTyping?: () => void;
 }
 
-const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputProps) => {
+const ChatInput = ({ message, setMessage, onSendMessage, isTyping, onTyping }: ChatInputProps) => {
   const [showEmojis, setShowEmojis] = useState(false);
   const [showPollForm, setShowPollForm] = useState(false);
   const [pollQuestion, setPollQuestion] = useState("");
@@ -163,6 +164,7 @@ const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputPr
           onSubmit={(e) => {
             e.preventDefault();
             onSendMessage();
+            if (onTyping) onTyping();
           }}
           className="flex gap-2 items-end"
         >
