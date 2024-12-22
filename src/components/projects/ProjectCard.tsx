@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import * as Icons from "lucide-react";
 import { ProjectData } from "@/data/projectsData";
 import JoinProjectDialog from "./JoinProjectDialog";
+import { optimizeImage } from "@/utils/imageOptimizer";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ProjectCardProps = ProjectData;
 
@@ -20,18 +22,31 @@ const ProjectCard = ({
   iconName
 }: ProjectCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   
   // Get the icon component from lucide-react
   const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
 
+  // Optimize image URL
+  const optimizedImageUrl = optimizeImage(image);
+
   return (
     <>
       <Card className="hover:shadow-lg transition-shadow">
-        <div className="h-48 overflow-hidden rounded-t-lg">
+        <div className="relative h-48 overflow-hidden rounded-t-lg bg-gray-100">
+          {!imageLoaded && (
+            <Skeleton className="w-full h-full absolute top-0 left-0" />
+          )}
           <img 
-            src={image} 
+            src={optimizedImageUrl}
             alt={name}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            loading="lazy"
+            width="500"
+            height="300"
           />
         </div>
         <CardHeader>
