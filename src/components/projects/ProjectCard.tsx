@@ -12,6 +12,7 @@ import { ProjectData } from "@/types/project";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import ProjectComments from "./ProjectComments";
 
 const ProjectCard = ({ 
   id,
@@ -109,6 +110,11 @@ const ProjectCard = ({
           <div className="text-sm text-gray-600">
             <span className="font-semibold">Impact:</span>
             <span className="ml-2">{impact}</span>
+          </div>
+
+          <div className="border-t pt-4">
+            <h4 className="font-semibold mb-4">Comments & Discussion</h4>
+            <ProjectComments projectId={id} />
           </div>
 
           <Button
