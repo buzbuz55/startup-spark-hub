@@ -4,6 +4,8 @@ import VCProfileForm from "@/components/vc-dashboard/VCProfileForm";
 import TopTechSchools from "@/components/vc-dashboard/TopTechSchools";
 import PortfolioOverview from "@/components/vc-dashboard/PortfolioOverview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
+import { BookOpen, HelpCircle, FileText } from "lucide-react";
 
 const VCDashboard = () => {
   return (
@@ -59,19 +61,19 @@ const VCDashboard = () => {
                   title="Startup Blog"
                   description="Latest insights and trends in the startup ecosystem"
                   link="/blog"
-                  icon="BookOpen"
+                  icon={<BookOpen className="w-5 h-5 text-purple-400" />}
                 />
                 <ResourceCard
                   title="FAQ"
                   description="Common questions about venture capital and investments"
                   link="/faq"
-                  icon="HelpCircle"
+                  icon={<HelpCircle className="w-5 h-5 text-purple-400" />}
                 />
                 <ResourceCard
                   title="Documentation"
                   description="Detailed guides and resources for VCs"
                   link="https://docs.startup-nation.com"
-                  icon="FileText"
+                  icon={<FileText className="w-5 h-5 text-purple-400" />}
                   external
                 />
               </div>
@@ -84,23 +86,31 @@ const VCDashboard = () => {
 };
 
 // Resource Card Component
-const ResourceCard = ({ title, description, link, icon, external = false }) => {
-  const Icon = dynamic(() => import('lucide-react').then((mod) => mod[icon]));
-  
+interface ResourceCardProps {
+  title: string;
+  description: string;
+  link: string;
+  icon: React.ReactNode;
+  external?: boolean;
+}
+
+const ResourceCard = ({ title, description, link, icon, external = false }: ResourceCardProps) => {
   return (
     <a
       href={link}
       target={external ? "_blank" : "_self"}
       rel={external ? "noopener noreferrer" : ""}
-      className="block p-6 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-200"
+      className="block"
     >
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-purple-500/20 rounded-lg">
-          <Icon className="w-5 h-5 text-purple-400" />
+      <Card className="p-6 bg-white/5 hover:bg-white/10 transition-all duration-200">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="p-2 bg-purple-500/20 rounded-lg">
+            {icon}
+          </div>
+          <h3 className="text-lg font-semibold">{title}</h3>
         </div>
-        <h3 className="text-lg font-semibold">{title}</h3>
-      </div>
-      <p className="text-gray-400 text-sm">{description}</p>
+        <p className="text-gray-400 text-sm">{description}</p>
+      </Card>
     </a>
   );
 };
