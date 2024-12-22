@@ -42,6 +42,39 @@ export type Database = {
         }
         Relationships: []
       }
+      companies: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          logo_url?: string | null
+          name: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           contact_id: string
@@ -367,6 +400,88 @@ export type Database = {
           website_url?: string | null
         }
         Relationships: []
+      }
+      team_applications: {
+        Row: {
+          applicant_id: string
+          cover_letter: string | null
+          created_at: string
+          id: string
+          portfolio_url: string | null
+          position_id: string
+          resume_url: string | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          applicant_id: string
+          cover_letter?: string | null
+          created_at?: string
+          id?: string
+          portfolio_url?: string | null
+          position_id: string
+          resume_url?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          applicant_id?: string
+          cover_letter?: string | null
+          created_at?: string
+          id?: string
+          portfolio_url?: string | null
+          position_id?: string
+          resume_url?: string | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_applications_position_id_fkey"
+            columns: ["position_id"]
+            isOneToOne: false
+            referencedRelation: "team_positions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_positions: {
+        Row: {
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          requirements: string[] | null
+          status: string | null
+          title: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          requirements?: string[] | null
+          status?: string | null
+          title: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          requirements?: string[] | null
+          status?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_positions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vc_firms: {
         Row: {
