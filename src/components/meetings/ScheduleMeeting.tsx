@@ -1,14 +1,31 @@
 import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Video, Calendar as CalendarIcon } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 const ScheduleMeeting = () => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [showVideoCall, setShowVideoCall] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<string>("");
+
+  const contacts = [
+    {
+      id: "d7bed21c-5a38-4c44-87f5-7b8f3f3c2421",
+      name: "Sarah Chen",
+      role: "Software Engineer"
+    },
+    {
+      id: "e9be0901-6a77-4b55-9644-3a25b56a90c9",
+      name: "Alex Kumar",
+      role: "Product Designer"
+    },
+    {
+      id: "f1c3a45b-2d89-4e67-8a31-9c45b7c8d3ef",
+      name: "Maria Garcia",
+      role: "VC Associate"
+    }
+  ];
 
   const handleScheduleMeeting = async () => {
     try {
@@ -18,47 +35,50 @@ const ScheduleMeeting = () => {
         return;
       }
 
-      if (!date) {
-        toast.error("Please select a date");
+      if (!selectedContact) {
+        toast.error("Please select a contact");
         return;
       }
 
       // Generate a unique meeting room ID
       const roomId = `meeting-${Math.random().toString(36).substring(7)}`;
+      const scheduledDate = new Date();
       
       // Store the meeting in Supabase
-      const { error } = await supabase
+      const { error: meetingError } = await supabase
         .from('meetings')
         .insert({
-          scheduled_date: date.toISOString(),
+          scheduled_date: scheduledDate.toISOString(),
           room_id: roomId,
           creator_id: user.id,
           status: 'scheduled'
         });
 
-      if (error) {
-        console.error("Supabase error:", error);
-        throw error;
-      }
+      if (meetingError) throw meetingError;
 
-      toast.success("Meeting scheduled successfully!");
+      // Send a message to the contact
+      const { error: messageError } = await supabase
+        .from('messages')
+        .insert({
+          sender_id: user.id,
+          receiver_id: selectedContact,
+          content: `Hi! I'd like to schedule a meeting with you. Here's the meeting link: ${roomId}. Looking forward to our discussion!`
+        });
+
+      if (messageError) throw messageError;
+
+      toast.success("Meeting invitation sent!");
     } catch (error) {
       console.error("Error scheduling meeting:", error);
       toast.error("Failed to schedule meeting");
     }
   };
 
-  const startVideoCall = () => {
-    setShowVideoCall(true);
-    // In a real implementation, you would initialize your video call SDK here
-    toast.success("Video call started! (Demo)");
-  };
-
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="gap-2">
-          <CalendarIcon className="w-4 h-4" />
+          <Calendar className="w-4 h-4" />
           Schedule Meeting
         </Button>
       </DialogTrigger>
@@ -67,22 +87,29 @@ const ScheduleMeeting = () => {
           <DialogTitle>Schedule a Meeting</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border"
-          />
-          <div className="flex gap-4 justify-end">
-            <Button onClick={handleScheduleMeeting} className="gap-2">
-              <CalendarIcon className="w-4 h-4" />
-              Schedule
-            </Button>
-            <Button onClick={startVideoCall} variant="secondary" className="gap-2">
-              <Video className="w-4 h-4" />
-              Start Now
-            </Button>
+          <div className="space-y-2">
+            <label htmlFor="contact" className="text-sm font-medium">
+              Who would you like to meet with?
+            </label>
+            <Select
+              value={selectedContact}
+              onValueChange={setSelectedContact}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a contact" />
+              </SelectTrigger>
+              <SelectContent>
+                {contacts.map((contact) => (
+                  <SelectItem key={contact.id} value={contact.id}>
+                    {contact.name} - {contact.role}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
+          <Button onClick={handleScheduleMeeting} className="w-full">
+            Send Meeting Invitation
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
