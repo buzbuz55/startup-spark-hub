@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { UserCircle, LogIn, UserPlus } from "lucide-react";
+import { UserCircle, LogIn, UserPlus, Settings, LogOut, Image } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -94,14 +97,36 @@ const UserProfileMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="gap-2">
-          <UserCircle className="w-5 h-5" />
-          {profile.full_name || profile.email}
+        <Button variant="ghost" className="relative gap-2 h-8 w-8 rounded-full">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="" alt={profile.full_name || 'User'} />
+            <AvatarFallback>
+              <UserCircle className="w-6 h-6" />
+            </AvatarFallback>
+          </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-        <DropdownMenuItem onClick={handleSignOut}>Sign Out</DropdownMenuItem>
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium leading-none">{profile.full_name || 'User'}</p>
+            <p className="text-xs leading-none text-muted-foreground">{profile.email}</p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Image className="mr-2 h-4 w-4" />
+          Change Photo
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Settings className="mr-2 h-4 w-4" />
+          Profile Settings
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleSignOut}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign Out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
