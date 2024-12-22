@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import SubmitIdea from "./pages/SubmitIdea";
+import TalentPool from "./pages/TalentPool";
+import VCDashboard from "./pages/VCDashboard";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/submit-idea" element={<SubmitIdea />} />
+          <Route path="/talent-pool" element={<TalentPool />} />
+          <Route path="/vc-dashboard" element={<VCDashboard />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

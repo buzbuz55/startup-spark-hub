@@ -5,8 +5,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Upload, Building2, Users, Briefcase, Play } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
 
 const SubmitIdea = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     companyName: "",
     logo: null as File | null,
@@ -33,7 +35,21 @@ const SubmitIdea = () => {
     e.preventDefault();
     // This would typically connect to a backend
     console.log("Form submitted:", formData);
-    toast.success("Your idea has been submitted successfully!");
+    toast.success("Thank you for submitting your idea! We'll be in touch soon.", {
+      duration: 5000,
+      action: {
+        label: "View VC Dashboard",
+        onClick: () => navigate("/vc-dashboard")
+      },
+    });
+    // Clear form after submission
+    setFormData({
+      companyName: "",
+      logo: null,
+      about: "",
+      projectDetails: "",
+      lookingFor: [],
+    });
   };
 
   const toggleLookingFor = (option: string) => {
