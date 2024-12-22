@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, isBefore, startOfToday, addDays, setHours, setMinutes } from "date-fns";
 
 const ScheduleMeeting = () => {
   const [selectedContact, setSelectedContact] = useState<string>("");
@@ -34,6 +34,28 @@ const ScheduleMeeting = () => {
       role: "VC Associate"
     }
   ];
+
+  // Generate available time slots for the selected date
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 9; hour <= 17; hour++) {
+      for (let minute of [0, 30]) {
+        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const today = startOfToday();
+        const slotDate = selectedDate ? 
+          setMinutes(setHours(selectedDate, hour), minute) : 
+          setMinutes(setHours(today, hour), minute);
+
+        // Disable past time slots for today
+        const isPast = isBefore(slotDate, new Date());
+        if (selectedDate && isBefore(selectedDate, today)) continue;
+        if (isPast) continue;
+
+        slots.push(timeString);
+      }
+    }
+    return slots;
+  };
 
   const handleScheduleMeeting = async () => {
     try {
@@ -62,6 +84,12 @@ const ScheduleMeeting = () => {
       const meetingDateTime = new Date(selectedDate);
       const [hours, minutes] = selectedTime.split(':');
       meetingDateTime.setHours(parseInt(hours), parseInt(minutes));
+
+      // Validate meeting time is in the future
+      if (isBefore(meetingDateTime, new Date())) {
+        toast.error("Please select a future date and time");
+        return;
+      }
 
       // Generate unique room ID
       const roomId = `meeting-${Math.random().toString(36).substring(7)}`;
@@ -119,18 +147,29 @@ const ScheduleMeeting = () => {
               mode="single"
               selected={selectedDate}
               onSelect={setSelectedDate}
+              disabled={(date) => isBefore(date, startOfToday())}
+              initialFocus
               className="rounded-md border"
             />
           </div>
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Select Time</label>
-            <Input
-              type="time"
+            <Select
               value={selectedTime}
-              onChange={(e) => setSelectedTime(e.target.value)}
-              className="w-full"
-            />
+              onValueChange={setSelectedTime}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select time" />
+              </SelectTrigger>
+              <SelectContent>
+                {generateTimeSlots().map((time) => (
+                  <SelectItem key={time} value={time}>
+                    {time}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
