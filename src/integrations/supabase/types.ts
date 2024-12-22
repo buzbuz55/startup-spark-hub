@@ -452,6 +452,39 @@ export type Database = {
         }
         Relationships: []
       }
+      startup_ideas: {
+        Row: {
+          created_at: string
+          description: string
+          email: string
+          id: string
+          market: string
+          team: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          market: string
+          team: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          market?: string
+          team?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       team_applications: {
         Row: {
           applicant_id: string

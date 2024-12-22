@@ -49,7 +49,7 @@ const Search = () => {
             {projects?.map((project) => (
               <ProjectCard
                 key={project.id}
-                id={project.id}
+                id={project.id.toString()}
                 name={project.title}
                 category={project.category}
                 description={project.description}
