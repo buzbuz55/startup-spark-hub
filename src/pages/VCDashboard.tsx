@@ -1,115 +1,158 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MessageSquare, Star, Filter } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Building2, Globe, Phone, Mail, Wallet, Trophy, Target, Rocket } from "lucide-react";
 import { toast } from "sonner";
 
 const VCDashboard = () => {
-  const [messageModal, setMessageModal] = useState(false);
-  const [selectedStartup, setSelectedStartup] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    firmName: "",
+    website: "",
+    email: "",
+    phone: "",
+    fundSize: "",
+    investmentStage: "",
+    portfolio: "",
+    bio: ""
+  });
 
-  const handleMessage = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent successfully!");
-    setMessageModal(false);
+    toast.success("Profile updated successfully! 🎉");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-teal-800 to-cyan-900 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">VC Dashboard</h1>
-          <p className="text-xl text-gray-200">Discover and connect with promising startups</p>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-xl p-6">
-          <div className="flex gap-4 mb-8">
-            <Input placeholder="Search startups..." className="flex-1" />
-            <Button variant="outline">
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
-            </Button>
-            <Button>
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-800 to-indigo-900 py-20">
+      <div className="container mx-auto px-4">
+        <div className="max-w-6xl mx-auto space-y-8">
+          {/* Dashboard Header */}
+          <div className="text-center text-white mb-12">
+            <h1 className="text-4xl font-bold mb-4">VC Dashboard 🚀</h1>
+            <p className="text-xl text-purple-200">Manage your venture capital profile and discover promising startups</p>
           </div>
 
-          <div className="space-y-6">
-            {/* Example Startup Card */}
-            <div className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h2 className="text-2xl font-semibold mb-2">TechStart Solutions</h2>
-                  <p className="text-gray-600 mb-4">
-                    AI-powered project management platform for remote teams
-                  </p>
-                  <div className="flex gap-2 mb-4">
-                    <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
-                      Seeking VC
-                    </span>
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                      SaaS
-                    </span>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            {[
+              { title: "Portfolio Companies", value: "12", icon: <Building2 />, color: "bg-purple-500" },
+              { title: "Total Investments", value: "$8.5M", icon: <Wallet />, color: "bg-blue-500" },
+              { title: "Success Exits", value: "3", icon: <Trophy />, color: "bg-green-500" },
+              { title: "Active Deals", value: "5", icon: <Target />, color: "bg-orange-500" }
+            ].map((stat, index) => (
+              <Card key={index} className="bg-white/10 border-white/20 backdrop-blur-sm text-white">
+                <CardContent className="flex items-center justify-between p-6">
+                  <div>
+                    <p className="text-sm text-purple-200">{stat.title}</p>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                  </div>
+                  <div className={`p-3 rounded-full ${stat.color}`}>
+                    {stat.icon}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Profile Form */}
+          <Card className="bg-white/10 border-white/20 backdrop-blur-sm text-white">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Rocket className="w-6 h-6" />
+                VC Firm Profile
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Firm Name</label>
+                    <Input
+                      placeholder="Enter your firm name"
+                      value={formData.firmName}
+                      onChange={(e) => setFormData({ ...formData, firmName: e.target.value })}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Website</label>
+                    <Input
+                      placeholder="https://example.com"
+                      value={formData.website}
+                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Email</label>
+                    <Input
+                      type="email"
+                      placeholder="contact@vcfirm.com"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Phone</label>
+                    <Input
+                      type="tel"
+                      placeholder="+1 (555) 000-0000"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Fund Size</label>
+                    <Input
+                      placeholder="e.g., $50M"
+                      value={formData.fundSize}
+                      onChange={(e) => setFormData({ ...formData, fundSize: e.target.value })}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Investment Stage</label>
+                    <Input
+                      placeholder="e.g., Seed, Series A"
+                      value={formData.investmentStage}
+                      onChange={(e) => setFormData({ ...formData, investmentStage: e.target.value })}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
                   </div>
                 </div>
-                <Button variant="outline" size="icon">
-                  <Star className="w-4 h-4" />
-                </Button>
-              </div>
 
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Seeking: $500k - $1M</span>
-                <Dialog open={messageModal} onOpenChange={setMessageModal}>
-                  <DialogTrigger asChild>
-                    <Button 
-                      onClick={() => setSelectedStartup("TechStart Solutions")}
-                      className="gap-2"
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                      Contact
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Message to {selectedStartup}</DialogTitle>
-                    </DialogHeader>
-                    <form onSubmit={handleMessage} className="space-y-4">
-                      <div>
-                        <label className="text-sm font-medium mb-2 block">
-                          Proposed Investment Details
-                        </label>
-                        <Input 
-                          placeholder="Investment amount"
-                          type="text"
-                          className="mb-2"
-                        />
-                        <Input 
-                          placeholder="Proposed valuation"
-                          type="text"
-                          className="mb-2"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-2 block">
-                          Message
-                        </label>
-                        <Textarea 
-                          placeholder="Enter your message..."
-                          className="min-h-[100px]"
-                        />
-                      </div>
-                      <Button type="submit" className="w-full">
-                        Send Message
-                      </Button>
-                    </form>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </div>
-          </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Portfolio Companies</label>
+                  <Textarea
+                    placeholder="List your current portfolio companies"
+                    value={formData.portfolio}
+                    onChange={(e) => setFormData({ ...formData, portfolio: e.target.value })}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/60 min-h-[100px]"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Bio & Investment Thesis</label>
+                  <Textarea
+                    placeholder="Tell us about your investment philosophy and areas of interest"
+                    value={formData.bio}
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/60 min-h-[150px]"
+                  />
+                </div>
+
+                <div className="flex justify-end">
+                  <Button type="submit" size="lg" className="bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700">
+                    Save Profile 🚀
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
