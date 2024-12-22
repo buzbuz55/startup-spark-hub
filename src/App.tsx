@@ -6,8 +6,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus } from "lucide-react";
-import LanguageSelector from "@/components/LanguageSelector";
+import { LogIn, UserPlus, Globe, Search, Calendar, Video } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Search from "./pages/Search";
 import SubmitIdea from "./pages/SubmitIdea";
@@ -54,9 +54,34 @@ const App = () => {
                       </span>
                     </Link>
 
+                    {/* Center Navigation Icons */}
+                    <div className="hidden md:flex items-center gap-4">
+                      <Button variant="ghost" size="icon" asChild>
+                        <Link to="/search">
+                          <Search className="h-5 w-5" />
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" size="icon" asChild>
+                        <Link to="/calendar">
+                          <Calendar className="h-5 w-5" />
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" size="icon" asChild>
+                        <Link to="/video">
+                          <Video className="h-5 w-5" />
+                        </Link>
+                      </Button>
+                    </div>
+
                     {/* Right side items */}
                     <div className="flex items-center gap-4">
-                      <LanguageSelector />
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        className="hover:bg-primary/10"
+                      >
+                        <Globe className="h-5 w-5" />
+                      </Button>
                       <div className="flex items-center gap-2">
                         <Link to="/login">
                           <Button 
