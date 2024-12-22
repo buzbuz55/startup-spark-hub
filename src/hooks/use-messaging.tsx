@@ -3,17 +3,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Message, MessageStatus } from "@/types/messages";
 
+const isValidUUID = (uuid: string) => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid);
+};
+
 export const useMessaging = (chatId: string | null) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     if (!chatId) return;
 
-    // Validate UUID format
-    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(chatId)) {
+    // Validate UUID format before making database queries
+    if (!isValidUUID(chatId)) {
       console.error("Invalid UUID format for chatId:", chatId);
-      toast.error("Invalid chat ID format");
       return;
     }
 
