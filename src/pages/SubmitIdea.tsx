@@ -1,198 +1,160 @@
-import Header from "@/components/Header";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { Rocket, Sparkles, Target, Users, Brain, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Building2, Users, Briefcase, Play } from "lucide-react";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
 
 const SubmitIdea = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    companyName: "",
-    logo: null as File | null,
-    about: "",
-    projectDetails: "",
-    lookingFor: [] as string[],
+    title: "",
+    description: "",
+    market: "",
+    team: "",
+    email: "",
   });
-
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("File size should be less than 5MB");
-        return;
-      }
-      setFormData({ ...formData, logo: file });
-      toast.success("Logo uploaded successfully!");
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    toast.success("Thank you for submitting your idea! We'll be in touch soon.", {
-      duration: 5000,
-      action: {
-        label: "View VC Dashboard",
-        onClick: () => navigate("/vc-dashboard")
-      },
-    });
-    // Clear form after submission
+    toast.success("Your idea has been submitted! 🚀");
     setFormData({
-      companyName: "",
-      logo: null,
-      about: "",
-      projectDetails: "",
-      lookingFor: [],
+      title: "",
+      description: "",
+      market: "",
+      team: "",
+      email: "",
     });
   };
 
-  const toggleLookingFor = (option: string) => {
-    setFormData(prev => ({
-      ...prev,
-      lookingFor: prev.lookingFor.includes(option)
-        ? prev.lookingFor.filter(item => item !== option)
-        : [...prev.lookingFor, option]
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-800 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-700">
       <Header />
-      <div className="pt-24 px-4 pb-12">
-        <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
-          <div className="relative h-48">
-            <img
-              src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b"
-              alt="Submit Your Idea"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <h1 className="text-4xl font-bold text-white">Submit Your Idea</h1>
-            </div>
+      <div className="container mx-auto px-4 pt-24 pb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              Launch Your Next Big Thing 🚀
+            </h1>
+            <p className="text-xl text-purple-100 mb-8">
+              Join thousands of young entrepreneurs who turned their ideas into reality!
+            </p>
           </div>
 
-          {/* Demo Video Button */}
-          <div className="p-4 text-center">
-            <Dialog open={isVideoModalOpen} onOpenChange={setIsVideoModalOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2">
-                  <Play className="w-5 h-5" />
-                  Watch Demo Video
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[625px]">
-                <DialogHeader>
-                  <DialogTitle>Startup Spark Hub Demo</DialogTitle>
-                </DialogHeader>
-                <div className="aspect-video">
-                  <iframe 
-                    width="100%" 
-                    height="100%" 
-                    src="https://www.youtube.com/embed/NnK-A7VQyVM" 
-                    title="Startup Spark Hub Demo" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              </DialogContent>
-            </Dialog>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <StatsCard icon={Rocket} title="500+" description="Startups Launched" />
+            <StatsCard icon={Users} title="10k+" description="Active Founders" />
+            <StatsCard icon={Trophy} title="$2M+" description="Funding Raised" />
           </div>
 
-          <form onSubmit={handleSubmit} className="p-8 space-y-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Company Name</label>
-              <Input
-                required
-                placeholder="Enter your company name"
-                value={formData.companyName}
-                onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Company Logo</label>
-              <div className="flex items-center gap-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-xl"
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-white text-lg font-medium">What's your big idea? 💡</label>
                 <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoUpload}
-                  className="hidden"
-                  id="logo-upload"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  placeholder="e.g., Uber for Pet Walking"
+                  className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+                  required
                 />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => document.getElementById("logo-upload")?.click()}
-                >
-                  <Upload className="mr-2" />
-                  Upload Logo
-                </Button>
-                {formData.logo && (
-                  <span className="text-sm text-green-600">Logo uploaded: {formData.logo.name}</span>
-                )}
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">About Your Company</label>
-              <Textarea
-                required
-                placeholder="Tell us about your company..."
-                value={formData.about}
-                onChange={(e) => setFormData({ ...formData, about: e.target.value })}
-                className="min-h-[100px]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">Project Details</label>
-              <Textarea
-                required
-                placeholder="Describe your project, goals, and current stage..."
-                value={formData.projectDetails}
-                onChange={(e) => setFormData({ ...formData, projectDetails: e.target.value })}
-                className="min-h-[150px]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700">I'm Looking For</label>
-              <div className="flex flex-wrap gap-3">
-                {[
-                  { icon: Building2, label: "VC Funding" },
-                  { icon: Users, label: "Co-Founder" },
-                  { icon: Briefcase, label: "Hiring" },
-                  { icon: Users, label: "Freelancers" }
-                ].map(({ icon: Icon, label }) => (
-                  <Button
-                    key={label}
-                    type="button"
-                    variant={formData.lookingFor.includes(label) ? "default" : "outline"}
-                    onClick={() => toggleLookingFor(label)}
-                    className="gap-2"
-                  >
-                    <Icon className="w-4 h-4" />
-                    {label}
-                  </Button>
-                ))}
+              <div className="space-y-2">
+                <label className="text-white text-lg font-medium">Tell us more about it ✨</label>
+                <Textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  placeholder="What problem does it solve? How does it work?"
+                  className="bg-white/20 border-white/10 text-white placeholder:text-white/60 min-h-[120px]"
+                  required
+                />
               </div>
-            </div>
 
-            <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-              Submit Your Idea
-            </Button>
-          </form>
-        </div>
+              <div className="space-y-2">
+                <label className="text-white text-lg font-medium">Target Market 🎯</label>
+                <Input
+                  name="market"
+                  value={formData.market}
+                  onChange={handleChange}
+                  placeholder="Who are your potential customers?"
+                  className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-white text-lg font-medium">Team Background 👥</label>
+                <Input
+                  name="team"
+                  value={formData.team}
+                  onChange={handleChange}
+                  placeholder="Tell us about your team's skills"
+                  className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-white text-lg font-medium">Contact Email 📧</label>
+                <Input
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                  className="bg-white/20 border-white/10 text-white placeholder:text-white/60"
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full bg-white text-purple-700 hover:bg-purple-100 font-semibold text-lg"
+              >
+                <Sparkles className="mr-2" />
+                Submit Your Idea
+              </Button>
+            </form>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
 };
+
+const StatsCard = ({ icon: Icon, title, description }: { icon: any; title: string; description: string }) => (
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center"
+  >
+    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/20 mb-4">
+      <Icon className="w-6 h-6 text-white" />
+    </div>
+    <h3 className="text-2xl font-bold text-white mb-1">{title}</h3>
+    <p className="text-purple-200">{description}</p>
+  </motion.div>
+);
 
 export default SubmitIdea;
