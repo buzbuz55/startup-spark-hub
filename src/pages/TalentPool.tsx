@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Briefcase, GraduationCap, Code } from "lucide-react";
+import { Link } from "react-router-dom";
+import Header from "@/components/Header";
 
 const TalentPool = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
+      <Header />
+      <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-white mb-4">Talent Pool</h1>
           <p className="text-xl text-gray-200">Find opportunities or hire talent for your startup</p>
@@ -25,21 +28,33 @@ const TalentPool = () => {
               <Briefcase className="w-12 h-12 text-purple-600 mb-4" />
               <h2 className="text-xl font-semibold mb-2">Full-time Positions</h2>
               <p className="text-gray-600 mb-4">Join innovative startups and make an impact</p>
-              <Button variant="outline" className="w-full">View Positions</Button>
+              <Link to="/submit-idea">
+                <Button variant="outline" className="w-full">
+                  View Positions
+                </Button>
+              </Link>
             </div>
 
             <div className="bg-gradient-to-br from-blue-100 to-white p-6 rounded-lg">
               <GraduationCap className="w-12 h-12 text-blue-600 mb-4" />
               <h2 className="text-xl font-semibold mb-2">Internships</h2>
               <p className="text-gray-600 mb-4">Gain valuable experience in startups</p>
-              <Button variant="outline" className="w-full">Find Internships</Button>
+              <Link to="/submit-idea">
+                <Button variant="outline" className="w-full">
+                  Find Internships
+                </Button>
+              </Link>
             </div>
 
             <div className="bg-gradient-to-br from-green-100 to-white p-6 rounded-lg">
               <Code className="w-12 h-12 text-green-600 mb-4" />
               <h2 className="text-xl font-semibold mb-2">Freelance Projects</h2>
               <p className="text-gray-600 mb-4">Work on exciting freelance opportunities</p>
-              <Button variant="outline" className="w-full">Browse Projects</Button>
+              <Link to="/submit-idea">
+                <Button variant="outline" className="w-full">
+                  Browse Projects
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
