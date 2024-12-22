@@ -49,26 +49,36 @@ const App = () => {
                   <div className="flex items-center justify-between h-full">
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-2">
-                      <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+                      <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent hover:opacity-90 transition-opacity">
                         StartupSparkHub
                       </span>
                     </Link>
 
                     {/* Right side items */}
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center gap-4">
                       <LanguageSelector />
-                      <Link to="/login">
-                        <Button variant="ghost" size="sm" className="gap-2">
-                          <LogIn className="h-4 w-4" />
-                          Login
-                        </Button>
-                      </Link>
-                      <Link to="/signup">
-                        <Button variant="default" size="sm" className="gap-2">
-                          <UserPlus className="h-4 w-4" />
-                          Sign Up
-                        </Button>
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        <Link to="/login">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="gap-2 hover:bg-primary/10"
+                          >
+                            <LogIn className="h-4 w-4" />
+                            <span className="hidden sm:inline">Login</span>
+                          </Button>
+                        </Link>
+                        <Link to="/signup">
+                          <Button 
+                            variant="default" 
+                            size="sm" 
+                            className="gap-2 shadow-sm hover:shadow-md transition-shadow"
+                          >
+                            <UserPlus className="h-4 w-4" />
+                            <span className="hidden sm:inline">Sign Up</span>
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
