@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Leaf, Wind, Droplet, Trees, Waves, Globe, Sun, Zap, Cloud, Rocket,
   Building, Car, Factory, Brain, Cpu, Plane, Battery, Fan, Truck,
-  Recycle, Container, Robot, Anchor, Car as CarIcon, Building2
+  Recycle, Container, Bot, Anchor, Car as CarIcon, Building2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
