@@ -20,6 +20,8 @@ const Message = ({ id, senderId, text, timestamp, status, onEdit }: MessageProps
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(text);
   const [poll, setPoll] = useState<any>(null);
+  const [pollVotes, setPollVotes] = useState<any[]>([]);
+  const [userVote, setUserVote] = useState<number | undefined>();
 
   useEffect(() => {
     const checkForPoll = async () => {
@@ -58,12 +60,49 @@ const Message = ({ id, senderId, text, timestamp, status, onEdit }: MessageProps
           setPoll(newPoll);
         } else {
           setPoll(existingPoll);
+          fetchPollVotes(existingPoll.id);
         }
       }
     };
 
     checkForPoll();
   }, [id, text]);
+
+  const fetchPollVotes = async (pollId: string) => {
+    const { data: votes } = await supabase
+      .from("poll_votes")
+      .select("*")
+      .eq("poll_id", pollId);
+
+    if (votes) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const userVoteRecord = votes.find(vote => vote.user_id === user.id);
+        if (userVoteRecord) {
+          setUserVote(userVoteRecord.option_index);
+        }
+      }
+
+      const voteCounts = votes.reduce((acc: any[], vote) => {
+        const existingVote = acc.find(v => v.option_index === vote.option_index);
+        if (existingVote) {
+          existingVote.count++;
+        } else {
+          acc.push({ option_index: vote.option_index, count: 1 });
+        }
+        return acc;
+      }, []);
+
+      setPollVotes(voteCounts);
+    }
+  };
+
+  const handleVote = async (optionIndex: number) => {
+    if (poll) {
+      setUserVote(optionIndex);
+      await fetchPollVotes(poll.id);
+    }
+  };
 
   const getStatusIcon = (status?: string) => {
     switch (status) {
@@ -138,10 +177,9 @@ const Message = ({ id, senderId, text, timestamp, status, onEdit }: MessageProps
                 pollId={poll.id}
                 question={poll.question}
                 options={JSON.parse(poll.options)}
-                votes={[]} // You'll need to implement vote tracking
-                onVote={(optionIndex) => {
-                  // Handle vote
-                }}
+                votes={pollVotes}
+                userVote={userVote}
+                onVote={handleVote}
               />
             ) : (
               <p className="text-sm whitespace-pre-wrap break-words">{text}</p>
