@@ -1,5 +1,5 @@
 export interface ProjectData {
-  id: number;
+  id: string;
   name: string;
   category: string;
   description: string;

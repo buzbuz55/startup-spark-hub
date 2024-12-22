@@ -2,7 +2,7 @@ import { ProjectData } from "@/types/project";
 
 export const urbanProjects: ProjectData[] = [
   {
-    id: 15,
+    id: "15",
     name: "EcoSphere Cities 🌆",
     category: "Smart Cities",
     description: "Building carbon-neutral megacities with integrated smart grids, vertical farms, and AI-managed sustainable buildings. Creating the blueprint for future urban living.",
@@ -13,7 +13,7 @@ export const urbanProjects: ProjectData[] = [
     iconName: "Building"
   },
   {
-    id: 25,
+    id: "25",
     name: "Smart Urban GreenTech 🌱",
     category: "Urban Innovation",
     description: "Implementing vertical forests and AI-managed green spaces in cities. Pioneering microbial carbon capture roads and intelligent traffic systems.",
