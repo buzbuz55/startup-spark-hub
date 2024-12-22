@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      chat_groups: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           contact_id: string
@@ -29,6 +62,41 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      group_members: {
+        Row: {
+          group_id: string
+          id: string
+          is_admin: boolean | null
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          is_admin?: boolean | null
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          is_admin?: boolean | null
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "chat_groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       meetings: {
         Row: {
@@ -67,31 +135,61 @@ export type Database = {
         Row: {
           content: string
           created_at: string | null
+          edited_at: string | null
+          group_id: string | null
           id: string
+          message_type: string | null
+          metadata: Json | null
           read_at: string | null
           receiver_id: string
+          reply_to: string | null
           sender_id: string
           status: string | null
         }
         Insert: {
           content: string
           created_at?: string | null
+          edited_at?: string | null
+          group_id?: string | null
           id?: string
+          message_type?: string | null
+          metadata?: Json | null
           read_at?: string | null
           receiver_id: string
+          reply_to?: string | null
           sender_id: string
           status?: string | null
         }
         Update: {
           content?: string
           created_at?: string | null
+          edited_at?: string | null
+          group_id?: string | null
           id?: string
+          message_type?: string | null
+          metadata?: Json | null
           read_at?: string | null
           receiver_id?: string
+          reply_to?: string | null
           sender_id?: string
           status?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "chat_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_reply_to_fkey"
+            columns: ["reply_to"]
+            isOneToOne: false
+            referencedRelation: "messages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       New: {
         Row: {

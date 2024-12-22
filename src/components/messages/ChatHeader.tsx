@@ -8,17 +8,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import GroupChatHeader from "./GroupChatHeader";
 
 interface ChatHeaderProps {
-  contact: {
+  contact?: {
     name: string;
     role: string;
     avatar: string;
-  } | undefined;
+  };
+  group?: {
+    id: string;
+    name: string;
+    description?: string;
+    avatar?: string;
+    members: Array<{
+      id: string;
+      name: string;
+      avatar: string;
+      role: string;
+      isAdmin: boolean;
+    }>;
+  };
   onStartVideoCall: () => void;
+  onLeaveGroup?: () => void;
+  onAddMember?: () => void;
 }
 
-const ChatHeader = ({ contact, onStartVideoCall }: ChatHeaderProps) => {
+const ChatHeader = ({ contact, group, onStartVideoCall, onLeaveGroup, onAddMember }: ChatHeaderProps) => {
+  if (group) {
+    return (
+      <GroupChatHeader
+        group={group}
+        onStartVideoCall={onStartVideoCall}
+        onLeaveGroup={onLeaveGroup!}
+        onAddMember={onAddMember!}
+      />
+    );
+  }
+
   if (!contact) return null;
 
   return (

@@ -8,21 +8,25 @@ import ContactsList from "@/components/messages/ContactsList";
 import ChatHeader from "@/components/messages/ChatHeader";
 import ChatInput from "@/components/messages/ChatInput";
 import MessageList from "@/components/messages/MessageList";
-import type { Message, MessageStatus } from "@/types/messages";
 import { useMessaging } from "@/hooks/use-messaging";
+import { useChatRealtime } from "@/hooks/use-chat-realtime";
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
   const projectId = searchParams.get("project");
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [message, setMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   const [videoSession, setVideoSession] = useState<{
     roomId: string;
     userId: string;
   } | null>(null);
+  const [currentGroup, setCurrentGroup] = useState<any>(null);
 
   const { messages, updateMessage } = useMessaging(selectedChat);
+  const { isTyping, onlineUsers, sendTypingIndicator } = useChatRealtime(
+    selectedChat,
+    !!currentGroup
+  );
 
   useEffect(() => {
     if (projectId) {
@@ -30,21 +34,6 @@ const Messages = () => {
       toast.info("You can now discuss project details with the team!");
     }
   }, [projectId]);
-
-  useEffect(() => {
-    if (!selectedChat) return;
-
-    const channel = supabase.channel(`typing:${selectedChat}`)
-      .on('broadcast', { event: 'typing' }, ({ payload }) => {
-        setIsTyping(true);
-        setTimeout(() => setIsTyping(false), 3000);
-      })
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [selectedChat]);
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
@@ -59,12 +48,17 @@ const Messages = () => {
         return;
       }
 
-      const { error } = await supabase.from("messages").insert({
+      const messageData = {
         sender_id: user.id,
-        receiver_id: selectedChat,
         content: message,
         status: "sent",
-      });
+        ...(currentGroup 
+          ? { group_id: currentGroup.id }
+          : { receiver_id: selectedChat }
+        ),
+      };
+
+      const { error } = await supabase.from("messages").insert(messageData);
 
       if (error) throw error;
 
@@ -76,22 +70,29 @@ const Messages = () => {
     }
   };
 
-  const handleTyping = async () => {
-    if (!selectedChat) return;
+  const handleLeaveGroup = async () => {
+    if (!currentGroup) return;
 
     try {
-      await supabase.channel(`typing:${selectedChat}`).send({
-        type: 'broadcast',
-        event: 'typing',
-        payload: { typing: true },
-      });
+      const { error } = await supabase
+        .from("group_members")
+        .delete()
+        .match({ group_id: currentGroup.id, user_id: (await supabase.auth.getUser()).data.user?.id });
+
+      if (error) throw error;
+
+      setCurrentGroup(null);
+      setSelectedChat(null);
+      toast.success("Left group successfully");
     } catch (error) {
-      console.error("Error sending typing indicator:", error);
+      console.error("Error leaving group:", error);
+      toast.error("Failed to leave group");
     }
   };
 
-  const handleEditMessage = async (id: string, newText: string) => {
-    await updateMessage(id, newText);
+  const handleAddMember = async () => {
+    // This would typically open a dialog to select users
+    toast.info("Add member functionality coming soon!");
   };
 
   const startVideoCall = async () => {
@@ -116,11 +117,7 @@ const Messages = () => {
         room_id: roomId,
       });
 
-      if (error) {
-        console.error("Error creating video session:", error);
-        toast.error("Failed to start video call");
-        return;
-      }
+      if (error) throw error;
 
       setVideoSession({ roomId, userId: user.id });
       toast.success("Video call started!");
@@ -136,8 +133,7 @@ const Messages = () => {
         id: "d7bed21c-5a38-4c44-87f5-7b8f3f3c2421",
         name: "Sarah Chen",
         role: "Software Engineer",
-        avatar:
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
       },
       {
         id: "e9be0901-6a77-4b55-9644-3a25b56a90c9",
@@ -163,6 +159,7 @@ const Messages = () => {
           <ContactsList
             selectedChat={selectedChat}
             onSelectChat={setSelectedChat}
+            onGroupSelect={setCurrentGroup}
           />
 
           <div className="md:col-span-2 bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg flex flex-col">
@@ -170,17 +167,22 @@ const Messages = () => {
               <>
                 <ChatHeader
                   contact={getSelectedContact()}
+                  group={currentGroup}
                   onStartVideoCall={startVideoCall}
+                  onLeaveGroup={handleLeaveGroup}
+                  onAddMember={handleAddMember}
                 />
                 <MessageList
                   messages={messages}
-                  onEditMessage={handleEditMessage}
+                  onEditMessage={updateMessage}
+                  onlineUsers={onlineUsers}
                 />
                 <ChatInput
                   message={message}
                   setMessage={setMessage}
                   onSendMessage={handleSendMessage}
                   isTyping={isTyping}
+                  onTyping={sendTypingIndicator}
                 />
               </>
             ) : (
