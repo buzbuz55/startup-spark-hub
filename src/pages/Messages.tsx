@@ -9,6 +9,7 @@ import ChatHeader from "@/components/messages/ChatHeader";
 import ChatInput from "@/components/messages/ChatInput";
 import MessageList from "@/components/messages/MessageList";
 import type { Message, MessageStatus } from "@/types/messages";
+import { useMessaging } from "@/hooks/use-messaging";
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
@@ -20,6 +21,8 @@ const Messages = () => {
     roomId: string;
     userId: string;
   } | null>(null);
+
+  const { messages, updateMessage } = useMessaging(selectedChat);
 
   useEffect(() => {
     if (projectId) {
@@ -42,30 +45,6 @@ const Messages = () => {
       supabase.removeChannel(channel);
     };
   }, [selectedChat]);
-
-  const messages: Message[] = [
-    {
-      id: "1",
-      senderId: "1",
-      text: "Hey, I saw your startup idea! 👋",
-      timestamp: "10:30 AM",
-      status: "read" as MessageStatus,
-    },
-    {
-      id: "2",
-      senderId: "current-user",
-      text: "Thanks! Would you like to know more? 😊",
-      timestamp: "10:32 AM",
-      status: "delivered" as MessageStatus,
-    },
-    {
-      id: "3",
-      senderId: "1",
-      text: "Absolutely! I think we could work together. 🚀",
-      timestamp: "10:35 AM",
-      status: "sent" as MessageStatus,
-    },
-  ];
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
@@ -109,6 +88,10 @@ const Messages = () => {
     } catch (error) {
       console.error("Error sending typing indicator:", error);
     }
+  };
+
+  const handleEditMessage = async (id: string, newText: string) => {
+    await updateMessage(id, newText);
   };
 
   const startVideoCall = async () => {
@@ -189,7 +172,10 @@ const Messages = () => {
                   contact={getSelectedContact()}
                   onStartVideoCall={startVideoCall}
                 />
-                <MessageList messages={messages} />
+                <MessageList
+                  messages={messages}
+                  onEditMessage={handleEditMessage}
+                />
                 <ChatInput
                   message={message}
                   setMessage={setMessage}
