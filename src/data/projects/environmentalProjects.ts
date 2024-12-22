@@ -2,7 +2,7 @@ import { ProjectData } from "@/types/project";
 
 export const environmentalProjects: ProjectData[] = [
   {
-    id: 3,
+    id: "3",
     name: "AquaPure 💧",
     category: "Clean Water",
     description: "Innovative water filtration technology inspired by mangrove roots. Our systems bring clean water to developing nations using nature's time-tested filtration methods.",
@@ -13,7 +13,7 @@ export const environmentalProjects: ProjectData[] = [
     iconName: "Droplet"
   },
   {
-    id: 4,
+    id: "4",
     name: "ForestGuard 🌳",
     category: "Save the Trees",
     description: "Drone-based reforestation and forest monitoring system using AI to identify optimal planting locations and track forest health in real-time.",
