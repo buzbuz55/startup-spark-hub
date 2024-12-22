@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import SubmitIdea from "./pages/SubmitIdea";
 import TalentPool from "./pages/TalentPool";
 import VCDashboard from "./pages/VCDashboard";
+import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/submit-idea" element={<SubmitIdea />} />
           <Route path="/talent-pool" element={<TalentPool />} />
           <Route path="/vc-dashboard" element={<VCDashboard />} />
+          <Route path="/messages" element={<Messages />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

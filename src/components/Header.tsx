@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { UserCircle, LogIn, UserPlus } from "lucide-react";
+import { UserCircle, LogIn, UserPlus, MessageSquare } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,6 +34,12 @@ const Header = () => {
             </Link>
             <Link to="/vc-dashboard">
               <Button variant="ghost">VC Dashboard 📊</Button>
+            </Link>
+            <Link to="/messages">
+              <Button variant="ghost">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Messages
+              </Button>
             </Link>
 
             {isLoggedIn ? (
