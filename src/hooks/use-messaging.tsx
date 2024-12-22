@@ -14,11 +14,14 @@ export const useMessaging = (chatId: string | null) => {
         const { data, error } = await supabase
           .from("messages")
           .select("*")
-          .or(`sender_id.eq.${chatId},receiver_id.eq.${chatId}`)
+          .or(
+            `sender_id.eq.${chatId},receiver_id.eq.${chatId}`
+          )
           .order("created_at", { ascending: true });
 
         if (error) {
           console.error("Error fetching messages:", error);
+          toast.error("Failed to fetch messages");
           return;
         }
 
@@ -50,6 +53,7 @@ export const useMessaging = (chatId: string | null) => {
           event: "*",
           schema: "public",
           table: "messages",
+          filter: `sender_id=eq.${chatId},receiver_id=eq.${chatId}`,
         },
         (payload) => {
           fetchMessages(); // Refresh messages when changes occur
