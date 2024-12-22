@@ -124,6 +124,71 @@ const interns = [
       "Black belt in karate 🥋",
       "Built a security lab at home 💻"
     ]
+  },
+  {
+    name: "Maya Patel",
+    role: "Growth Marketing Intern",
+    about: "Data-driven marketer with a passion for growth hacking and user acquisition. Love experimenting with new channels! 📈",
+    skills: ["Growth Marketing", "Analytics", "Content Strategy", "SEO", "Social Media"],
+    hobbies: ["Digital Art", "Podcasting", "Running", "Travel Photography"],
+    avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    funFacts: [
+      "Built a 100K+ following on TikTok 📱",
+      "Completed a marathon 🏃‍♀️",
+      "Digital nomad for 2 years 🌎"
+    ]
+  },
+  {
+    name: "Lucas Thompson",
+    role: "DevOps Engineer Intern",
+    about: "Infrastructure enthusiast focused on automation and scalability. Building the future of cloud computing! ☁️",
+    skills: ["AWS", "Terraform", "Docker", "Kubernetes", "CI/CD"],
+    hobbies: ["Cloud Architecture", "Open Source", "Gaming", "Hiking"],
+    avatar: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
+    funFacts: [
+      "Contributed to major open source projects 💻",
+      "Built a home lab server rack 🖥️",
+      "Certified in 5 cloud platforms ☁️"
+    ]
+  },
+  {
+    name: "Isabella Rodriguez",
+    role: "Product Design Intern",
+    about: "Creative designer with a focus on user-centered design and accessibility. Making the web beautiful for everyone! 🎨",
+    skills: ["UI/UX Design", "Figma", "User Research", "Prototyping", "Design Systems"],
+    hobbies: ["Digital Illustration", "Photography", "Ceramics", "Yoga"],
+    avatar: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952",
+    funFacts: [
+      "Won a national design competition 🏆",
+      "Created a popular design YouTube channel 🎥",
+      "Teaches design workshops 👩‍🏫"
+    ]
+  },
+  {
+    name: "David Kim",
+    role: "Blockchain Developer Intern",
+    about: "Web3 enthusiast developing decentralized applications. Building the future of finance! 🌐",
+    skills: ["Solidity", "Smart Contracts", "Web3.js", "DeFi", "React"],
+    hobbies: ["Cryptocurrency Trading", "Blockchain Research", "Chess", "Music Production"],
+    avatar: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+    funFacts: [
+      "Created a successful NFT collection 🎨",
+      "Speaks at crypto conferences 🎤",
+      "Built a DeFi protocol 💰"
+    ]
+  },
+  {
+    name: "Emma Wilson",
+    role: "Data Science Intern",
+    about: "AI researcher passionate about machine learning and neural networks. Solving real-world problems with data! 🤖",
+    skills: ["Python", "TensorFlow", "Deep Learning", "NLP", "Computer Vision"],
+    hobbies: ["AI Research", "Robotics", "Piano", "Science Fiction"],
+    avatar: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+    funFacts: [
+      "Published an AI research paper 📑",
+      "Built an autonomous robot 🤖",
+      "Won a Kaggle competition 🏆"
+    ]
   }
 ];
 

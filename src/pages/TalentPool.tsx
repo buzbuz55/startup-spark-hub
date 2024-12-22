@@ -50,7 +50,7 @@ const TalentPool = () => {
               <Briefcase className="w-12 h-12 text-purple-600 mb-4" />
               <h2 className="text-xl font-semibold mb-2">Full-time Positions</h2>
               <p className="text-gray-600 mb-4">Join innovative startups and make an impact</p>
-              <Link to="/submit-idea">
+              <Link to="/vc-dashboard">
                 <Button variant="outline" className="w-full">
                   View Positions
                 </Button>
@@ -72,7 +72,7 @@ const TalentPool = () => {
               <Code className="w-12 h-12 text-green-600 mb-4" />
               <h2 className="text-xl font-semibold mb-2">Freelance Projects</h2>
               <p className="text-gray-600 mb-4">Work on exciting freelance opportunities</p>
-              <Link to="/submit-idea">
+              <Link to="/messages">
                 <Button variant="outline" className="w-full">
                   Browse Projects
                 </Button>
