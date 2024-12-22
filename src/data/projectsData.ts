@@ -1,70 +1,12 @@
 import { ProjectData } from "@/types/project";
+import { energyProjects } from "./projects/energyProjects";
+import { environmentalProjects } from "./projects/environmentalProjects";
+import { urbanProjects } from "./projects/urbanProjects";
+
+export type { ProjectData };
 
 export const projectsData: ProjectData[] = [
-  {
-    id: "123e4567-e89b-12d3-a456-426614174001",
-    name: "Ocean Cleanup Initiative",
-    category: "Environmental",
-    description: "Developing autonomous systems to clean ocean plastic",
-    seeking: ["Engineers", "Marine Biologists", "Project Managers"],
-    funding: "$2.5M Secured",
-    impact: "Reducing ocean plastic pollution by 30% in target areas",
-    image: "https://images.unsplash.com/photo-1621451537084-482c73073a0f",
-    iconName: "Waves"
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174002",
-    name: "Sustainable Agriculture Tech",
-    category: "Agriculture",
-    description: "Smart farming solutions for sustainable agriculture",
-    seeking: ["Software Developers", "Agricultural Scientists", "IoT Specialists"],
-    funding: "$1.8M Seed Round",
-    impact: "20% increase in crop yield with 40% less water usage",
-    image: "https://images.unsplash.com/photo-1472289065668-ce650ac443d2",
-    iconName: "Sprout"
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174003",
-    name: "Renewable Energy Solutions",
-    category: "Energy",
-    description: "Innovative technologies for harnessing renewable energy",
-    seeking: ["Energy Analysts", "Engineers", "Project Coordinators"],
-    funding: "$3M Series A",
-    impact: "Increasing renewable energy usage by 50% in local communities",
-    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276",
-    iconName: "Sun"
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174004",
-    name: "Wildlife Conservation Program",
-    category: "Conservation",
-    description: "Protecting endangered species through habitat restoration",
-    seeking: ["Conservationists", "Ecologists", "Volunteers"],
-    funding: "$1M Grant",
-    impact: "Restoring habitats for over 10 endangered species",
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23",
-    iconName: "Tree"
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174005",
-    name: "Urban Green Spaces Initiative",
-    category: "Urban Development",
-    description: "Creating green spaces in urban areas for community well-being",
-    seeking: ["Urban Planners", "Landscape Architects", "Community Organizers"],
-    funding: "$500K Fundraising",
-    impact: "Increasing green space accessibility by 40% in cities",
-    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233",
-    iconName: "Plant"
-  },
-  {
-    id: "123e4567-e89b-12d3-a456-426614174006",
-    name: "Clean Water Access Project",
-    category: "Water",
-    description: "Providing clean water solutions to underserved communities",
-    seeking: ["Water Engineers", "Health Workers", "NGO Partners"],
-    funding: "$2M Partnership",
-    impact: "Ensuring clean water access for 100,000 people",
-    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e",
-    iconName: "Water"
-  },
+  ...energyProjects,
+  ...environmentalProjects,
+  ...urbanProjects,
 ];
