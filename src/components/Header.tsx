@@ -1,16 +1,22 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Video, Menu, Calendar } from "lucide-react";
+import { MessageSquare, Video, Menu, ChevronDown } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import UserProfileMenu from "./header/UserProfileMenu";
 import MobileMenu from "./header/MobileMenu";
-import ScheduleMeeting from "./meetings/ScheduleMeeting";
 import VideoChat from "./video/VideoChat";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
@@ -50,33 +56,45 @@ const Header = () => {
           </Link>
           
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/talent-pool">
-              <Button variant="ghost" size="sm">Talent Pool</Button>
-            </Link>
-            <Link to="/projects">
-              <Button variant="ghost" size="sm">Projects</Button>
-            </Link>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Discover</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-2 p-4 w-[200px]">
+                      <Link to="/talent-pool" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        Talent Pool
+                      </Link>
+                      <Link to="/projects" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        Projects
+                      </Link>
+                      <Link to="/blog" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        Blog
+                      </Link>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-2 p-4 w-[200px]">
+                      <Link to="/about" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        About Us
+                      </Link>
+                      <Link to="/faq" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        FAQ
+                      </Link>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
           <nav className="flex items-center gap-2 md:gap-4">
             {!isMobile && (
               <>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="hidden md:flex relative group"
-                  onClick={() => {
-                    const scheduleMeetingModal = document.getElementById('schedule-meeting-modal');
-                    if (scheduleMeetingModal) {
-                      (scheduleMeetingModal as any).showModal();
-                    }
-                  }}
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
-                    Schedule Meeting
-                  </span>
-                </Button>
                 <Button 
                   variant="ghost" 
                   size="icon"
@@ -125,8 +143,6 @@ const Header = () => {
           </nav>
         </div>
       </div>
-
-      <ScheduleMeeting />
 
       {isVideoModalOpen && (
         <VideoChat
