@@ -9,7 +9,7 @@ export const projectsData: ProjectData[] = [
     seeking: ["Engineers", "Marine Biologists", "Project Managers"],
     funding: "$2.5M Secured",
     impact: "Reducing ocean plastic pollution by 30% in target areas",
-    image: "/projects/ocean-cleanup.jpg",
+    image: "https://images.unsplash.com/photo-1621451537084-482c73073a0f",
     iconName: "Waves"
   },
   {
@@ -20,7 +20,7 @@ export const projectsData: ProjectData[] = [
     seeking: ["Software Developers", "Agricultural Scientists", "IoT Specialists"],
     funding: "$1.8M Seed Round",
     impact: "20% increase in crop yield with 40% less water usage",
-    image: "/projects/smart-farm.jpg",
+    image: "https://images.unsplash.com/photo-1472289065668-ce650ac443d2",
     iconName: "Sprout"
   },
   {
@@ -31,7 +31,7 @@ export const projectsData: ProjectData[] = [
     seeking: ["Energy Analysts", "Engineers", "Project Coordinators"],
     funding: "$3M Series A",
     impact: "Increasing renewable energy usage by 50% in local communities",
-    image: "/projects/renewable-energy.jpg",
+    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276",
     iconName: "Sun"
   },
   {
@@ -42,7 +42,7 @@ export const projectsData: ProjectData[] = [
     seeking: ["Conservationists", "Ecologists", "Volunteers"],
     funding: "$1M Grant",
     impact: "Restoring habitats for over 10 endangered species",
-    image: "/projects/wildlife-conservation.jpg",
+    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23",
     iconName: "Tree"
   },
   {
@@ -53,7 +53,7 @@ export const projectsData: ProjectData[] = [
     seeking: ["Urban Planners", "Landscape Architects", "Community Organizers"],
     funding: "$500K Fundraising",
     impact: "Increasing green space accessibility by 40% in cities",
-    image: "/projects/urban-green-spaces.jpg",
+    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233",
     iconName: "Plant"
   },
   {
@@ -64,7 +64,7 @@ export const projectsData: ProjectData[] = [
     seeking: ["Water Engineers", "Health Workers", "NGO Partners"],
     funding: "$2M Partnership",
     impact: "Ensuring clean water access for 100,000 people",
-    image: "/projects/clean-water.jpg",
+    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e",
     iconName: "Water"
   },
 ];
