@@ -11,7 +11,7 @@ const FAQ = () => {
       <main className="container mx-auto px-4 py-24 animate-fade-in">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <HelpCircle className="w-16 h-16 mx-auto text-purple-600 mb-6" />
+            {/* Removed HelpCircle logo */}
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text">
               Frequently Asked Questions
             </h1>
@@ -86,7 +86,7 @@ const FAQ = () => {
               href="/submit-idea" 
               className="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
             >
-              Start Your Journey
+              Start Your Journey!
               <HelpCircle className="w-5 h-5" />
             </a>
           </div>
