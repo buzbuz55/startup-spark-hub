@@ -1,7 +1,8 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { PortfolioCompany } from '../types';
 
 interface InvestmentTimelineProps {
-  data: any[];
+  data: PortfolioCompany[];
 }
 
 const InvestmentTimeline = ({ data }: InvestmentTimelineProps) => {

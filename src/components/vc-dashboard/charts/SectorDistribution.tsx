@@ -1,9 +1,10 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { ChartDataPoint } from '../types';
 
 const COLORS = ['#8B5CF6', '#EC4899', '#3B82F6', '#10B981', '#F59E0B'];
 
 interface SectorDistributionProps {
-  data: Array<{ name: string; value: number }>;
+  data: ChartDataPoint[];
 }
 
 const SectorDistribution = ({ data }: SectorDistributionProps) => {

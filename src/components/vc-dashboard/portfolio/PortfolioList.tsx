@@ -1,13 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
-
-interface PortfolioCompany {
-  id: string;
-  company_name: string;
-  sector: string;
-  investment_amount: number;
-  equity_percentage: number;
-  status: 'up' | 'down';
-}
+import { PortfolioCompany } from "../types";
 
 interface PortfolioListProps {
   companies: PortfolioCompany[];

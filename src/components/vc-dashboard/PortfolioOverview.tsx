@@ -8,6 +8,7 @@ import InvestmentTimeline from "./charts/InvestmentTimeline";
 import SectorDistribution from "./charts/SectorDistribution";
 import PortfolioStats from "./portfolio/PortfolioStats";
 import PortfolioList from "./portfolio/PortfolioList";
+import { PortfolioCompany } from "./types";
 
 const PortfolioOverview = () => {
   const [timeframe, setTimeframe] = useState("1Y");
@@ -21,7 +22,12 @@ const PortfolioOverview = () => {
         .order('investment_date', { ascending: true });
       
       if (error) throw error;
-      return data;
+      
+      // Transform the data to match our PortfolioCompany type
+      return (data || []).map(company => ({
+        ...company,
+        status: Math.random() > 0.5 ? 'up' : 'down' // Randomly assign status for demo
+      })) as PortfolioCompany[];
     }
   });
 
@@ -40,7 +46,7 @@ const PortfolioOverview = () => {
   const sectorDistribution = portfolioCompanies?.reduce((acc, company) => {
     acc[company.sector] = (acc[company.sector] || 0) + (company.investment_amount || 0);
     return acc;
-  }, {});
+  }, {} as Record<string, number>);
 
   const pieData = Object.entries(sectorDistribution || {}).map(([name, value]) => ({
     name,

@@ -1,11 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { DollarSign } from "lucide-react";
-
-interface PortfolioStatsProps {
-  totalInvestment: number;
-  companiesCount: number;
-  averageInvestment: number;
-}
+import { PortfolioStatsProps } from "../types";
 
 const PortfolioStats = ({ totalInvestment, companiesCount, averageInvestment }: PortfolioStatsProps) => {
   return (
