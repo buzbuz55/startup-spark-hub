@@ -9,7 +9,6 @@ import StartupIdeas from "@/components/talent/StartupIdeas";
 import JobPostingForm from "@/components/talent/JobPostingForm";
 import CandidateForm from "@/components/talent/CandidateForm";
 import ChatBot from "@/components/talent/ChatBot";
-import StudentMarketplace from "@/components/talent/StudentMarketplace";
 
 const TalentPool = () => {
   const [companyFormData, setCompanyFormData] = useState({
@@ -26,7 +25,7 @@ const TalentPool = () => {
     portfolio: "",
     expectedSalary: "",
     resume: null as File | null,
-    githubUrl: "" // Added githubUrl property
+    githubUrl: ""
   });
 
   return (
@@ -84,11 +83,6 @@ const TalentPool = () => {
         </div>
 
         <div className="space-y-12 mt-12">
-          <section>
-            <h2 className="text-3xl font-bold text-white mb-6">Student Marketplace</h2>
-            <StudentMarketplace />
-          </section>
-
           <section>
             <h2 className="text-3xl font-bold text-white mb-6">Featured Interns</h2>
             <InternGrid />
