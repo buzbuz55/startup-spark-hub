@@ -65,9 +65,6 @@ const Header = () => {
                       <Link to="/projects" className="block px-4 py-2 hover:bg-accent rounded-md">
                         Projects
                       </Link>
-                      <Link to="/blog" className="block px-4 py-2 hover:bg-accent rounded-md">
-                        Blog
-                      </Link>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -76,6 +73,9 @@ const Header = () => {
                   <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid gap-2 p-4 w-[200px]">
+                      <Link to="/blog" className="block px-4 py-2 hover:bg-accent rounded-md">
+                        Blog
+                      </Link>
                       <Link to="/about" className="block px-4 py-2 hover:bg-accent rounded-md">
                         About Us
                       </Link>
