@@ -22,15 +22,13 @@ const StartupOpportunities = () => {
         .select(`
           *,
           startup_votes (
-            vote_type
+            vote_type,
+            user_id
           )
         `);
 
       if (sortBy === "recent") {
         query = query.order('created_at', { ascending: false });
-      } else {
-        // For popular sorting, we'll need to count votes
-        query = query.order('created_at', { ascending: false }); // Temporary fallback
       }
 
       const { data, error } = await query;
@@ -41,7 +39,8 @@ const StartupOpportunities = () => {
       const startupsWithVotes = data.map(startup => ({
         ...startup,
         voteCount: startup.startup_votes?.reduce((acc, vote) => 
-          acc + (vote.vote_type === 'up' ? 1 : -1), 0) || 0
+          acc + (vote.vote_type === 'up' ? 1 : -1), 0) || 0,
+        userVote: startup.startup_votes?.find(vote => vote.user_id === supabase.auth.user()?.id)?.vote_type
       }));
 
       // Sort by votes if needed
@@ -81,6 +80,7 @@ const StartupOpportunities = () => {
             .delete()
             .eq('startup_id', startupId)
             .eq('user_id', user.id);
+          toast.success("Vote removed");
         } else {
           // Update vote if changing vote type
           await supabase
@@ -88,6 +88,7 @@ const StartupOpportunities = () => {
             .update({ vote_type: voteType })
             .eq('startup_id', startupId)
             .eq('user_id', user.id);
+          toast.success("Vote updated");
         }
       } else {
         // Insert new vote
@@ -98,15 +99,30 @@ const StartupOpportunities = () => {
             user_id: user.id,
             vote_type: voteType
           });
+        toast.success("Vote recorded");
       }
 
       fetchStartups(); // Refresh the list
-      toast.success("Vote recorded successfully");
     } catch (error) {
       console.error('Error voting:', error);
       toast.error("Failed to record vote");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="container mx-auto px-4 py-24">
+          <div className="animate-pulse space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-48 bg-gray-200 rounded-lg" />
+            ))}
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -145,17 +161,19 @@ const StartupOpportunities = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
-                      variant="ghost"
+                      variant={startup.userVote === 'up' ? "default" : "ghost"}
                       size="sm"
                       onClick={() => handleVote(startup.id, 'up')}
+                      className="relative"
                     >
                       <ThumbsUp className="w-4 h-4" />
                     </Button>
                     <span className="font-semibold">{startup.voteCount}</span>
                     <Button
-                      variant="ghost"
+                      variant={startup.userVote === 'down' ? "default" : "ghost"}
                       size="sm"
                       onClick={() => handleVote(startup.id, 'down')}
+                      className="relative"
                     >
                       <ThumbsDown className="w-4 h-4" />
                     </Button>
@@ -163,14 +181,16 @@ const StartupOpportunities = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">{startup.description}</p>
-                <div className="mt-4">
-                  <p className="text-sm font-semibold">Market:</p>
-                  <p className="text-sm text-gray-600">{startup.market}</p>
-                </div>
-                <div className="mt-2">
-                  <p className="text-sm font-semibold">Team:</p>
-                  <p className="text-sm text-gray-600">{startup.team}</p>
+                <p className="text-gray-600 mb-4">{startup.description}</p>
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-sm font-semibold">Market:</p>
+                    <p className="text-sm text-gray-600">{startup.market}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">Team:</p>
+                    <p className="text-sm text-gray-600">{startup.team}</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
