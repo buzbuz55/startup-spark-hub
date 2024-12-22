@@ -14,7 +14,12 @@ const ProfileSettings = () => {
     full_name: "",
     email: "",
     phone_number: "",
-    avatar_url: ""
+    avatar_url: "",
+    linkedin_url: "",
+    twitter_url: "",
+    website_url: "",
+    hobbies: [] as string[],
+    bio: ""
   });
 
   useEffect(() => {
@@ -37,7 +42,12 @@ const ProfileSettings = () => {
           full_name: data.full_name || "",
           email: data.email || "",
           phone_number: data.phone_number || "",
-          avatar_url: data.avatar_url || ""
+          avatar_url: data.avatar_url || "",
+          linkedin_url: data.linkedin_url || "",
+          twitter_url: data.twitter_url || "",
+          website_url: data.website_url || "",
+          hobbies: data.hobbies || [],
+          bio: data.bio || ""
         });
       }
     } catch (error) {
@@ -46,7 +56,15 @@ const ProfileSettings = () => {
     }
   };
 
-  const handleProfileUpdate = async (values: { full_name: string; phone_number: string }) => {
+  const handleProfileUpdate = async (values: {
+    full_name: string;
+    phone_number: string;
+    linkedin_url: string | null;
+    twitter_url: string | null;
+    website_url: string | null;
+    hobbies: string[];
+    bio: string | null;
+  }) => {
     setLoading(true);
 
     try {
@@ -59,6 +77,11 @@ const ProfileSettings = () => {
         .update({
           full_name: values.full_name,
           phone_number: values.phone_number,
+          linkedin_url: values.linkedin_url,
+          twitter_url: values.twitter_url,
+          website_url: values.website_url,
+          hobbies: values.hobbies,
+          bio: values.bio,
         })
         .eq('id', user.id);
 
@@ -68,6 +91,11 @@ const ProfileSettings = () => {
         ...prev,
         full_name: values.full_name,
         phone_number: values.phone_number,
+        linkedin_url: values.linkedin_url || "",
+        twitter_url: values.twitter_url || "",
+        website_url: values.website_url || "",
+        hobbies: values.hobbies,
+        bio: values.bio || "",
       }));
       
       toast.success("Profile updated successfully");
@@ -79,8 +107,8 @@ const ProfileSettings = () => {
     }
   };
 
-  const handleAvatarUpdate = (url: string) => {
-    setProfile(prev => ({ ...prev, avatar_url: url }));
+  const handleAvatarUpdate = (url: string | null) => {
+    setProfile(prev => ({ ...prev, avatar_url: url || "" }));
   };
 
   return (
