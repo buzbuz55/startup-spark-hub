@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { UserCircle, LogIn, UserPlus, MessageSquare, User, FileText, ArrowUpRight } from "lucide-react";
+import { useTheme } from "@/hooks/use-theme";
+import { motion } from "framer-motion";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
-  // TODO: Replace with actual auth state
+  const { theme, toggleTheme } = useTheme();
   const isLoggedIn = false;
   const userProfile = {
     name: "John Doe",
@@ -26,11 +28,11 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="text-xl font-bold text-purple-600">
-            Startup Nation ✨
+          <Link to="/" className="text-xl font-bold text-primary">
+            Startup Spark Hub ✨
           </Link>
           
           <NavigationMenu>
@@ -89,6 +91,27 @@ const Header = () => {
           </NavigationMenu>
 
           <nav className="flex items-center gap-4">
+            <motion.button
+              className="relative w-14 h-8 rounded-full bg-secondary p-1 shadow-inner"
+              onClick={toggleTheme}
+              animate={{
+                backgroundColor: theme === 'dark' ? '#1a1f2c' : '#f1f1f1'
+              }}
+            >
+              <motion.div
+                className="w-6 h-6 rounded-full bg-primary shadow-md"
+                animate={{
+                  x: theme === 'dark' ? 24 : 0,
+                  rotate: theme === 'dark' ? 45 : 0
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 15
+                }}
+              />
+            </motion.button>
+
             <Link to="/messages">
               <Button variant="ghost" size="icon">
                 <MessageSquare className="w-4 h-4" />
