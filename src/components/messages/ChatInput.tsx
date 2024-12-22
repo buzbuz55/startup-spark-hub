@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, Paperclip, Smile } from "lucide-react";
+import { Send, Smile } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -10,6 +10,7 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { useState } from "react";
 import MessageActions from "./MessageActions";
+import { toast } from "sonner";
 
 interface ChatInputProps {
   message: string;
@@ -26,9 +27,49 @@ const ChatInput = ({ message, setMessage, onSendMessage, isTyping }: ChatInputPr
     setShowEmojis(false);
   };
 
-  const handleActionSelect = (action: string) => {
-    // This will be implemented in the future to handle different message actions
-    console.log("Selected action:", action);
+  const handleActionSelect = (action: string, data?: any) => {
+    switch (action) {
+      case "camera":
+        if (data instanceof MediaStream) {
+          // Handle camera stream
+          // You might want to create a video preview component
+          toast.success("Camera accessed successfully!");
+        }
+        break;
+      case "files":
+        if (data instanceof File) {
+          // Handle file upload
+          toast.success(`File selected: ${data.name}`);
+        }
+        break;
+      case "location":
+        if (data?.latitude && data?.longitude) {
+          const locationMessage = `📍 Location: ${data.latitude}, ${data.longitude}`;
+          setMessage(locationMessage);
+        }
+        break;
+      case "polls":
+        setMessage("/poll Question\nOption 1\nOption 2\nOption 3");
+        break;
+      case "contracts":
+        setMessage("/contract\nTitle: \nTerms: \nDeadline: ");
+        break;
+      case "event":
+        setMessage("/event\nTitle: \nDate: \nLocation: \nDescription: ");
+        break;
+      case "contact":
+        setMessage("/contact\nName: \nPhone: \nEmail: ");
+        break;
+      case "ai-image":
+        setMessage("/imagine A detailed description of the image you want to generate");
+        break;
+      case "edit":
+        // This will be handled by the message list component
+        toast.info("Select a message to edit");
+        break;
+      default:
+        toast.info(`${action} feature coming soon!`);
+    }
   };
 
   return (
