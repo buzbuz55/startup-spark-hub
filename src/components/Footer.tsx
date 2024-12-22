@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Info } from "lucide-react";
+import { Info, Facebook, Twitter, Linkedin, Instagram, Youtube, Github } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -54,15 +54,54 @@ const Footer = () => {
           
           <div>
             <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
-            <div className="flex space-x-4">
-              <a href="https://facebook.com/startupnation" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                Facebook
+            <div className="grid grid-cols-3 gap-4">
+              <a 
+                href="https://facebook.com/startupnation" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-blue-600 transition-all duration-300 group"
+              >
+                <Facebook className="w-6 h-6 text-gray-400 group-hover:text-white" />
               </a>
-              <a href="https://twitter.com/startupnation" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                Twitter
+              <a 
+                href="https://twitter.com/startupnation" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-sky-500 transition-all duration-300 group"
+              >
+                <Twitter className="w-6 h-6 text-gray-400 group-hover:text-white" />
               </a>
-              <a href="https://linkedin.com/company/startupnation" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-                LinkedIn
+              <a 
+                href="https://linkedin.com/company/startupnation" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-blue-700 transition-all duration-300 group"
+              >
+                <Linkedin className="w-6 h-6 text-gray-400 group-hover:text-white" />
+              </a>
+              <a 
+                href="https://instagram.com/startupnation" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-pink-600 transition-all duration-300 group"
+              >
+                <Instagram className="w-6 h-6 text-gray-400 group-hover:text-white" />
+              </a>
+              <a 
+                href="https://youtube.com/startupnation" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-red-600 transition-all duration-300 group"
+              >
+                <Youtube className="w-6 h-6 text-gray-400 group-hover:text-white" />
+              </a>
+              <a 
+                href="https://github.com/startupnation" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-purple-600 transition-all duration-300 group"
+              >
+                <Github className="w-6 h-6 text-gray-400 group-hover:text-white" />
               </a>
             </div>
           </div>
