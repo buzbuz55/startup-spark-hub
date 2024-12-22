@@ -1,124 +1,90 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
-import { ProjectData } from "@/types/project";
-import JoinProjectDialog from "./JoinProjectDialog";
-import ProjectDetailsDialog from "./ProjectDetailsDialog";
+import { Badge } from "@/components/ui/badge";
+import { Users, MapPin, Calendar } from "lucide-react";
 import ProjectImage from "./ProjectImage";
-import ProjectHeader from "./ProjectHeader";
-import ProjectRoles from "./ProjectRoles";
+import JoinProjectDialog from "./JoinProjectDialog";
+import { formatDistanceToNow } from "date-fns";
 
-const ProjectCard = ({ 
-  id,
-  name, 
-  category, 
-  description, 
-  seeking, 
-  funding, 
-  impact, 
-  image,
-  iconName
-}: ProjectData) => {
+interface ProjectCardProps {
+  project: {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    team_size: number;
+    stage: string;
+    location?: string;
+    collaboration_type?: string;
+    is_hiring?: boolean;
+    created_at: string;
+    created_by_username?: string;
+    website_url?: string;
+  };
+}
+
+const ProjectCard = ({ project }: ProjectCardProps) => {
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
-  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleJoinClick = () => {
+    setIsJoinDialogOpen(true);
+  };
 
   return (
-    <>
-      <Card className="hover:shadow-lg transition-shadow">
-        <ProjectImage 
-          image={image} 
-          name={name} 
-          onClick={() => setIsDetailsDialogOpen(true)} 
-        />
-        
-        <ProjectHeader 
-          name={name} 
-          category={category} 
-          iconName={iconName} 
-        />
+    <Card className="overflow-hidden transition-all hover:shadow-lg">
+      <ProjectImage
+        image="/placeholder.svg"
+        name={project.title}
+        onClick={handleJoinClick}
+      />
+      <div className="p-4">
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="text-lg font-semibold line-clamp-1">{project.title}</h3>
+          <Badge variant="secondary" className="ml-2">
+            {project.category}
+          </Badge>
+        </div>
 
-        <CardContent className="space-y-4">
-          <p className="text-gray-600 line-clamp-2">{description}</p>
-          
-          <ProjectRoles seeking={seeking} />
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+          {project.description}
+        </p>
 
-          <div className="flex justify-between items-center pt-4">
-            <div className="text-sm">
-              <span className="font-semibold">Funding:</span>
-              <span className="text-green-600 ml-2">{funding}</span>
-            </div>
-            <Button 
-              variant="default"
-              onClick={() => setIsJoinDialogOpen(true)}
-            >
-              Join Project
-            </Button>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex items-center text-sm text-gray-500">
+            <Users className="w-4 h-4 mr-1" />
+            {project.team_size} members
           </div>
-
-          <div className="text-sm text-gray-600">
-            <span className="font-semibold">Impact:</span>
-            <span className="ml-2">{impact}</span>
-          </div>
-
-          <Button
-            variant="ghost"
-            className="w-full mt-2 flex items-center justify-center gap-2"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            {isExpanded ? 'Show Less' : 'Show More'}
-          </Button>
-
-          {isExpanded && (
-            <div className="space-y-4 pt-2 border-t">
-              <div>
-                <h4 className="font-semibold mb-2">Company Info</h4>
-                <p className="text-sm text-gray-600">
-                  A pioneering startup in the {category.toLowerCase()} sector, focused on creating sustainable solutions.
-                </p>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2">Contact</h4>
-                <Button 
-                  variant="outline" 
-                  className="w-full flex items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/messages'}
-                >
-                  <MessageSquare className="h-4 w-4" />
-                  Chat with Team
-                </Button>
-              </div>
+          {project.location && (
+            <div className="flex items-center text-sm text-gray-500">
+              <MapPin className="w-4 h-4 mr-1" />
+              {project.location}
             </div>
           )}
-        </CardContent>
-      </Card>
+          <div className="flex items-center text-sm text-gray-500">
+            <Calendar className="w-4 h-4 mr-1" />
+            {formatDistanceToNow(new Date(project.created_at), { addSuffix: true })}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <Button variant="default" onClick={handleJoinClick}>
+            Join Project
+          </Button>
+          {project.is_hiring && (
+            <Badge variant="secondary" className="ml-2">
+              Hiring
+            </Badge>
+          )}
+        </div>
+      </div>
 
       <JoinProjectDialog
-        isOpen={isJoinDialogOpen}
-        onClose={() => setIsJoinDialogOpen(false)}
-        projectName={name}
-        projectId={id}
+        open={isJoinDialogOpen}
+        onOpenChange={setIsJoinDialogOpen}
+        project={project}
       />
-
-      <ProjectDetailsDialog
-        project={{
-          id,
-          name,
-          category,
-          description,
-          seeking,
-          funding,
-          impact,
-          image,
-          iconName
-        }}
-        isOpen={isDetailsDialogOpen}
-        onClose={() => setIsDetailsDialogOpen(false)}
-      />
-    </>
+    </Card>
   );
 };
 
