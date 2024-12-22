@@ -21,7 +21,7 @@ const Hero = () => {
             </Button>
           </Link>
           <Link to="/talent-pool">
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 font-semibold text-lg">
               Join Talent Pool
             </Button>
           </Link>

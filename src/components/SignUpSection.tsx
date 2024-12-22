@@ -1,4 +1,4 @@
-import { Mail, Phone, Share2, Download } from "lucide-react";
+import { Mail, Phone, Share2, Download, Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -92,9 +92,28 @@ const SignUpSection = () => {
               <Download className="mr-2" />
               Download App
             </Button>
-            <Button onClick={handleShare} size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            <Button onClick={handleShare} size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-semibold">
               <Share2 className="mr-2" />
               Share
+            </Button>
+          </div>
+
+          {/* Social Media Buttons */}
+          <div className="flex justify-center gap-6 pt-8">
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+              <Facebook className="w-6 h-6 text-white" />
+            </Button>
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+              <Instagram className="w-6 h-6 text-white" />
+            </Button>
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+              <Linkedin className="w-6 h-6 text-white" />
+            </Button>
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+              <Twitter className="w-6 h-6 text-white" />
+            </Button>
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
+              <Youtube className="w-6 h-6 text-white" />
             </Button>
           </div>
         </div>
