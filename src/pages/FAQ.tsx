@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Info, HelpCircle, Smile, CheckCircle, QuestionMark } from "lucide-react";
+import { Info, HelpCircle, Smile, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -23,7 +23,7 @@ const FAQ = () => {
           <Accordion type="single" collapsible className="space-y-4">
             <AccordionItem value="what-is">
               <AccordionTrigger className="flex items-center gap-3 text-lg">
-                <QuestionMark className="w-5 h-5 text-purple-500" />
+                <HelpCircle className="w-5 h-5 text-purple-500" />
                 What is Startup Nation?
               </AccordionTrigger>
               <AccordionContent className="text-gray-600 pl-8">
