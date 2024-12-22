@@ -8,18 +8,9 @@ import ProjectDetailsDialog from "./ProjectDetailsDialog";
 import { optimizeImage } from "@/utils/imageOptimizer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
+import { ProjectData } from "@/types/project";
 
-interface ProjectCardProps {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  seeking: string[];
-  funding: string;
-  impact: string;
-  image: string;
-  iconName: string;
-}
+type ProjectCardProps = ProjectData;
 
 const ProjectCard = ({ 
   id,
