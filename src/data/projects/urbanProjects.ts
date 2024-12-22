@@ -55,5 +55,27 @@ export const urbanProjects: ProjectData[] = [
     impact: "Launched 200+ startups",
     image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
     iconName: "Rocket"
+  },
+  {
+    id: "123e4567-e89b-12d3-a456-426614174010",
+    name: "🎬 TubeGenius AI",
+    category: "YouTube Automation",
+    description: "Revolutionary AI platform that automates YouTube content creation, from ideation to publishing. Helping creators scale their channels effortlessly.",
+    seeking: ["ML Engineers", "Video Processing Experts", "Content Strategists"],
+    funding: "$4.2M",
+    impact: "10M+ videos optimized",
+    image: "https://images.unsplash.com/photo-1626544827763-d516dce335e2",
+    iconName: "Video"
+  },
+  {
+    id: "223e4567-e89b-12d3-a456-426614174011",
+    name: "🎥 VideoForge AI",
+    category: "AI Video Generation",
+    description: "Next-gen AI video generation platform that turns text into professional-quality videos. Creating stunning visual content in minutes.",
+    seeking: ["AI Researchers", "Motion Graphics Artists", "Backend Engineers"],
+    funding: "$8.9M",
+    impact: "500K+ videos generated",
+    image: "https://images.unsplash.com/photo-1579566346927-c68383817a25",
+    iconName: "Film"
   }
 ];
