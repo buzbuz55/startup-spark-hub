@@ -20,7 +20,7 @@ const ProjectComments = ({ projectId }: ProjectCommentsProps) => {
           created_at,
           file_url,
           file_type,
-          user:profiles!user_id (
+          profiles!comments_user_id_fkey (
             full_name,
             avatar_url
           )
@@ -29,7 +29,17 @@ const ProjectComments = ({ projectId }: ProjectCommentsProps) => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data as Comment[];
+
+      // Transform the data to match our Comment type
+      const transformedData = data.map(comment => ({
+        ...comment,
+        user: comment.profiles || {
+          full_name: 'Anonymous',
+          avatar_url: null
+        }
+      }));
+
+      return transformedData as Comment[];
     },
   });
 
