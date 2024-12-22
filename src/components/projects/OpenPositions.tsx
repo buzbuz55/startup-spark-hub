@@ -21,21 +21,51 @@ const OpenPositions = ({ projectId }: OpenPositionsProps) => {
     "SECURITY ENGINEER"
   ]);
 
-  const handleAddPosition = () => {
-    if (newPosition.trim()) {
+  const handleAddPosition = async () => {
+    try {
+      if (!newPosition.trim()) {
+        toast.error("Please enter a position title");
+        return;
+      }
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please sign in to add positions");
+        return;
+      }
+
+      const { error } = await supabase
+        .from('team_positions')
+        .insert({
+          company_id: projectId,
+          title: newPosition.toUpperCase(),
+          description: `New position for ${newPosition}`
+        });
+
+      if (error) throw error;
+
       setPositions([...positions, newPosition.toUpperCase()]);
       setNewPosition("");
       toast.success("Position added successfully");
+    } catch (error) {
+      console.error('Error adding position:', error);
+      toast.error("Failed to add position");
     }
   };
 
   const handleInviteByEmail = async () => {
-    if (!emailInvite.trim()) {
-      toast.error("Please enter an email address");
-      return;
-    }
-
     try {
+      if (!emailInvite.trim()) {
+        toast.error("Please enter an email address");
+        return;
+      }
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please sign in to send invites");
+        return;
+      }
+
       const { error } = await supabase
         .from('team_positions')
         .insert({

@@ -9,6 +9,9 @@ import { optimizeImage } from "@/utils/imageOptimizer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { ProjectData } from "@/types/project";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const ProjectCard = ({ 
   id,
@@ -21,6 +24,7 @@ const ProjectCard = ({
   image,
   iconName
 }: ProjectData) => {
+  const navigate = useNavigate();
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -28,6 +32,25 @@ const ProjectCard = ({
   
   const DynamicIcon = (Icons as any)[iconName] || Icons.FileQuestion;
   const optimizedImageUrl = optimizeImage(image);
+
+  const handleChatClick = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast.error("Please sign in to start a chat");
+        navigate("/login");
+        return;
+      }
+      navigate(`/messages?project=${id}`);
+    } catch (error) {
+      console.error("Error navigating to chat:", error);
+      toast.error("Failed to open chat");
+    }
+  };
+
+  const handleApplyNow = () => {
+    setIsJoinDialogOpen(true);
+  };
 
   return (
     <>
@@ -77,9 +100,9 @@ const ProjectCard = ({
             </div>
             <Button 
               variant="default"
-              onClick={() => setIsJoinDialogOpen(true)}
+              onClick={handleApplyNow}
             >
-              Join Project
+              Apply Now
             </Button>
           </div>
 
@@ -111,7 +134,7 @@ const ProjectCard = ({
                 <Button 
                   variant="outline" 
                   className="w-full flex items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/messages'}
+                  onClick={handleChatClick}
                 >
                   <MessageSquare className="h-4 w-4" />
                   Chat with Team
