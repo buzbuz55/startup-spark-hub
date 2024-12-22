@@ -96,6 +96,13 @@ const App = () => {
                             <span className="hidden sm:inline">Sign Up</span>
                           </Button>
                         </Link>
+                        <Button 
+                          variant="ghost" 
+                          size="icon"
+                          className="hover:bg-primary/10 ml-2"
+                        >
+                          <Globe className="h-5 w-5" />
+                        </Button>
                       </div>
                     </div>
                   </div>
