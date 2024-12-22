@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import * as Icons from "lucide-react";
 import { ProjectData } from "@/data/projectsData";
 import JoinProjectDialog from "./JoinProjectDialog";
+import { LucideIcon } from "lucide-react";
 
 type ProjectCardProps = ProjectData;
 
@@ -21,8 +22,8 @@ const ProjectCard = ({
 }: ProjectCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
-  // Dynamically get the icon component from lucide-react
-  const IconComponent = Icons[iconName as keyof typeof Icons];
+  // Properly type the icon component as a LucideIcon
+  const IconComponent = Icons[iconName as keyof typeof Icons] as LucideIcon;
 
   return (
     <>
