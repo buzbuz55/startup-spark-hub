@@ -3,7 +3,6 @@ import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import { useState } from "react";
 import { projectsData } from "@/data/projectsData";
-import { Heading1 } from "lucide-react";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,21 +16,12 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
-      {/* Header Section */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Heading1 className="w-8 h-8 text-primary" />
-            <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
-          </div>
-          <p className="text-gray-600">
-            Discover innovative environmental projects and connect with teams making a difference
-          </p>
+      <div className="container mx-auto px-4 py-24">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Environmental Impact Projects</h1>
+          <p className="text-xl text-gray-600">Join innovative projects making a difference for our planet</p>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-8">
         <ProjectFilters 
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
