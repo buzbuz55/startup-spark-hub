@@ -20,9 +20,11 @@ const Hero = () => {
               Submit Your Idea
             </Button>
           </Link>
-          <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
-            Watch Demo
-          </Button>
+          <Link to="/talent-pool">
+            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+              Join Talent Pool
+            </Button>
+          </Link>
         </div>
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
           <FeatureIcon icon={MessageSquare} text="Real-time Chat" />

@@ -33,7 +33,6 @@ const SubmitIdea = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // This would typically connect to a backend
     console.log("Form submitted:", formData);
     toast.success("Thank you for submitting your idea! We'll be in touch soon.", {
       duration: 5000,
