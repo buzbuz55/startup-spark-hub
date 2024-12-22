@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Rocket, Brain, Leaf, Heart, Globe, Robot, Shield, Sun, Zap, Cloud } from "lucide-react";
+import { Rocket, Brain, Leaf, Heart, Globe, Bot, Shield, Sun, Zap, Cloud } from "lucide-react";
 
 const startupIdeas = [
   {
@@ -29,7 +29,7 @@ const startupIdeas = [
     description: "Autonomous robot assistants for elderly care and home support",
     seeking: ["Robotics Engineer", "AI Developer", "Hardware Designer"],
     tech: ["ROS", "Python", "C++", "TensorFlow"],
-    icon: <Robot className="w-8 h-8 text-purple-500" />
+    icon: <Bot className="w-8 h-8 text-purple-500" />
   },
   {
     name: "CyberShield",
