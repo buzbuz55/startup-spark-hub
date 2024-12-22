@@ -9,7 +9,7 @@ import TalentHeader from "@/components/talent/TalentHeader";
 import OpportunityCards from "@/components/talent/OpportunityCards";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, UserPlus } from "lucide-react";
+import { PlusCircle, UserPlus, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -58,11 +58,17 @@ const TalentPool = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Header />
-      <main className="flex-grow container mx-auto px-4 pt-24 pb-16">
+      <main className="flex-grow container mx-auto px-4 pt-12 pb-16">
         <div className="max-w-6xl mx-auto">
-          <TalentHeader onSearch={setSearchQuery} />
-          
-          <div className="flex gap-4 mb-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white shadow-sm rounded-xl p-4 mb-8"
+          >
+            <OpportunityCards onInternshipsClick={() => setShowInterns(true)} />
+          </motion.div>
+
+          <div className="flex items-center gap-4 mb-8">
             <Button 
               onClick={handlePostJob}
               className="bg-primary hover:bg-primary/90"
@@ -81,15 +87,9 @@ const TalentPool = () => {
               <UserPlus className="mr-2 h-5 w-5" />
               Submit Your Profile
             </Button>
-          </div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white shadow-sm rounded-xl p-4 mb-6"
-          >
-            <OpportunityCards onInternshipsClick={() => setShowInterns(true)} />
-          </motion.div>
+            <TalentHeader onSearch={setSearchQuery} />
+          </div>
 
           <AnimatePresence>
             {showInterns && (
