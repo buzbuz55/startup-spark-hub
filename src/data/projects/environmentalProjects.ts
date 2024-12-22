@@ -14,13 +14,13 @@ export const environmentalProjects: ProjectData[] = [
   },
   {
     id: "523e4567-e89b-12d3-a456-426614174004",
-    name: "ReForest Drones",
-    category: "Reforestation",
-    description: "Using drone technology and AI for rapid reforestation. Our system can plant thousands of trees per day in hard-to-reach areas.",
-    seeking: ["Drone Operators", "Environmental Scientists", "AI Specialists"],
-    funding: "$2.9M",
-    impact: "Planted 1 million trees",
-    image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86",
-    iconName: "Trees"
+    name: "NeuralFinance AI",
+    category: "AI Finance",
+    description: "Using advanced machine learning to democratize investment strategies. Our AI analyzes market patterns and provides institutional-grade insights to retail investors.",
+    seeking: ["ML Engineers", "Quant Analysts", "Full-Stack Developers"],
+    funding: "$15.5M",
+    impact: "Serving 50,000+ active users",
+    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e",
+    iconName: "Brain"
   }
 ];
