@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import Header from "@/components/Header";
+import { supabase } from "@/integrations/supabase/client";
 
 const SubmitIdea = () => {
   const [formData, setFormData] = useState({
@@ -15,17 +16,57 @@ const SubmitIdea = () => {
     team: "",
     email: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Your idea has been submitted! 🚀");
-    setFormData({
-      title: "",
-      description: "",
-      market: "",
-      team: "",
-      email: "",
-    });
+    setIsSubmitting(true);
+
+    try {
+      const {
+        data: { user },
+        error: userError
+      } = await supabase.auth.getUser();
+
+      if (userError) {
+        toast.error("Please sign in to submit your idea");
+        return;
+      }
+
+      const { error: messageError } = await supabase
+        .from('messages')
+        .insert([
+          {
+            sender_id: user?.id,
+            receiver_id: user?.id, // For idea submissions, sender and receiver are the same
+            content: JSON.stringify({
+              type: 'startup_idea',
+              ...formData,
+              timestamp: new Date().toISOString()
+            })
+          }
+        ]);
+
+      if (messageError) {
+        console.error('Error submitting idea:', messageError);
+        toast.error("Failed to submit idea. Please try again.");
+        return;
+      }
+
+      toast.success("Your idea has been submitted! 🚀");
+      setFormData({
+        title: "",
+        description: "",
+        market: "",
+        team: "",
+        email: "",
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error("An error occurred while submitting your idea");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -131,10 +172,11 @@ const SubmitIdea = () => {
               <Button
                 type="submit"
                 size="lg"
+                disabled={isSubmitting}
                 className="w-full bg-white text-purple-700 hover:bg-purple-100 font-semibold text-lg"
               >
                 <Sparkles className="mr-2" />
-                Submit Your Idea
+                {isSubmitting ? "Submitting..." : "Submit Your Idea"}
               </Button>
             </form>
           </motion.div>
