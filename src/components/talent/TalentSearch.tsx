@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, SortAsc } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface TalentSearchProps {
   onSearch: (query: string) => void;
@@ -17,9 +18,16 @@ interface TalentSearchProps {
 
 const TalentSearch = ({ onSearch, onSort }: TalentSearchProps) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { toast } = useToast();
 
   const handleSearch = () => {
     onSearch(searchQuery);
+    if (searchQuery.trim()) {
+      toast({
+        title: "Searching...",
+        description: `Looking for talents matching "${searchQuery}"`,
+      });
+    }
   };
 
   return (
@@ -30,7 +38,12 @@ const TalentSearch = ({ onSearch, onSort }: TalentSearchProps) => {
           <Input
             placeholder="Search by name, role, or skills..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              if (!e.target.value.trim()) {
+                onSearch(""); // Clear search when input is empty
+              }
+            }}
             className="pl-9"
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />

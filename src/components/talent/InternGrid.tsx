@@ -2,11 +2,12 @@ import { useState, useMemo } from "react";
 import { InternProfile } from "./InternProfile";
 import TalentSearch from "./TalentSearch";
 import { interns } from "@/data/interns";
-import type { InternProfile as InternProfileType } from "@/types/intern";
+import { useToast } from "@/components/ui/use-toast";
 
 const InternGrid = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortCriteria, setSortCriteria] = useState("name");
+  const { toast } = useToast();
 
   const filteredAndSortedInterns = useMemo(() => {
     let filtered = interns;
@@ -19,6 +20,20 @@ const InternGrid = () => {
           intern.role.toLowerCase().includes(query) ||
           intern.skills.some(skill => skill.toLowerCase().includes(query))
       );
+
+      // Show toast with search results
+      if (filtered.length === 0) {
+        toast({
+          title: "No results found",
+          description: `No talents found matching "${searchQuery}"`,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Search results",
+          description: `Found ${filtered.length} talent${filtered.length === 1 ? '' : 's'} matching "${searchQuery}"`,
+        });
+      }
     }
 
     return [...filtered].sort((a, b) => {
