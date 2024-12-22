@@ -3,14 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import * as Icons from "lucide-react";
-import { ProjectData } from "@/data/projectsData";
 import JoinProjectDialog from "./JoinProjectDialog";
 import ProjectDetailsDialog from "./ProjectDetailsDialog";
 import { optimizeImage } from "@/utils/imageOptimizer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 
-type ProjectCardProps = {
+interface ProjectCardProps {
   id: string;
   name: string;
   category: string;
@@ -20,7 +19,7 @@ type ProjectCardProps = {
   impact: string;
   image: string;
   iconName: string;
-};
+}
 
 const ProjectCard = ({ 
   id,
@@ -59,8 +58,6 @@ const ProjectCard = ({
             }`}
             onLoad={() => setImageLoaded(true)}
             loading="lazy"
-            width="500"
-            height="300"
           />
         </div>
         <CardHeader>
