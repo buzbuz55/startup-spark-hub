@@ -75,13 +75,6 @@ const App = () => {
 
                     {/* Right side items */}
                     <div className="flex items-center gap-4">
-                      <Button 
-                        variant="ghost" 
-                        size="icon"
-                        className="hover:bg-primary/10"
-                      >
-                        <Globe className="h-5 w-5" />
-                      </Button>
                       <div className="flex items-center gap-2">
                         <Link to="/login">
                           <Button 
