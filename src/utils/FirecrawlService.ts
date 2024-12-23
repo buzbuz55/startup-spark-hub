@@ -36,7 +36,7 @@ export class FirecrawlService {
         limit: 10, // Reduced limit for faster response
         scrapeOptions: {
           formats: ['content'], // Using content format for text extraction
-          selectors: {
+          cssSelectors: {
             title: 'title',
             headings: 'h1, h2, h3',
             paragraphs: 'p'
