@@ -23,6 +23,7 @@ import ProfileSettings from "./pages/ProfileSettings";
 import StartupOpportunities from "./pages/StartupOpportunities";
 import Internships from "./pages/Internships";
 import Startups from "./pages/Startups";
+import Scraper from "./pages/Scraper";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
@@ -61,6 +62,7 @@ const App = () => {
               <Route path="/startup-opportunities" element={<StartupOpportunities />} />
               <Route path="/internships" element={<Internships />} />
               <Route path="/startups" element={<Startups />} />
+              <Route path="/scraper" element={<Scraper />} />
             </Routes>
           </BrowserRouter>
         </div>
