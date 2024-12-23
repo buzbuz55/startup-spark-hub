@@ -25,26 +25,33 @@ export class FirecrawlService {
       console.log('Making crawl request to Firecrawl API');
       if (!this.firecrawlApp) {
         const response = await fetch('/api/firecrawl-key');
+        if (!response.ok) {
+          throw new Error('Failed to fetch Firecrawl API key');
+        }
         const { apiKey } = await response.json();
         this.firecrawlApp = new FirecrawlApp({ apiKey });
       }
 
       const crawlResponse = await this.firecrawlApp.crawlUrl(url, {
-        limit: 100,
+        limit: 10, // Reduced limit for faster response
         scrapeOptions: {
-          formats: ['markdown', 'html'],
+          formats: ['text'], // Changed to text only for simpler output
+          selectors: [
+            { name: 'title', selector: 'title' },
+            { name: 'headings', selector: 'h1, h2, h3' },
+            { name: 'paragraphs', selector: 'p' }
+          ]
         }
-      }) as CrawlResponse;
+      });
 
       if (!crawlResponse.success) {
-        console.error('Crawl failed:', (crawlResponse as ErrorResponse).error);
+        console.error('Crawl failed:', crawlResponse);
         return { 
           success: false, 
-          error: (crawlResponse as ErrorResponse).error || 'Failed to crawl website' 
+          error: 'Failed to crawl website' 
         };
       }
 
-      console.log('Crawl successful:', crawlResponse);
       return { 
         success: true,
         data: crawlResponse 

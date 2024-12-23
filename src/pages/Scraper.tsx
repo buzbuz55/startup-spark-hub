@@ -27,6 +27,16 @@ const Scraper = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!url) {
+      toast({
+        title: "Error",
+        description: "Please enter a URL",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
     setIsLoading(true);
     setProgress(0);
     setCrawlResult(null);
@@ -62,6 +72,45 @@ const Scraper = () => {
       setIsLoading(false);
       setProgress(100);
     }
+  };
+
+  const renderCrawlData = (data: any) => {
+    if (!data || !data.data) return null;
+    
+    return (
+      <div className="space-y-4">
+        {data.data.map((item: any, index: number) => (
+          <div key={index} className="border-b pb-4">
+            {item.title && (
+              <h3 className="font-semibold text-lg">{item.title}</h3>
+            )}
+            {item.headings && (
+              <div className="mt-2">
+                <h4 className="font-medium">Headings:</h4>
+                <ul className="list-disc pl-5">
+                  {item.headings.map((heading: string, i: number) => (
+                    <li key={i}>{heading}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {item.paragraphs && (
+              <div className="mt-2">
+                <h4 className="font-medium">Content:</h4>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {item.paragraphs.slice(0, 3).map((p: string, i: number) => (
+                    <p key={i} className="mt-1">{p}</p>
+                  ))}
+                  {item.paragraphs.length > 3 && (
+                    <p className="mt-1 italic">... and {item.paragraphs.length - 3} more paragraphs</p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -100,21 +149,7 @@ const Scraper = () => {
             {crawlResult && (
               <div className="mt-6 space-y-4">
                 <h3 className="text-lg font-semibold">Crawl Results</h3>
-                <div className="space-y-2 text-sm">
-                  <p>Status: {crawlResult.status}</p>
-                  <p>Completed Pages: {crawlResult.completed}</p>
-                  <p>Total Pages: {crawlResult.total}</p>
-                  <p>Credits Used: {crawlResult.creditsUsed}</p>
-                  <p>Expires At: {new Date(crawlResult.expiresAt || '').toLocaleString()}</p>
-                  {crawlResult.data && (
-                    <div className="mt-4">
-                      <p className="font-semibold mb-2">Crawled Data:</p>
-                      <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded overflow-auto max-h-96">
-                        {JSON.stringify(crawlResult.data, null, 2)}
-                      </pre>
-                    </div>
-                  )}
-                </div>
+                {renderCrawlData(crawlResult)}
               </div>
             )}
           </Card>
