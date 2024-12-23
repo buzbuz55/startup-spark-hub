@@ -35,8 +35,8 @@ export class FirecrawlService {
       const crawlResponse = await this.firecrawlApp.crawlUrl(url, {
         limit: 10, // Reduced limit for faster response
         scrapeOptions: {
-          formats: ['content'], // Changed from 'text' to 'content' which is a valid format
-          selectors: [
+          formats: ['content'], // Using content format for text extraction
+          extract: [
             { name: 'title', selector: 'title' },
             { name: 'headings', selector: 'h1, h2, h3' },
             { name: 'paragraphs', selector: 'p' }
