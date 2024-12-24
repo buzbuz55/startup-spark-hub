@@ -1,4 +1,4 @@
-import { FirecrawlApp } from "@mendable/firecrawl-js";
+import FirecrawlApp from "@mendable/firecrawl-js";
 
 class FirecrawlService {
   private static instance: FirecrawlApp;

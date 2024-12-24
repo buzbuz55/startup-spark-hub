@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Upload } from "lucide-react";
 import { FormSection } from "./FormSection";
+import { toast } from "sonner";
 
 interface ProjectLogoUploadProps {
   projectLogo: File | null;

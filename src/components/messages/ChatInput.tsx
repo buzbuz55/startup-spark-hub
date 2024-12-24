@@ -1,203 +1,112 @@
-import { Input } from "@/components/ui/input";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Send, Smile, X } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import data from '@emoji-mart/data';
-import Picker from '@emoji-mart/react';
-import { useState } from "react";
-import MessageActions from "./MessageActions";
-import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
+import { Send, Smile, PlusCircle } from "lucide-react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-export interface ChatInputProps {
-  message: string;
-  setMessage: (message: string) => void;
-  onSendMessage: () => void;
-  isTyping?: boolean;
-  onTyping?: () => void;
+interface ChatInputProps {
+  onSendMessage: (message: string, type?: string) => void;
+  isLoading?: boolean;
 }
 
-const ChatInput = ({ message, setMessage, onSendMessage, isTyping, onTyping }: ChatInputProps) => {
-  const [showEmojis, setShowEmojis] = useState(false);
-  const [showPollForm, setShowPollForm] = useState(false);
-  const [pollQuestion, setPollQuestion] = useState("");
-  const [pollOptions, setPollOptions] = useState(["", ""]);
+const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
+  const [message, setMessage] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "inherit";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      textareaRef.current.style.height = `${scrollHeight}px`;
+    }
+  }, [message]);
+
+  const handleSend = () => {
+    if (message.trim()) {
+      onSendMessage(message);
+      setMessage("");
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   const handleEmojiSelect = (emoji: any) => {
-    setMessage(message + emoji.native);
-    setShowEmojis(false);
+    setMessage((prev) => prev + emoji.native);
   };
 
-  const handleAddOption = () => {
-    setPollOptions([...pollOptions, ""]);
-  };
-
-  const handleRemoveOption = (index: number) => {
-    setPollOptions(pollOptions.filter((_, i) => i !== index));
-  };
-
-  const handleOptionChange = (index: number, value: string) => {
-    const newOptions = [...pollOptions];
-    newOptions[index] = value;
-    setPollOptions(newOptions);
-  };
-
-  const handleCreatePoll = async () => {
-    if (!pollQuestion.trim()) {
-      toast.error("Please enter a question");
-      return;
-    }
-
-    const validOptions = pollOptions.filter(opt => opt.trim());
-    if (validOptions.length < 2) {
-      toast.error("Please add at least 2 options");
-      return;
-    }
-
-    setMessage(`/poll ${pollQuestion}\n${validOptions.join("\n")}`);
-    setShowPollForm(false);
-    setPollQuestion("");
-    setPollOptions(["", ""]);
-    onSendMessage();
-  };
-
-  const handleActionSelect = (action: string, data?: any) => {
+  const handleQuickAction = (action: string) => {
     switch (action) {
-      case "polls":
-        setShowPollForm(true);
+      case "meeting":
+        setMessage("/meet Schedule a meeting");
         break;
-      case "camera":
-        if (data instanceof MediaStream) {
-          // Handle camera stream
-          // You might want to create a video preview component
-          toast.success("Camera accessed successfully!");
-        }
-        break;
-      case "files":
-        if (data instanceof File) {
-          // Handle file upload
-          toast.success(`File selected: ${data.name}`);
-        }
-        break;
-      case "location":
-        if (data?.latitude && data?.longitude) {
-          const locationMessage = `📍 Location: ${data.latitude}, ${data.longitude}`;
-          setMessage(locationMessage);
-        }
-        break;
-      case "polls":
+      case "poll":
         setMessage("/poll Question\nOption 1\nOption 2\nOption 3");
         break;
-      case "contracts":
-        setMessage("/contract\nTitle: \nTerms: \nDeadline: ");
-        break;
-      case "event":
-        setMessage("/event\nTitle: \nDate: \nLocation: \nDescription: ");
-        break;
-      case "contact":
-        setMessage("/contact\nName: \nPhone: \nEmail: ");
-        break;
-      case "ai-image":
-        setMessage("/imagine A detailed description of the image you want to generate");
-        break;
-      case "edit":
-        // This will be handled by the message list component
-        toast.info("Select a message to edit");
-        break;
       default:
-        toast.info(`${action} feature coming soon!`);
+        break;
     }
   };
 
   return (
-    <div className="p-4 border-t">
-      {isTyping && (
-        <div className="text-xs text-muted-foreground mb-2">
-          Contact is typing...
-        </div>
-      )}
-      {showPollForm ? (
-        <div className="space-y-4">
-          <Input
-            value={pollQuestion}
-            onChange={(e) => setPollQuestion(e.target.value)}
-            placeholder="Enter your question..."
-          />
-          <div className="space-y-2">
-            {pollOptions.map((option, index) => (
-              <div key={index} className="flex gap-2">
-                <Input
-                  value={option}
-                  onChange={(e) => handleOptionChange(index, e.target.value)}
-                  placeholder={`Option ${index + 1}`}
-                />
-                {pollOptions.length > 2 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleRemoveOption(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <Button type="button" variant="outline" onClick={handleAddOption}>
-              Add Option
-            </Button>
-            <Button type="button" onClick={handleCreatePoll}>
-              Create Poll
-            </Button>
-            <Button type="button" variant="ghost" onClick={() => setShowPollForm(false)}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSendMessage();
-            if (onTyping) onTyping();
-          }}
-          className="flex gap-2 items-end"
-        >
-          <MessageActions onActionSelect={handleActionSelect} />
-          <Popover open={showEmojis} onOpenChange={setShowEmojis}>
-            <PopoverTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="h-10 w-10"
-              >
-                <Smile className="h-5 w-5" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0" align="start" side="top">
-              <Picker
-                data={data}
-                onEmojiSelect={handleEmojiSelect}
-              />
-            </PopoverContent>
-          </Popover>
-          <Input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="bg-background"
-          />
-          <Button type="submit" size="icon" className="h-10 w-10">
-            <Send className="h-4 w-4" />
+    <div className="flex items-end gap-2 p-4 bg-background border-t">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="shrink-0">
+            <PlusCircle className="h-5 w-5" />
           </Button>
-        </form>
-      )}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem onClick={() => handleQuickAction("meeting")}>
+            Schedule Meeting
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleQuickAction("poll")}>
+            Create Poll
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <div className="flex-1 relative">
+        <Textarea
+          ref={textareaRef}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="Type a message..."
+          className="resize-none pr-12 max-h-[200px]"
+          rows={1}
+        />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <Smile className="h-5 w-5" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent side="top" align="end" className="p-0">
+            <Picker data={data} onEmojiSelect={handleEmojiSelect} />
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      <Button
+        onClick={handleSend}
+        disabled={!message.trim() || isLoading}
+        size="icon"
+        className="shrink-0"
+      >
+        <Send className="h-5 w-5" />
+      </Button>
     </div>
   );
 };
