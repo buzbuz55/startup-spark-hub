@@ -1,4 +1,4 @@
-import { FirecrawlClient } from '@mendable/firecrawl-js';
+import FirecrawlApp from '@mendable/firecrawl-js';
 
 interface CrawlScrapeOptions {
   url: string;
@@ -11,29 +11,43 @@ interface CrawlScrapeOptions {
 }
 
 export class FirecrawlService {
-  private client: FirecrawlClient;
+  private static instance: FirecrawlApp | null = null;
 
-  constructor(apiKey: string) {
-    this.client = new FirecrawlClient(apiKey);
+  private static getInstance(): FirecrawlApp {
+    if (!this.instance) {
+      const apiKey = process.env.FIRECRAWL_API_KEY || '';
+      this.instance = new FirecrawlApp({ apiKey });
+    }
+    return this.instance;
   }
 
-  async crawlWebsite(url: string): Promise<any> {
+  static async crawlWebsite(url: string): Promise<any> {
     try {
-      const options: CrawlScrapeOptions = {
-        url,
-        selectors: [
-          { name: 'title', selector: 'h1' },
-          { name: 'description', selector: 'meta[name="description"]' }
-        ],
+      const firecrawl = this.getInstance();
+      
+      const response = await firecrawl.crawlUrl(url, {
         limit: 10,
-        format: 'text'
-      };
+        scrapeOptions: {
+          formats: ['text'],
+          extract: [
+            { selector: 'h1', name: 'title' },
+            { selector: 'meta[name="description"]', name: 'description' },
+            { selector: 'p', name: 'paragraphs' },
+            { selector: 'h2,h3,h4', name: 'headings' }
+          ]
+        }
+      });
 
-      const response = await this.client.crawl(options);
-      return response;
+      return {
+        success: true,
+        data: response
+      };
     } catch (error) {
       console.error('Error crawling website:', error);
-      throw error;
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to crawl website'
+      };
     }
   }
 }

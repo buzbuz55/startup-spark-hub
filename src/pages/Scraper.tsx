@@ -42,7 +42,6 @@ const Scraper = () => {
     setCrawlResult(null);
     
     try {
-      console.log('Starting crawl for URL:', url);
       const result = await FirecrawlService.crawlWebsite(url);
       
       if (result.success) {
