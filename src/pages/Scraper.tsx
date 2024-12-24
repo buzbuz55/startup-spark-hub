@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-interface CrawlResult {
+type CrawlResult = {
   success: boolean;
   status?: string;
   completed?: number;
@@ -44,6 +44,7 @@ const Scraper = () => {
     
     try {
       const result = await FirecrawlService.crawlWebsite(url);
+      setCrawlResult(result);
       
       if (result.success) {
         toast({
@@ -51,7 +52,6 @@ const Scraper = () => {
           description: "Website crawled successfully",
           duration: 3000,
         });
-        setCrawlResult(result);
       } else {
         toast({
           title: "Error",
@@ -59,7 +59,6 @@ const Scraper = () => {
           variant: "destructive",
           duration: 3000,
         });
-        setCrawlResult(result);
       }
     } catch (error) {
       console.error('Error crawling website:', error);
@@ -75,12 +74,12 @@ const Scraper = () => {
     }
   };
 
-  const renderCrawlData = (data: any) => {
-    if (!data || !data.data) return null;
+  const renderCrawlData = (data: CrawlResult) => {
+    if (!data || (!data.success && !data.data)) return null;
     
     return (
       <div className="space-y-4">
-        {data.data.map((item: any, index: number) => (
+        {data.data?.map((item: any, index: number) => (
           <div key={index} className="border-b pb-4">
             {item.title && (
               <h3 className="font-semibold text-lg">{item.title}</h3>

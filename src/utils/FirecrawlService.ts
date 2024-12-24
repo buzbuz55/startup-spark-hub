@@ -33,12 +33,12 @@ class FirecrawlService {
     const firecrawl = this.getInstance();
     try {
       const response = await firecrawl.crawlUrl(url, {
-        limit: 10, // Using limit instead of maxPages
+        limit: 10,
         scrapeOptions: {
           formats: ['markdown', 'html'],
         }
       });
-      return response as CrawlResponse;
+      return response as CrawlStatusResponse;
     } catch (error) {
       console.error('Error crawling website:', error);
       return {
