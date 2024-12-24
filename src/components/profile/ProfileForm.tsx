@@ -2,16 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
+import { usePhoneVerification } from "@/hooks/usePhoneVerification";
+import PhoneVerification from "./PhoneVerification";
+import HobbiesInput from "./HobbiesInput";
 import AiBioGenerator from "./AiBioGenerator";
 
 interface ProfileFormProps {
@@ -39,63 +33,45 @@ interface ProfileFormProps {
 }
 
 const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFormProps) => {
-  const [newHobby, setNewHobby] = useState("");
   const [hobbies, setHobbies] = useState<string[]>(profile.hobbies || []);
-  const [showOTPInput, setShowOTPInput] = useState(false);
-  const [otp, setOTP] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(profile.phone_number || "");
-  const [verificationInProgress, setVerificationInProgress] = useState(false);
   const [bio, setBio] = useState(profile.bio || "");
+  
+  const {
+    phoneNumber,
+    setPhoneNumber,
+    showOTPInput,
+    otp,
+    setOTP,
+    verificationInProgress,
+    sendOTP,
+    verifyOTP,
+  } = usePhoneVerification(profile.phone_number || "");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     
     if (phoneNumber !== profile.phone_number && !showOTPInput) {
-      try {
-        setVerificationInProgress(true);
-        const { error } = await supabase.auth.signInWithOtp({
-          phone: phoneNumber,
-        });
-        
-        if (error) throw error;
-        
-        setShowOTPInput(true);
-        toast.success("OTP sent to your phone number");
-      } catch (error) {
-        console.error("Error sending OTP:", error);
-        toast.error("Failed to send OTP. Please try again.");
-      } finally {
-        setVerificationInProgress(false);
-      }
-      return;
+      const success = await sendOTP();
+      if (!success) return;
     }
 
-    onProfileUpdate({
-      full_name: formData.get('fullName') as string,
-      phone_number: phoneNumber,
-      linkedin_url: formData.get('linkedin') as string,
-      twitter_url: formData.get('twitter') as string,
-      website_url: formData.get('website') as string,
-      hobbies: hobbies,
-      bio: bio,
-    });
+    if (!showOTPInput) {
+      onProfileUpdate({
+        full_name: formData.get('fullName') as string,
+        phone_number: phoneNumber,
+        linkedin_url: formData.get('linkedin') as string,
+        twitter_url: formData.get('twitter') as string,
+        website_url: formData.get('website') as string,
+        hobbies: hobbies,
+        bio: bio,
+      });
+    }
   };
 
-  const verifyOTP = async () => {
-    try {
-      setVerificationInProgress(true);
-      const { error } = await supabase.auth.verifyOtp({
-        phone: phoneNumber,
-        token: otp,
-        type: 'sms',
-      });
-
-      if (error) throw error;
-
-      setShowOTPInput(false);
-      toast.success("Phone number verified successfully");
-      
+  const handleVerifyOTP = async () => {
+    const success = await verifyOTP();
+    if (success) {
       const formElement = document.querySelector('form') as HTMLFormElement;
       const formData = new FormData(formElement);
       onProfileUpdate({
@@ -107,26 +83,7 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
         hobbies: hobbies,
         bio: bio,
       });
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-      toast.error("Invalid OTP. Please try again.");
-    } finally {
-      setVerificationInProgress(false);
     }
-  };
-
-  const addHobby = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && newHobby.trim()) {
-      e.preventDefault();
-      if (!hobbies.includes(newHobby.trim())) {
-        setHobbies([...hobbies, newHobby.trim()]);
-      }
-      setNewHobby("");
-    }
-  };
-
-  const removeHobby = (hobby: string) => {
-    setHobbies(hobbies.filter(h => h !== hobby));
   };
 
   const handleBioGenerated = (generatedBio: string) => {
@@ -159,45 +116,15 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
         </p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="phone">Phone Number</Label>
-        <Input
-          id="phone"
-          name="phone"
-          type="tel"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          placeholder="Enter your phone number"
-          disabled={showOTPInput || verificationInProgress}
-        />
-      </div>
-
-      {showOTPInput && (
-        <div className="space-y-2">
-          <Label>Enter OTP</Label>
-          <div className="flex flex-col space-y-2">
-            <InputOTP
-              value={otp}
-              onChange={setOTP}
-              maxLength={6}
-              render={({ slots }) => (
-                <InputOTPGroup className="gap-2">
-                  {slots.map((slot, index) => (
-                    <InputOTPSlot key={index} {...slot} index={index} />
-                  ))}
-                </InputOTPGroup>
-              )}
-            />
-            <Button
-              type="button"
-              onClick={verifyOTP}
-              disabled={otp.length !== 6 || verificationInProgress}
-            >
-              {verificationInProgress ? "Verifying..." : "Verify OTP"}
-            </Button>
-          </div>
-        </div>
-      )}
+      <PhoneVerification
+        phoneNumber={phoneNumber}
+        onPhoneChange={setPhoneNumber}
+        showOTPInput={showOTPInput}
+        otp={otp}
+        onOTPChange={setOTP}
+        verificationInProgress={verificationInProgress}
+        onVerifyOTP={handleVerifyOTP}
+      />
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
@@ -252,30 +179,7 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="hobbies">Hobbies</Label>
-        <Input
-          id="hobbies"
-          value={newHobby}
-          onChange={(e) => setNewHobby(e.target.value)}
-          onKeyDown={addHobby}
-          placeholder="Type a hobby and press Enter"
-        />
-        <div className="flex flex-wrap gap-2 mt-2">
-          {hobbies.map((hobby) => (
-            <Badge key={hobby} variant="secondary" className="gap-1">
-              {hobby}
-              <button
-                type="button"
-                onClick={() => removeHobby(hobby)}
-                className="ml-1 hover:text-destructive"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </Badge>
-          ))}
-        </div>
-      </div>
+      <HobbiesInput hobbies={hobbies} onChange={setHobbies} />
 
       <div className="flex justify-end gap-4">
         <Button
