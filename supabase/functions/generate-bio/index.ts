@@ -14,18 +14,26 @@ serve(async (req) => {
   try {
     const { currentBio, fullName, hobbies } = await req.json()
 
-    const prompt = `As a creative AI assistant, craft an engaging and professional bio for ${fullName}.
-    ${currentBio ? `Their current bio is: "${currentBio}". Please enhance it while maintaining their authentic voice.` : 'Create a fresh, engaging bio that captures their essence.'}
-    Their interests and hobbies include: ${hobbies.join(', ')}.
+    const prompt = `As an AI writing assistant, analyze and enhance this profile:
+
+    ${currentBio ? `Current Bio: "${currentBio}"
+    Task: Analyze this bio and create an improved version while maintaining the person's authentic voice.` 
+    : 'Task: Create a fresh, engaging bio from scratch.'}
+
+    Person: ${fullName}
+    Interests/Hobbies: ${hobbies.join(', ')}
     
     Guidelines:
+    - Write in first person perspective
     - Keep it concise (max 200 words)
-    - Strike a balance between professional and personable
-    - Incorporate their hobbies naturally
-    - Make it engaging and memorable
-    - Use a friendly, approachable tone
+    - Balance professionalism with personality
+    - Naturally incorporate their interests
+    - Make it memorable and engaging
+    - Use a friendly, conversational tone
     
-    Please write the bio in first person perspective.`
+    Please analyze the content and create a bio that feels authentic and personal.`
+
+    console.log('Generating bio with prompt:', prompt);
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -36,7 +44,10 @@ serve(async (req) => {
       body: JSON.stringify({
         model: 'gpt-4',
         messages: [
-          { role: 'system', content: 'You are a professional bio writer specializing in creating engaging, personalized professional bios.' },
+          { 
+            role: 'system', 
+            content: 'You are an expert bio writer specializing in creating authentic, engaging personal bios that capture the essence of each individual.' 
+          },
           { role: 'user', content: prompt }
         ],
         temperature: 0.7,
@@ -44,13 +55,14 @@ serve(async (req) => {
     })
 
     if (!response.ok) {
-      const error = await response.json()
-      console.error('OpenAI API error:', error)
-      throw new Error('Failed to generate bio')
+      console.error('OpenAI API error:', await response.text());
+      throw new Error('Failed to generate bio');
     }
 
     const data = await response.json()
     const generatedBio = data.choices[0].message.content
+
+    console.log('Successfully generated bio:', generatedBio);
 
     return new Response(
       JSON.stringify({ generatedBio }),

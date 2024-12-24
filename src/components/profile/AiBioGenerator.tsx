@@ -22,10 +22,10 @@ const AiBioGenerator = ({ currentBio, fullName, hobbies, onBioGenerated }: AiBio
 
       // Show a hint toast before generating
       toast.info(
-        "✨ Magic AI is analyzing your profile...", 
+        "✨ AI Magic is reading your profile...", 
         { description: currentBio 
-          ? "Enhancing your current bio with AI magic!" 
-          : "Creating a personalized bio based on your hobbies and interests!" 
+          ? "Analyzing your current bio to create something even better!" 
+          : "Creating a personalized bio based on your profile!" 
         }
       );
 
@@ -46,12 +46,12 @@ const AiBioGenerator = ({ currentBio, fullName, hobbies, onBioGenerated }: AiBio
       
       const { generatedBio } = await response.json();
       onBioGenerated(generatedBio);
-      toast.success("✨ Bio magically generated!", {
-        description: "Your new bio has been crafted with AI magic."
+      toast.success("✨ AI Magic Complete!", {
+        description: "Your new bio has been crafted and applied automatically."
       });
     } catch (error) {
       console.error('Error generating bio:', error);
-      toast.error("Couldn't cast the magic spell", {
+      toast.error("AI Magic encountered an error", {
         description: "Please try again in a moment."
       });
     } finally {
@@ -69,7 +69,7 @@ const AiBioGenerator = ({ currentBio, fullName, hobbies, onBioGenerated }: AiBio
       className="gap-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-300"
     >
       <Wand2 className={`w-4 h-4 ${isGenerating ? 'animate-bounce' : 'animate-pulse'}`} />
-      {isGenerating ? "Casting Magic..." : "Magic AI ✨"}
+      {isGenerating ? "AI Magic in Progress..." : "AI Magic ✨"}
     </Button>
   );
 };
