@@ -36,11 +36,11 @@ export class FirecrawlService {
         limit: 10, // Reduced limit for faster response
         scrapeOptions: {
           formats: ['content'], // Using content format for text extraction
-          selectors: [
-            { name: 'title', selector: 'title' },
-            { name: 'headings', selector: 'h1, h2, h3' },
-            { name: 'paragraphs', selector: 'p' }
-          ]
+          extract: {
+            title: 'title',
+            headings: 'h1, h2, h3',
+            paragraphs: 'p'
+          }
         }
       });
 
