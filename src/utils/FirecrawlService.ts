@@ -1,67 +1,39 @@
-import FirecrawlApp from '@mendable/firecrawl-js';
+import { FirecrawlClient } from '@mendable/firecrawl-js';
 
-interface ErrorResponse {
-  success: false;
-  error: string;
+interface CrawlScrapeOptions {
+  url: string;
+  selectors?: Array<{
+    name: string;
+    selector: string;
+  }>;
+  limit?: number;
+  format?: 'text' | 'html';
 }
-
-interface CrawlStatusResponse {
-  success: true;
-  status: string;
-  completed: number;
-  total: number;
-  creditsUsed: number;
-  expiresAt: string;
-  data: any[];
-}
-
-type CrawlResponse = CrawlStatusResponse | ErrorResponse;
 
 export class FirecrawlService {
-  private static firecrawlApp: FirecrawlApp | null = null;
+  private client: FirecrawlClient;
 
-  static async crawlWebsite(url: string): Promise<{ success: boolean; error?: string; data?: any }> {
+  constructor(apiKey: string) {
+    this.client = new FirecrawlClient(apiKey);
+  }
+
+  async crawlWebsite(url: string): Promise<any> {
     try {
-      console.log('Making crawl request to Firecrawl API');
-      if (!this.firecrawlApp) {
-        const response = await fetch('/api/firecrawl-key');
-        if (!response.ok) {
-          throw new Error('Failed to fetch Firecrawl API key');
-        }
-        const { apiKey } = await response.json();
-        this.firecrawlApp = new FirecrawlApp({ apiKey });
-      }
-
-      const crawlResponse = await this.firecrawlApp.crawlUrl(url, {
-        limit: 10, // Reduced limit for faster response
-        scrapeOptions: {
-          formats: ['content'], // Using content format for text extraction
-          extract: {
-            title: 'title',
-            headings: 'h1, h2, h3',
-            paragraphs: 'p'
-          }
-        }
-      });
-
-      if (!crawlResponse.success) {
-        console.error('Crawl failed:', crawlResponse);
-        return { 
-          success: false, 
-          error: 'Failed to crawl website' 
-        };
-      }
-
-      return { 
-        success: true,
-        data: crawlResponse 
+      const options: CrawlScrapeOptions = {
+        url,
+        selectors: [
+          { name: 'title', selector: 'h1' },
+          { name: 'description', selector: 'meta[name="description"]' }
+        ],
+        limit: 10,
+        format: 'text'
       };
+
+      const response = await this.client.crawl(options);
+      return response;
     } catch (error) {
-      console.error('Error during crawl:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Failed to connect to Firecrawl API' 
-      };
+      console.error('Error crawling website:', error);
+      throw error;
     }
   }
 }
