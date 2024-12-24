@@ -456,12 +456,18 @@ export type Database = {
           created_at: string
           created_by_username: string | null
           description: string
+          funding_needed: number | null
+          goal: string | null
           id: string
           is_hiring: boolean | null
           location: string | null
+          logo_url: string | null
           stage: string
           status: string | null
+          target_audience: string | null
+          team_roles: Json | null
           team_size: number
+          timeline: string | null
           title: string
           user_id: string
           website_url: string | null
@@ -472,12 +478,18 @@ export type Database = {
           created_at?: string
           created_by_username?: string | null
           description: string
+          funding_needed?: number | null
+          goal?: string | null
           id?: string
           is_hiring?: boolean | null
           location?: string | null
+          logo_url?: string | null
           stage: string
           status?: string | null
+          target_audience?: string | null
+          team_roles?: Json | null
           team_size: number
+          timeline?: string | null
           title: string
           user_id: string
           website_url?: string | null
@@ -488,12 +500,18 @@ export type Database = {
           created_at?: string
           created_by_username?: string | null
           description?: string
+          funding_needed?: number | null
+          goal?: string | null
           id?: string
           is_hiring?: boolean | null
           location?: string | null
+          logo_url?: string | null
           stage?: string
           status?: string | null
+          target_audience?: string | null
+          team_roles?: Json | null
           team_size?: number
+          timeline?: string | null
           title?: string
           user_id?: string
           website_url?: string | null

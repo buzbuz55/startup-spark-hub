@@ -1,53 +1,31 @@
-import FirecrawlApp from '@mendable/firecrawl-js';
+import { FirecrawlApp } from "@mendable/firecrawl-js";
 
-interface CrawlScrapeOptions {
-  url: string;
-  selectors?: Array<{
-    name: string;
-    selector: string;
-  }>;
-  limit?: number;
-  format?: 'text' | 'html';
-}
-
-export class FirecrawlService {
-  private static instance: FirecrawlApp | null = null;
+class FirecrawlService {
+  private static instance: FirecrawlApp;
 
   private static getInstance(): FirecrawlApp {
     if (!this.instance) {
-      const apiKey = process.env.FIRECRAWL_API_KEY || '';
-      this.instance = new FirecrawlApp({ apiKey });
+      this.instance = new FirecrawlApp({
+        apiKey: import.meta.env.VITE_FIRECRAWL_API_KEY || '',
+      });
     }
     return this.instance;
   }
 
-  static async crawlWebsite(url: string): Promise<any> {
+  static async crawlWebsite(url: string) {
+    const firecrawl = this.getInstance();
     try {
-      const firecrawl = this.getInstance();
-      
-      const response = await firecrawl.crawlUrl(url, {
-        limit: 10,
-        scrapeOptions: {
-          formats: ['text'],
-          extract: [
-            { selector: 'h1', name: 'title' },
-            { selector: 'meta[name="description"]', name: 'description' },
-            { selector: 'p', name: 'paragraphs' },
-            { selector: 'h2,h3,h4', name: 'headings' }
-          ]
-        }
+      const response = await firecrawl.crawl({
+        url,
+        output: "content",
+        maxPages: 10
       });
-
-      return {
-        success: true,
-        data: response
-      };
+      return response;
     } catch (error) {
       console.error('Error crawling website:', error);
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Failed to crawl website'
-      };
+      throw error;
     }
   }
 }
+
+export default FirecrawlService;

@@ -1,19 +1,12 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { ProjectBasicInfo } from "./create/ProjectBasicInfo";
+import { ProjectLogoUpload } from "./create/ProjectLogoUpload";
+import { ProjectCategories } from "./create/ProjectCategories";
+import { ProjectGoals } from "./create/ProjectGoals";
 
 interface CreateProjectDialogProps {
   open: boolean;
@@ -34,20 +27,7 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
     targetAudience: "",
     timeline: "",
     fundingNeeded: "",
-    collaborationType: "",
   });
-
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        toast.error("Logo size should be less than 5MB");
-        return;
-      }
-      setProjectLogo(file);
-      toast.success("Logo uploaded successfully!");
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,7 +74,6 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
           target_audience: formData.targetAudience,
           timeline: formData.timeline,
           funding_needed: parseFloat(formData.fundingNeeded),
-          collaboration_type: formData.collaborationType,
           is_hiring: true,
           status: 'active'
         });
@@ -111,6 +90,10 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
     }
   };
 
+  const updateFormData = (newData: Partial<typeof formData>) => {
+    setFormData(prev => ({ ...prev, ...newData }));
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px]">
@@ -119,182 +102,25 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div>
-              <Label>Project Logo</Label>
-              <div className="flex items-center gap-4 mt-1">
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleLogoUpload}
-                  className="hidden"
-                  id="logo-upload"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => document.getElementById("logo-upload")?.click()}
-                >
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Logo
-                </Button>
-                {projectLogo && (
-                  <span className="text-sm text-green-600">
-                    Logo uploaded: {projectLogo.name}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <div>
-              <Label>Project Title</Label>
-              <Input
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Enter your project title"
-                required
-              />
-            </div>
-
-            <div>
-              <Label>Description</Label>
-              <Textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Describe your project"
-                className="min-h-[100px]"
-                required
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Category</Label>
-                <Select
-                  value={formData.category}
-                  onValueChange={(value) => setFormData({ ...formData, category: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="software">Software</SelectItem>
-                    <SelectItem value="marketing">Marketing</SelectItem>
-                    <SelectItem value="ai">AI & ML</SelectItem>
-                    <SelectItem value="ecommerce">E-Commerce</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Team Size</Label>
-                <Input
-                  type="number"
-                  value={formData.teamSize}
-                  onChange={(e) => setFormData({ ...formData, teamSize: e.target.value })}
-                  placeholder="Number of team members"
-                  required
-                  min="1"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Project Stage</Label>
-                <Select
-                  value={formData.stage}
-                  onValueChange={(value) => setFormData({ ...formData, stage: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select stage" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="idea">Idea Phase</SelectItem>
-                    <SelectItem value="mvp">MVP</SelectItem>
-                    <SelectItem value="growth">Growth</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Location</Label>
-                <Select
-                  value={formData.location}
-                  onValueChange={(value) => setFormData({ ...formData, location: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="remote">Remote</SelectItem>
-                    <SelectItem value="onsite">On-site</SelectItem>
-                    <SelectItem value="hybrid">Hybrid</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div>
-              <Label>Project Goal</Label>
-              <Textarea
-                value={formData.goal}
-                onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
-                placeholder="What are you trying to achieve?"
-                required
-              />
-            </div>
-
-            <div>
-              <Label>Target Audience</Label>
-              <Input
-                value={formData.targetAudience}
-                onChange={(e) => setFormData({ ...formData, targetAudience: e.target.value })}
-                placeholder="Who is this project for?"
-                required
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Timeline</Label>
-                <Input
-                  value={formData.timeline}
-                  onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                  placeholder="Expected timeline"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label>Funding Needed</Label>
-                <Input
-                  type="number"
-                  value={formData.fundingNeeded}
-                  onChange={(e) => setFormData({ ...formData, fundingNeeded: e.target.value })}
-                  placeholder="Amount in USD"
-                />
-              </div>
-            </div>
-
-            <div>
-              <Label>Collaboration Type</Label>
-              <Select
-                value={formData.collaborationType}
-                onValueChange={(value) => setFormData({ ...formData, collaborationType: value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select collaboration type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="full-time">Full-time</SelectItem>
-                  <SelectItem value="part-time">Part-time</SelectItem>
-                  <SelectItem value="contract">Contract</SelectItem>
-                  <SelectItem value="volunteer">Volunteer</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <ProjectLogoUpload
+            projectLogo={projectLogo}
+            onLogoUpload={setProjectLogo}
+          />
+          
+          <ProjectBasicInfo
+            formData={formData}
+            onChange={updateFormData}
+          />
+          
+          <ProjectCategories
+            formData={formData}
+            onChange={updateFormData}
+          />
+          
+          <ProjectGoals
+            formData={formData}
+            onChange={updateFormData}
+          />
 
           <div className="flex justify-end gap-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

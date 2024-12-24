@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Search, Plus, Users, MapPin, Filter, SlidersHorizontal, Bookmark, Share2 } from "lucide-react";
+import { Search, Plus, Users, MapPin, SlidersHorizontal, Bookmark, Share2 } from "lucide-react";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog";
 
 const CreatorHome = () => {
@@ -52,27 +52,30 @@ const CreatorHome = () => {
       <Header />
       
       <main className="container mx-auto px-4 pt-24 pb-12">
-        {/* Top Section */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Creator Hub
-          </h1>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Creator Hub
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Connect, collaborate, and bring your ideas to life
+            </p>
+          </div>
           <Button 
             onClick={() => setIsCreateDialogOpen(true)}
-            className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
+            className="bg-purple-600 hover:bg-purple-700 text-white shadow-sm hover:shadow-md transition-all"
           >
             <Plus className="w-4 h-4 mr-2" />
             Create Project
           </Button>
         </div>
 
-        {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
           <div className="flex gap-4 mb-6">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
-                placeholder="Search for a specific project..."
+                placeholder="Search for projects, ideas, or collaborators..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-gray-200"
@@ -137,25 +140,23 @@ const CreatorHome = () => {
           </div>
         </div>
 
-        {/* Project Count */}
         <div className="text-gray-600 mb-6">
           Projects matching filters: {projects.length}
         </div>
 
-        {/* Project Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
-            <Card key={project.id} className="bg-white border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+            <Card key={project.id} className="bg-white border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-6">
                 <div className="flex gap-2 mb-4">
-                  <Badge className="bg-green-100 text-green-800 hover:bg-green-200">
+                  <Badge variant="secondary" className="bg-purple-50 text-purple-700 hover:bg-purple-100">
                     {project.type}
                   </Badge>
                   <Badge variant="outline" className="border-orange-500 text-orange-700">
                     {project.stage}
                   </Badge>
                   {project.isHiring && (
-                    <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
+                    <Badge className="bg-green-50 text-green-700 hover:bg-green-100">
                       Hiring
                     </Badge>
                   )}
@@ -177,18 +178,20 @@ const CreatorHome = () => {
                   </div>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 mt-4 flex justify-between items-center text-sm text-gray-500">
-                  <div>
-                    <p>Created by {project.creator}</p>
-                    <p>Date Posted: {project.date}</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="ghost" size="icon" className="hover:text-purple-600">
-                      <Bookmark className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="hover:text-purple-600">
-                      <Share2 className="w-4 h-4" />
-                    </Button>
+                <div className="border-t border-gray-100 pt-4 mt-4">
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm text-gray-500">
+                      <p className="font-medium text-gray-900">{project.creator}</p>
+                      <p>{project.date}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="ghost" size="icon" className="hover:text-purple-600">
+                        <Bookmark className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="hover:text-purple-600">
+                        <Share2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
