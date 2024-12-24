@@ -29,23 +29,17 @@ const AiBioGenerator = ({ currentBio, fullName, hobbies, onBioGenerated }: AiBio
         }
       );
 
-      const response = await fetch('/api/generate-bio', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.id}`,
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('generate-bio', {
+        body: {
           currentBio,
           fullName,
           hobbies,
-        }),
+        },
       });
 
-      if (!response.ok) throw new Error("Failed to generate bio");
+      if (error) throw error;
       
-      const { generatedBio } = await response.json();
-      onBioGenerated(generatedBio);
+      onBioGenerated(data.generatedBio);
       toast.success("✨ AI Magic Complete!", {
         description: "Your new bio has been crafted and applied automatically."
       });
