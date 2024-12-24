@@ -55,13 +55,13 @@ const Scraper = () => {
       } else {
         toast({
           title: "Error",
-          description: result.error || "Failed to crawl website",
+          description: 'error' in result ? result.error : "Failed to crawl website",
           variant: "destructive",
           duration: 3000,
         });
       }
     } catch (error) {
-      console.error('Error crawling website:', error);
+      console.error('Error:', error);
       toast({
         title: "Error",
         description: "Failed to crawl website",

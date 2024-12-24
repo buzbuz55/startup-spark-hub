@@ -9,6 +9,7 @@ const CreatorHome = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedStage, setSelectedStage] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const projects = [
@@ -52,6 +53,8 @@ const CreatorHome = () => {
           onCategoryChange={setSelectedCategory}
           selectedStage={selectedStage}
           onStageChange={setSelectedStage}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
         />
 
         <div className="text-gray-600 mb-6">
