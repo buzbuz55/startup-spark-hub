@@ -34,6 +34,12 @@ serve(async (req) => {
       }),
     })
 
+    if (!response.ok) {
+      const error = await response.json()
+      console.error('OpenAI API error:', error)
+      throw new Error('Failed to generate bio')
+    }
+
     const data = await response.json()
     const generatedBio = data.choices[0].message.content
 
