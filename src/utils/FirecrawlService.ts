@@ -15,8 +15,7 @@ class FirecrawlService {
   static async crawlWebsite(url: string) {
     const firecrawl = this.getInstance();
     try {
-      const response = await firecrawl.crawl({
-        url,
+      const response = await firecrawl.crawlUrl(url, {
         output: "content",
         maxPages: 10
       });
