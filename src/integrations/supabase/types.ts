@@ -144,6 +144,54 @@ export type Database = {
         }
         Relationships: []
       }
+      founder_profiles: {
+        Row: {
+          company_name: string
+          created_at: string
+          founding_date: string | null
+          funding_stage: string | null
+          id: string
+          industry: string | null
+          location: string | null
+          pitch_deck_url: string | null
+          tagline: string | null
+          team_size: number | null
+          updated_at: string
+          user_id: string | null
+          website_url: string | null
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          founding_date?: string | null
+          funding_stage?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          pitch_deck_url?: string | null
+          tagline?: string | null
+          team_size?: number | null
+          updated_at?: string
+          user_id?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          founding_date?: string | null
+          funding_stage?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          pitch_deck_url?: string | null
+          tagline?: string | null
+          team_size?: number | null
+          updated_at?: string
+          user_id?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       group_members: {
         Row: {
           group_id: string

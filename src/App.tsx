@@ -25,6 +25,11 @@ import Internships from "./pages/Internships";
 import Startups from "./pages/Startups";
 import Scraper from "./pages/Scraper";
 import CreatorHome from "./pages/CreatorHome";
+import Library from "./pages/Library";
+import CofounderMatching from "./pages/CofounderMatching";
+import Jobs from "./pages/Jobs";
+import Apply from "./pages/Apply";
+import Interviews from "./pages/Interviews";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
@@ -65,6 +70,11 @@ const App = () => {
               <Route path="/internships" element={<Internships />} />
               <Route path="/startups" element={<Startups />} />
               <Route path="/scraper" element={<Scraper />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/cofounder-matching" element={<CofounderMatching />} />
+              <Route path="/jobs" element={<Jobs />} />
+              <Route path="/apply" element={<Apply />} />
+              <Route path="/interviews" element={<Interviews />} />
             </Routes>
           </BrowserRouter>
         </div>
