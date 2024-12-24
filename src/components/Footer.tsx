@@ -4,7 +4,7 @@ import { Info, Facebook, Twitter, Linkedin, Instagram, Youtube, Github } from "l
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-gray-900 text-white py-12 mt-auto">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -51,7 +51,7 @@ const Footer = () => {
             <ul className="space-y-2 text-gray-400">
               <li>Email: contact@startupsparkhub.com</li>
               <li>Phone: +1 (555) 123-4567</li>
-              <li>Location: Silicon Valley, CA</li>
+              <li>Location: 1755 Broadway, New York NYC</li>
             </ul>
           </div>
           
@@ -111,7 +111,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Startup Nation. All rights reserved.</p>
+          <p>&copy; 2025 Startup Nation. All rights reserved.</p>
         </div>
       </div>
     </footer>

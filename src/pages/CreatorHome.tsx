@@ -4,6 +4,7 @@ import CreatorHeader from "@/components/creator/CreatorHeader";
 import CreatorFilters from "@/components/creator/CreatorFilters";
 import ProjectCard from "@/components/creator/ProjectCard";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog";
+import Footer from "@/components/Footer";
 
 const CreatorHome = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,10 +41,10 @@ const CreatorHome = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       
-      <main className="container mx-auto px-4 pt-24 pb-12">
+      <main className="flex-1 container mx-auto px-4 pt-24 pb-12">
         <CreatorHeader onCreateProject={() => setIsCreateDialogOpen(true)} />
         
         <CreatorFilters
@@ -67,6 +68,8 @@ const CreatorHome = () => {
           ))}
         </div>
       </main>
+
+      <Footer />
 
       <CreateProjectDialog 
         open={isCreateDialogOpen} 
