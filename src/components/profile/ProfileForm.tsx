@@ -12,6 +12,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import AiBioGenerator from "./AiBioGenerator";
 
 interface ProfileFormProps {
   profile: {
@@ -44,12 +45,12 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
   const [otp, setOTP] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(profile.phone_number || "");
   const [verificationInProgress, setVerificationInProgress] = useState(false);
+  const [bio, setBio] = useState(profile.bio || "");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     
-    // If phone number has changed and not verified, show OTP input
     if (phoneNumber !== profile.phone_number && !showOTPInput) {
       try {
         setVerificationInProgress(true);
@@ -70,7 +71,6 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
       return;
     }
 
-    // If OTP verification is successful or phone number hasn't changed
     onProfileUpdate({
       full_name: formData.get('fullName') as string,
       phone_number: phoneNumber,
@@ -78,7 +78,7 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
       twitter_url: formData.get('twitter') as string,
       website_url: formData.get('website') as string,
       hobbies: hobbies,
-      bio: formData.get('bio') as string,
+      bio: bio,
     });
   };
 
@@ -96,7 +96,6 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
       setShowOTPInput(false);
       toast.success("Phone number verified successfully");
       
-      // Submit the form after successful verification
       const formElement = document.querySelector('form') as HTMLFormElement;
       const formData = new FormData(formElement);
       onProfileUpdate({
@@ -106,7 +105,7 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
         twitter_url: formData.get('twitter') as string,
         website_url: formData.get('website') as string,
         hobbies: hobbies,
-        bio: formData.get('bio') as string,
+        bio: bio,
       });
     } catch (error) {
       console.error("Error verifying OTP:", error);
@@ -128,6 +127,10 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
 
   const removeHobby = (hobby: string) => {
     setHobbies(hobbies.filter(h => h !== hobby));
+  };
+
+  const handleBioGenerated = (generatedBio: string) => {
+    setBio(generatedBio);
   };
 
   return (
@@ -180,7 +183,7 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
               render={({ slots }) => (
                 <InputOTPGroup className="gap-2">
                   {slots.map((slot, index) => (
-                    <InputOTPSlot key={index} {...slot} />
+                    <InputOTPSlot key={index} {...slot} index={index} />
                   ))}
                 </InputOTPGroup>
               )}
@@ -197,11 +200,20 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
       )}
 
       <div className="space-y-2">
-        <Label htmlFor="bio">Bio</Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="bio">Bio</Label>
+          <AiBioGenerator
+            currentBio={bio}
+            fullName={profile.full_name}
+            hobbies={hobbies}
+            onBioGenerated={handleBioGenerated}
+          />
+        </div>
         <Textarea
           id="bio"
           name="bio"
-          defaultValue={profile.bio || ""}
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
           placeholder="Tell us about yourself"
           className="h-24"
         />
