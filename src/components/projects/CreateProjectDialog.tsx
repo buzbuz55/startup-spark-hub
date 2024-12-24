@@ -7,6 +7,7 @@ import { ProjectBasicInfo } from "./create/ProjectBasicInfo";
 import { ProjectLogoUpload } from "./create/ProjectLogoUpload";
 import { ProjectCategories } from "./create/ProjectCategories";
 import { ProjectGoals } from "./create/ProjectGoals";
+import { useNavigate } from "react-router-dom";
 
 interface CreateProjectDialogProps {
   open: boolean;
@@ -14,6 +15,7 @@ interface CreateProjectDialogProps {
 }
 
 const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) => {
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [projectLogo, setProjectLogo] = useState<File | null>(null);
   const [formData, setFormData] = useState({
@@ -38,6 +40,20 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
       
       if (userError || !user) {
         toast.error("Please sign in to create a project");
+        navigate("/login");
+        return;
+      }
+
+      // First check if user has a profile
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError) {
+        console.error('Profile error:', profileError);
+        toast.error("Error accessing user profile");
         return;
       }
 
