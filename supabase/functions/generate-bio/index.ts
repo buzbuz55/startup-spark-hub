@@ -14,13 +14,10 @@ serve(async (req) => {
   try {
     const { currentBio, fullName, hobbies } = await req.json()
 
-    const prompt = `As an AI writing assistant, analyze and enhance this profile:
-
-    ${currentBio ? `Current Bio: "${currentBio}"
-    Task: Analyze this bio and create an improved version while maintaining the person's authentic voice.` 
-    : 'Task: Create a fresh, engaging bio from scratch.'}
+    const prompt = `As an expert copywriter and AI writing assistant, create an engaging personal bio:
 
     Person: ${fullName}
+    Current Bio: ${currentBio || 'None provided'}
     Interests/Hobbies: ${hobbies.join(', ')}
     
     Guidelines:
@@ -31,7 +28,7 @@ serve(async (req) => {
     - Make it memorable and engaging
     - Use a friendly, conversational tone
     
-    Please analyze the content and create a bio that feels authentic and personal.`
+    Please create a bio that feels authentic and personal while highlighting key aspects of their profile.`
 
     console.log('Generating bio with prompt:', prompt);
 
@@ -46,21 +43,23 @@ serve(async (req) => {
         messages: [
           { 
             role: 'system', 
-            content: 'You are an expert bio writer specializing in creating authentic, engaging personal bios that capture the essence of each individual.' 
+            content: 'You are an expert copywriter specializing in creating authentic, engaging personal bios.' 
           },
           { role: 'user', content: prompt }
         ],
         temperature: 0.7,
+        max_tokens: 500,
       }),
     })
 
     if (!response.ok) {
-      console.error('OpenAI API error:', await response.text());
+      const errorText = await response.text();
+      console.error('OpenAI API error:', errorText);
       throw new Error('Failed to generate bio');
     }
 
     const data = await response.json()
-    const generatedBio = data.choices[0].message.content
+    const generatedBio = data.choices[0].message.content.trim()
 
     console.log('Successfully generated bio:', generatedBio);
 
