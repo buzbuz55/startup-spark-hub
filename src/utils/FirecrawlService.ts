@@ -1,5 +1,22 @@
 import FirecrawlApp from "@mendable/firecrawl-js";
 
+interface CrawlStatusResponse {
+  success: true;
+  status: string;
+  completed: number;
+  total: number;
+  creditsUsed: number;
+  expiresAt: string;
+  data: any[];
+}
+
+interface ErrorResponse {
+  success: false;
+  error: string;
+}
+
+type CrawlResponse = CrawlStatusResponse | ErrorResponse;
+
 class FirecrawlService {
   private static instance: FirecrawlApp;
 
@@ -16,13 +33,18 @@ class FirecrawlService {
     const firecrawl = this.getInstance();
     try {
       const response = await firecrawl.crawlUrl(url, {
-        output: "content",
-        maxPages: 10
+        maxPages: 10,
+        scrapeOptions: {
+          formats: ['markdown', 'html'],
+        }
       });
-      return response;
+      return response as CrawlResponse;
     } catch (error) {
       console.error('Error crawling website:', error);
-      throw error;
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error occurred'
+      } as ErrorResponse;
     }
   }
 }

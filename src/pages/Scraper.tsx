@@ -16,6 +16,7 @@ interface CrawlResult {
   creditsUsed?: number;
   expiresAt?: string;
   data?: any[];
+  error?: string;
 }
 
 const Scraper = () => {
@@ -50,7 +51,7 @@ const Scraper = () => {
           description: "Website crawled successfully",
           duration: 3000,
         });
-        setCrawlResult(result.data);
+        setCrawlResult(result);
       } else {
         toast({
           title: "Error",
@@ -58,6 +59,7 @@ const Scraper = () => {
           variant: "destructive",
           duration: 3000,
         });
+        setCrawlResult(result);
       }
     } catch (error) {
       console.error('Error crawling website:', error);
