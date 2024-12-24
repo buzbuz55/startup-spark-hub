@@ -2,7 +2,8 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import CreatorHeader from "@/components/creator/CreatorHeader";
 import CreatorFilters from "@/components/creator/CreatorFilters";
-import ProjectCard from "@/components/creator/ProjectCard";
+import CreatorStats from "@/components/creator/CreatorStats";
+import ProjectGrid from "@/components/creator/ProjectGrid";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog";
 import Footer from "@/components/Footer";
 
@@ -58,15 +59,8 @@ const CreatorHome = () => {
           onSortChange={setSortBy}
         />
 
-        <div className="text-gray-600 mb-6">
-          Projects matching filters: {projects.length}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
+        <CreatorStats projectCount={projects.length} />
+        <ProjectGrid projects={projects} />
       </main>
 
       <Footer />
