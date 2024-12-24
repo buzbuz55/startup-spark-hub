@@ -64,12 +64,12 @@ const TalentPool = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Header />
-      <main className="flex-grow container mx-auto px-4 pt-8 pb-16">
+      <main className="flex-grow container mx-auto px-4 pt-12 pb-16">
         <div className="max-w-6xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/30 backdrop-blur-sm shadow-sm rounded-xl p-4 mb-6"
+            className="bg-white shadow-sm rounded-xl p-4 mb-8"
           >
             <OpportunityCards onInternshipsClick={() => setShowInterns(true)} />
           </motion.div>
