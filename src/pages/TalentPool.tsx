@@ -1,14 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import OpportunityCards from "@/components/talent/OpportunityCards";
-import TalentHeader from "@/components/talent/TalentHeader";
-import TalentPoolHeader from "@/components/talent/TalentPoolHeader";
-import TalentPoolContent from "@/components/talent/TalentPoolContent";
+import OpportunitySection from "@/components/talent/OpportunitySection";
+import MainContent from "@/components/talent/MainContent";
 
 const TalentPool = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,63 +19,14 @@ const TalentPool = () => {
     githubUrl: ""
   });
 
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [user, setUser] = useState(null);
-
-  useState(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-  });
-
-  const handlePostJob = () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in to post a job",
-        variant: "destructive",
-      });
-      navigate("/login");
-      return;
-    }
-    setShowJobForm(true);
-  };
-
-  const handleSubmitProfile = () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign up to submit your profile",
-        variant: "destructive",
-      });
-      navigate("/signup");
-      return;
-    }
-    setShowCandidateForm(true);
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Header />
       <main className="flex-grow container mx-auto px-4 pt-12 pb-16">
         <div className="max-w-6xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white shadow-sm rounded-xl p-4 mb-8"
-          >
-            <OpportunityCards onInternshipsClick={() => setShowInterns(true)} />
-          </motion.div>
-
-          <TalentPoolHeader 
-            onPostJob={handlePostJob}
-            onSubmitProfile={handleSubmitProfile}
-          />
-
-          <TalentHeader onSearch={setSearchQuery} />
-
-          <TalentPoolContent 
+          <OpportunitySection setShowInterns={setShowInterns} />
+          
+          <MainContent 
             showInterns={showInterns}
             setShowInterns={setShowInterns}
             showJobForm={showJobForm}
@@ -90,6 +35,7 @@ const TalentPool = () => {
             setCandidateFormData={setCandidateFormData}
             onCloseJobForm={() => setShowJobForm(false)}
             onCloseCandidateForm={() => setShowCandidateForm(false)}
+            onSearch={setSearchQuery}
           />
         </div>
       </main>
