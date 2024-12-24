@@ -16,6 +16,8 @@ interface CreatorFiltersProps {
   onCategoryChange: (value: string) => void;
   selectedStage: string;
   onStageChange: (value: string) => void;
+  sortBy: string;
+  onSortChange: (value: string) => void;
 }
 
 const CreatorFilters = ({
@@ -25,6 +27,8 @@ const CreatorFilters = ({
   onCategoryChange,
   selectedStage,
   onStageChange,
+  sortBy,
+  onSortChange,
 }: CreatorFiltersProps) => {
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
@@ -50,10 +54,11 @@ const CreatorFilters = ({
             <SelectValue placeholder="CATEGORY" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="software">Software</SelectItem>
-            <SelectItem value="marketing">Marketing</SelectItem>
-            <SelectItem value="ai">AI & ML</SelectItem>
-            <SelectItem value="ecommerce">E-Commerce</SelectItem>
+            <SelectItem value="Social Media">Social Media</SelectItem>
+            <SelectItem value="Fintech">Fintech</SelectItem>
+            <SelectItem value="AI">AI</SelectItem>
+            <SelectItem value="Education">Education</SelectItem>
+            <SelectItem value="Gaming">Gaming</SelectItem>
           </SelectContent>
         </Select>
 
@@ -90,10 +95,17 @@ const CreatorFilters = ({
           </SelectContent>
         </Select>
 
-        <Button variant="outline" className="text-gray-700 border-gray-200 hover:bg-gray-50">
-          <SlidersHorizontal className="w-4 h-4 mr-2" />
-          Sort by
-        </Button>
+        <Select value={sortBy} onValueChange={onSortChange}>
+          <SelectTrigger className="w-[180px] border-gray-200">
+            <SelectValue placeholder="SORT BY" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="newest">Newest First</SelectItem>
+            <SelectItem value="oldest">Oldest First</SelectItem>
+            <SelectItem value="team_size_asc">Team Size (Low to High)</SelectItem>
+            <SelectItem value="team_size_desc">Team Size (High to Low)</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );

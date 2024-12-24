@@ -1,21 +1,72 @@
+import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import SubmitProjectDialog from "@/components/projects/SubmitProjectDialog";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
-import { projectsData } from "@/data/projectsData";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedStage, setSelectedStage] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredProjects = projectsData.filter(project => 
-    project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    project.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    project.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    fetchProjects();
+  }, [searchQuery, selectedCategory, selectedStage, sortBy]);
+
+  const fetchProjects = async () => {
+    try {
+      let query = supabase
+        .from('projects')
+        .select('*')
+        .eq('status', 'active');
+
+      if (selectedCategory) {
+        query = query.eq('category', selectedCategory);
+      }
+
+      if (selectedStage) {
+        query = query.eq('stage', selectedStage);
+      }
+
+      if (searchQuery) {
+        query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+      }
+
+      // Apply sorting
+      switch (sortBy) {
+        case 'newest':
+          query = query.order('created_at', { ascending: false });
+          break;
+        case 'oldest':
+          query = query.order('created_at', { ascending: true });
+          break;
+        case 'team_size_asc':
+          query = query.order('team_size', { ascending: true });
+          break;
+        case 'team_size_desc':
+          query = query.order('team_size', { ascending: false });
+          break;
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      setProjects(data);
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error("Failed to fetch projects");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -38,30 +89,30 @@ const Projects = () => {
         <ProjectFilters 
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          selectedStage={selectedStage}
+          onStageChange={setSelectedStage}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <ProjectCard 
-              key={project.id} 
-              project={{
-                id: project.id,
-                title: project.name,
-                description: project.description,
-                category: project.category,
-                team_size: 1,
-                stage: "Development",
-                location: "Global",
-                collaboration_type: "Remote",
-                is_hiring: true,
-                created_at: new Date().toISOString(),
-                created_by_username: "GreenTech",
-                website_url: "https://example.com",
-                image: project.image
-              }} 
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-gray-100 rounded-lg animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project) => (
+              <ProjectCard 
+                key={project.id} 
+                project={project}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <SubmitProjectDialog
