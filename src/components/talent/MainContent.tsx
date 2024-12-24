@@ -29,6 +29,8 @@ interface MainContentProps {
   onCloseJobForm: () => void;
   onCloseCandidateForm: () => void;
   onSearch: (query: string) => void;
+  setShowJobForm: (show: boolean) => void;
+  setShowCandidateForm: (show: boolean) => void;
 }
 
 const MainContent = ({
@@ -41,7 +43,17 @@ const MainContent = ({
   onCloseJobForm,
   onCloseCandidateForm,
   onSearch,
+  setShowJobForm,
+  setShowCandidateForm
 }: MainContentProps) => {
+  const handlePostJob = () => {
+    setShowJobForm(true);
+  };
+
+  const handleSubmitProfile = () => {
+    setShowCandidateForm(true);
+  };
+
   return (
     <>
       <TalentPoolHeader 

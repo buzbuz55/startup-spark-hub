@@ -24,7 +24,11 @@ const TalentPool = () => {
       <Header />
       <main className="flex-grow container mx-auto px-4 pt-12 pb-16">
         <div className="max-w-6xl mx-auto">
-          <OpportunitySection setShowInterns={setShowInterns} />
+          <OpportunitySection 
+            setShowInterns={setShowInterns}
+            setShowJobForm={setShowJobForm}
+            setShowCandidateForm={setShowCandidateForm}
+          />
           
           <MainContent 
             showInterns={showInterns}
@@ -36,6 +40,8 @@ const TalentPool = () => {
             onCloseJobForm={() => setShowJobForm(false)}
             onCloseCandidateForm={() => setShowCandidateForm(false)}
             onSearch={setSearchQuery}
+            setShowJobForm={setShowJobForm}
+            setShowCandidateForm={setShowCandidateForm}
           />
         </div>
       </main>

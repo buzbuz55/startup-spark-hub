@@ -3,18 +3,28 @@ import OpportunityCards from "./OpportunityCards";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const OpportunitySection = ({ setShowInterns }: { setShowInterns: (show: boolean) => void }) => {
+interface OpportunitySectionProps {
+  setShowInterns: (show: boolean) => void;
+  setShowJobForm: (show: boolean) => void;
+  setShowCandidateForm: (show: boolean) => void;
+}
+
+const OpportunitySection = ({ 
+  setShowInterns,
+  setShowJobForm,
+  setShowCandidateForm 
+}: OpportunitySectionProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
 
-  useState(() => {
+  useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
     });
-  });
+  }, []);
 
   const handlePostJob = () => {
     if (!user) {
