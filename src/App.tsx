@@ -24,6 +24,7 @@ import StartupOpportunities from "./pages/StartupOpportunities";
 import Internships from "./pages/Internships";
 import Startups from "./pages/Startups";
 import Scraper from "./pages/Scraper";
+import CreatorHome from "./pages/CreatorHome";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
@@ -44,6 +45,7 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/creator" element={<CreatorHome />} />
               <Route path="/search" element={<Search />} />
               <Route path="/submit-idea" element={<SubmitIdea />} />
               <Route path="/talent-pool" element={<TalentPool />} />
