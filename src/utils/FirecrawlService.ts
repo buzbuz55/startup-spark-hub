@@ -50,3 +50,4 @@ class FirecrawlService {
 }
 
 export default FirecrawlService;
+export type { CrawlResponse, CrawlStatusResponse, ErrorResponse };

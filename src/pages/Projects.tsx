@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
 import SubmitProjectDialog from "@/components/projects/SubmitProjectDialog";
@@ -10,16 +11,13 @@ import { toast } from "sonner";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedStage, setSelectedStage] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchProjects();
-  }, [searchQuery, selectedCategory, selectedStage, sortBy]);
+  }, [searchQuery]);
 
   const fetchProjects = async () => {
     try {
@@ -28,32 +26,8 @@ const Projects = () => {
         .select('*')
         .eq('status', 'active');
 
-      if (selectedCategory) {
-        query = query.eq('category', selectedCategory);
-      }
-
-      if (selectedStage) {
-        query = query.eq('stage', selectedStage);
-      }
-
       if (searchQuery) {
         query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
-      }
-
-      // Apply sorting
-      switch (sortBy) {
-        case 'newest':
-          query = query.order('created_at', { ascending: false });
-          break;
-        case 'oldest':
-          query = query.order('created_at', { ascending: true });
-          break;
-        case 'team_size_asc':
-          query = query.order('team_size', { ascending: true });
-          break;
-        case 'team_size_desc':
-          query = query.order('team_size', { ascending: false });
-          break;
       }
 
       const { data, error } = await query;
@@ -69,9 +43,9 @@ const Projects = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <div className="container mx-auto px-4 py-24">
+      <div className="flex-1 container mx-auto px-4 py-24">
         <div className="flex justify-between items-center mb-12">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Environmental Impact Projects</h1>
@@ -89,12 +63,6 @@ const Projects = () => {
         <ProjectFilters 
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          selectedStage={selectedStage}
-          onStageChange={setSelectedStage}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
         />
 
         {isLoading ? (
@@ -114,6 +82,8 @@ const Projects = () => {
           </div>
         )}
       </div>
+
+      <Footer />
 
       <SubmitProjectDialog
         isOpen={isSubmitDialogOpen}
