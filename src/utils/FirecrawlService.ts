@@ -29,7 +29,7 @@ class FirecrawlService {
     return this.instance;
   }
 
-  static async crawlWebsite(url: string) {
+  static async crawlWebsite(url: string): Promise<CrawlResponse> {
     const firecrawl = this.getInstance();
     try {
       const response = await firecrawl.crawlUrl(url, {
@@ -44,7 +44,7 @@ class FirecrawlService {
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error occurred'
-      } as ErrorResponse;
+      };
     }
   }
 }
