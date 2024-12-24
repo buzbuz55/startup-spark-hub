@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { usePhoneVerification } from "@/hooks/usePhoneVerification";
 import PhoneVerification from "./PhoneVerification";
 import HobbiesInput from "./HobbiesInput";
-import AiBioGenerator from "./AiBioGenerator";
+import BasicInfoFields from "./form/BasicInfoFields";
+import SocialLinks from "./form/SocialLinks";
+import BioSection from "./form/BioSection";
 
 interface ProfileFormProps {
   profile: {
@@ -86,35 +85,9 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
     }
   };
 
-  const handleBioGenerated = (generatedBio: string) => {
-    setBio(generatedBio);
-  };
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="fullName">Full Name</Label>
-        <Input
-          id="fullName"
-          name="fullName"
-          defaultValue={profile.full_name}
-          placeholder="Enter your full name"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          value={profile.email}
-          disabled
-          className="bg-muted"
-        />
-        <p className="text-sm text-muted-foreground">
-          Email cannot be changed
-        </p>
-      </div>
+      <BasicInfoFields fullName={profile.full_name} email={profile.email} />
 
       <PhoneVerification
         phoneNumber={phoneNumber}
@@ -126,58 +99,18 @@ const ProfileForm = ({ profile, loading, onProfileUpdate, onCancel }: ProfileFor
         onVerifyOTP={handleVerifyOTP}
       />
 
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="bio">Bio</Label>
-          <AiBioGenerator
-            currentBio={bio}
-            fullName={profile.full_name}
-            hobbies={hobbies}
-            onBioGenerated={handleBioGenerated}
-          />
-        </div>
-        <Textarea
-          id="bio"
-          name="bio"
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          placeholder="Tell us about yourself"
-          className="h-24"
-        />
-      </div>
+      <BioSection
+        bio={bio}
+        fullName={profile.full_name}
+        hobbies={hobbies}
+        onBioChange={setBio}
+      />
 
-      <div className="space-y-2">
-        <Label htmlFor="linkedin">LinkedIn URL</Label>
-        <Input
-          id="linkedin"
-          name="linkedin"
-          type="url"
-          defaultValue={profile.linkedin_url || ""}
-          placeholder="https://linkedin.com/in/yourprofile"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="twitter">Twitter URL</Label>
-        <Input
-          id="twitter"
-          name="twitter"
-          type="url"
-          defaultValue={profile.twitter_url || ""}
-          placeholder="https://twitter.com/yourhandle"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="website">Personal Website</Label>
-        <Input
-          id="website"
-          name="website"
-          type="url"
-          defaultValue={profile.website_url || ""}
-          placeholder="https://yourwebsite.com"
-        />
-      </div>
+      <SocialLinks
+        linkedinUrl={profile.linkedin_url}
+        twitterUrl={profile.twitter_url}
+        websiteUrl={profile.website_url}
+      />
 
       <HobbiesInput hobbies={hobbies} onChange={setHobbies} />
 
