@@ -566,6 +566,33 @@ export type Database = {
         }
         Relationships: []
       }
+      scraping_requests: {
+        Row: {
+          created_at: string
+          id: string
+          result: Json | null
+          status: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          result?: Json | null
+          status?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          result?: Json | null
+          status?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       startup_ideas: {
         Row: {
           created_at: string
