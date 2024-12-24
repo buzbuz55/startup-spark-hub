@@ -2,8 +2,7 @@ import { motion } from "framer-motion";
 import OpportunityCards from "./OpportunityCards";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface OpportunitySectionProps {
   setShowInterns: (show: boolean) => void;
@@ -18,13 +17,7 @@ const OpportunitySection = ({
 }: OpportunitySectionProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-  }, []);
+  const { user } = useAuth();
 
   const handlePostJob = () => {
     if (!user) {

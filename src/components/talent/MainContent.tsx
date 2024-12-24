@@ -46,19 +46,11 @@ const MainContent = ({
   setShowJobForm,
   setShowCandidateForm
 }: MainContentProps) => {
-  const handlePostJob = () => {
-    setShowJobForm(true);
-  };
-
-  const handleSubmitProfile = () => {
-    setShowCandidateForm(true);
-  };
-
   return (
     <>
       <TalentPoolHeader 
-        onPostJob={handlePostJob}
-        onSubmitProfile={handleSubmitProfile}
+        onPostJob={() => setShowJobForm(true)}
+        onSubmitProfile={() => setShowCandidateForm(true)}
       />
 
       <TalentHeader onSearch={onSearch} />
