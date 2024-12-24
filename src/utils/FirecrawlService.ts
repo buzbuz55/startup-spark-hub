@@ -33,7 +33,7 @@ class FirecrawlService {
     const firecrawl = this.getInstance();
     try {
       const response = await firecrawl.crawlUrl(url, {
-        maxPages: 10,
+        limit: 10, // Using limit instead of maxPages
         scrapeOptions: {
           formats: ['markdown', 'html'],
         }
