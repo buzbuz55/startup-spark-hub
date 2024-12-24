@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
-import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
-import { Skeleton } from "@/components/ui/skeleton";
+import SearchHeader from "@/components/search/SearchHeader";
+import SearchResults from "@/components/search/SearchResults";
 import type { Project } from "@/components/projects/ProjectCard";
 
 const Search = () => {
@@ -31,27 +31,20 @@ const Search = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Discover Projects</h1>
+      <main className="container mx-auto px-4">
+        <SearchHeader />
         
-        <ProjectFilters 
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
+        <div className="space-y-8">
+          <ProjectFilters 
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="h-[400px] rounded-xl" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects?.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-        )}
+          <SearchResults 
+            projects={projects} 
+            isLoading={isLoading} 
+          />
+        </div>
       </main>
     </div>
   );
