@@ -20,6 +20,15 @@ const AiBioGenerator = ({ currentBio, fullName, hobbies, onBioGenerated }: AiBio
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("User not found");
 
+      // Show a hint toast before generating
+      toast.info(
+        "✨ Magic AI is analyzing your profile...", 
+        { description: currentBio 
+          ? "Enhancing your current bio with AI magic!" 
+          : "Creating a personalized bio based on your hobbies and interests!" 
+        }
+      );
+
       const response = await fetch('/api/generate-bio', {
         method: 'POST',
         headers: {
@@ -37,10 +46,14 @@ const AiBioGenerator = ({ currentBio, fullName, hobbies, onBioGenerated }: AiBio
       
       const { generatedBio } = await response.json();
       onBioGenerated(generatedBio);
-      toast.success("Bio generated successfully!");
+      toast.success("✨ Bio magically generated!", {
+        description: "Your new bio has been crafted with AI magic."
+      });
     } catch (error) {
       console.error('Error generating bio:', error);
-      toast.error("Failed to generate bio");
+      toast.error("Couldn't cast the magic spell", {
+        description: "Please try again in a moment."
+      });
     } finally {
       setIsGenerating(false);
     }
@@ -53,10 +66,10 @@ const AiBioGenerator = ({ currentBio, fullName, hobbies, onBioGenerated }: AiBio
       size="sm"
       onClick={generateBio}
       disabled={isGenerating}
-      className="gap-2"
+      className="gap-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20 transition-all duration-300"
     >
-      <Wand2 className="w-4 h-4" />
-      {isGenerating ? "Generating..." : "Generate AI Bio"}
+      <Wand2 className={`w-4 h-4 ${isGenerating ? 'animate-bounce' : 'animate-pulse'}`} />
+      {isGenerating ? "Casting Magic..." : "Magic AI ✨"}
     </Button>
   );
 };

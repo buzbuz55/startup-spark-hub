@@ -14,10 +14,18 @@ serve(async (req) => {
   try {
     const { currentBio, fullName, hobbies } = await req.json()
 
-    const prompt = `Generate a professional and engaging bio for ${fullName}. 
-    ${currentBio ? `Current bio: ${currentBio}` : ''}
-    Their hobbies include: ${hobbies.join(', ')}.
-    Keep it concise (max 200 words) and professional while showing personality.`
+    const prompt = `As a creative AI assistant, craft an engaging and professional bio for ${fullName}.
+    ${currentBio ? `Their current bio is: "${currentBio}". Please enhance it while maintaining their authentic voice.` : 'Create a fresh, engaging bio that captures their essence.'}
+    Their interests and hobbies include: ${hobbies.join(', ')}.
+    
+    Guidelines:
+    - Keep it concise (max 200 words)
+    - Strike a balance between professional and personable
+    - Incorporate their hobbies naturally
+    - Make it engaging and memorable
+    - Use a friendly, approachable tone
+    
+    Please write the bio in first person perspective.`
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -26,11 +34,12 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4',
         messages: [
-          { role: 'system', content: 'You are a professional bio writer. Create engaging and concise professional bios.' },
+          { role: 'system', content: 'You are a professional bio writer specializing in creating engaging, personalized professional bios.' },
           { role: 'user', content: prompt }
         ],
+        temperature: 0.7,
       }),
     })
 
