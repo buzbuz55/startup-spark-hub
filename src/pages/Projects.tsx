@@ -3,9 +3,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectCard from "@/components/projects/ProjectCard";
 import ProjectFilters from "@/components/projects/ProjectFilters";
-import SubmitProjectDialog from "@/components/projects/SubmitProjectDialog";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -25,7 +22,6 @@ interface Project {
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,14 +34,14 @@ const Projects = () => {
       let query = supabase
         .from('projects')
         .select('*')
-        .eq('status', 'active')
-        .order('created_at', { ascending: false });
+        .eq('status', 'active');
 
+      // Apply search filter if searchQuery exists
       if (searchQuery) {
         query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
       }
 
-      const { data, error } = await query;
+      const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) {
         console.error('Error fetching projects:', error);
@@ -62,26 +58,10 @@ const Projects = () => {
     }
   };
 
-  const handleProjectSubmitted = () => {
-    fetchProjects();
-    setIsSubmitDialogOpen(false);
-    toast.success("Project submitted successfully!");
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-12 md:py-24">
-        <div className="flex justify-end mb-12">
-          <Button 
-            onClick={() => setIsSubmitDialogOpen(true)}
-            className="flex items-center gap-2"
-          >
-            <PlusCircle className="w-5 h-5" />
-            Submit Your Project
-          </Button>
-        </div>
-
         <ProjectFilters 
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
@@ -104,14 +84,7 @@ const Projects = () => {
           </div>
         )}
       </main>
-
       <Footer />
-
-      <SubmitProjectDialog
-        isOpen={isSubmitDialogOpen}
-        onClose={() => setIsSubmitDialogOpen(false)}
-        onSubmitSuccess={handleProjectSubmitted}
-      />
     </div>
   );
 };
