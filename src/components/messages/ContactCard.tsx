@@ -1,49 +1,59 @@
-import { Contact } from "@/types/contacts";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface ContactCardProps {
-  contact: Contact;
-  isSelected: boolean;
-  onClick: () => void;
+  id: string;
+  name: string;
+  avatar: string;
+  lastMessage: string;
+  timestamp: string;
+  unreadCount: number;
+  online: boolean;
+  isSelected?: boolean;
+  onClick?: () => void;
 }
 
-const ContactCard = ({ contact, isSelected, onClick }: ContactCardProps) => {
+const ContactCard = ({
+  name,
+  avatar,
+  lastMessage,
+  timestamp,
+  unreadCount,
+  online,
+  isSelected,
+  onClick,
+}: ContactCardProps) => {
   return (
     <div
       className={cn(
-        "flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-colors",
-        isSelected ? "bg-primary/10" : "hover:bg-muted"
+        "flex items-center gap-3 p-3 cursor-pointer hover:bg-muted/50 rounded-lg transition-colors",
+        isSelected && "bg-muted"
       )}
       onClick={onClick}
     >
-      <Avatar className="h-10 w-10 border-2 border-background">
-        <AvatarImage src={contact.avatar} alt={contact.name} />
-      </Avatar>
-      <div className="flex-1 min-w-0">
-        <div className="flex justify-between items-start">
-          <div>
-            <p className="font-medium text-sm">{contact.name}</p>
-            <p className="text-xs text-muted-foreground">
-              {contact.role}
-            </p>
-          </div>
-          {contact.timestamp && (
-            <span className="text-xs text-muted-foreground whitespace-nowrap">
-              {contact.timestamp}
-            </span>
-          )}
-        </div>
-        {contact.lastMessage && (
-          <p className="text-xs text-muted-foreground truncate mt-1">
-            {contact.lastMessage}
-          </p>
+      <div className="relative">
+        <Avatar>
+          <AvatarImage src={avatar} alt={name} />
+          <AvatarFallback>{name[0]}</AvatarFallback>
+        </Avatar>
+        {online && (
+          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-background rounded-full" />
         )}
       </div>
-      {contact.unread && contact.unread > 0 && (
-        <div className="bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-          {contact.unread}
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-start">
+          <h3 className="font-semibold truncate">{name}</h3>
+          <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
+            {timestamp}
+          </span>
         </div>
+        <p className="text-sm text-muted-foreground truncate">{lastMessage}</p>
+      </div>
+      {unreadCount > 0 && (
+        <Badge variant="default" className="rounded-full">
+          {unreadCount}
+        </Badge>
       )}
     </div>
   );

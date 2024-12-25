@@ -1,70 +1,64 @@
-export const exampleMessages = [
-  {
-    id: "1",
-    senderId: "current-user",
-    text: "Hi Sarah, I saw your startup focusing on sustainable agriculture tech. Very impressed!",
-    timestamp: "9:30 AM",
-    status: "read" as const,
-  },
-  {
-    id: "2",
-    senderId: "other-user",
-    text: "Thank you! Yes, we've developed a system that reduces water usage by 70% while increasing yield.",
-    timestamp: "9:31 AM",
-  },
-  {
-    id: "3",
-    senderId: "current-user",
-    text: "Those are impressive metrics. What kind of funding are you looking for?",
-    timestamp: "9:32 AM",
-    status: "delivered" as const,
-  },
-];
+import { Message } from "@/types/messages";
 
 export const exampleContacts = [
   {
     id: "1",
-    name: "Sarah Chen",
-    role: "Founder, AgriTech Solutions",
-    avatar: "https://ui.shadcn.com/avatars/01.png",
-    lastMessage: "Thank you! Yes, we've developed a system that reduces water usage...",
-    timestamp: "9:31 AM",
-    unread: 0,
+    name: "Sarah Miller",
+    avatar: "https://ui-avatars.com/api/?name=Sarah+Miller&background=random",
+    lastMessage: "Let's discuss the startup proposal",
+    timestamp: "18:19",
+    unreadCount: 2,
+    online: true,
   },
   {
     id: "2",
-    name: "Michael Rodriguez",
-    role: "Tech Lead, AI Innovations",
-    avatar: "https://ui.shadcn.com/avatars/02.png",
-    lastMessage: "Let's schedule a call to discuss the integration details.",
-    timestamp: "Yesterday",
-    unread: 2,
+    name: "Tech Innovators Group",
+    avatar: "https://ui-avatars.com/api/?name=Tech+Innovators&background=random",
+    lastMessage: "New poll: Meeting time for tomorrow",
+    timestamp: "17:42",
+    unreadCount: 0,
+    online: false,
   },
   {
     id: "3",
-    name: "Emma Watson",
-    role: "Product Manager, FinTech",
-    avatar: "https://ui.shadcn.com/avatars/03.png",
-    lastMessage: "The new feature looks promising. When can we test it?",
-    timestamp: "2 days ago",
-    unread: 1,
+    name: "Alex Chen",
+    avatar: "https://ui-avatars.com/api/?name=Alex+Chen&background=random",
+    lastMessage: "Shared project files",
+    timestamp: "Yesterday",
+    unreadCount: 1,
+    online: true,
   },
   {
     id: "4",
-    name: "David Kim",
-    role: "Investor, Venture Capital",
-    avatar: "https://ui.shadcn.com/avatars/04.png",
-    lastMessage: "I'd like to learn more about your revenue projections.",
-    timestamp: "3 days ago",
-    unread: 0,
+    name: "Startup Mentors",
+    avatar: "https://ui-avatars.com/api/?name=Startup+Mentors&background=random",
+    lastMessage: "Check out the latest resources",
+    timestamp: "Yesterday",
+    unreadCount: 5,
+    online: false,
   },
   {
     id: "5",
-    name: "Lisa Thompson",
-    role: "CEO, Health Analytics",
-    avatar: "https://ui.shadcn.com/avatars/05.png",
-    lastMessage: "Great presentation yesterday! Let's collaborate.",
-    timestamp: "1 week ago",
-    unread: 0,
+    name: "Jessica Wong",
+    avatar: "https://ui-avatars.com/api/?name=Jessica+Wong&background=random",
+    lastMessage: "Thanks for the feedback!",
+    timestamp: "19/8/2024",
+    unreadCount: 0,
+    online: true,
+  }
+];
+
+export const exampleMessages: Message[] = [
+  {
+    id: "1",
+    senderId: "other-user",
+    text: "Hey! How's the project coming along?",
+    timestamp: "10:00 AM"
   },
+  {
+    id: "2",
+    senderId: "current-user",
+    text: "Going great! Just finished the main features.",
+    timestamp: "10:05 AM"
+  }
 ];

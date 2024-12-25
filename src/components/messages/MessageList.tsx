@@ -33,28 +33,6 @@ const MessageList = ({ messages, onEmojiSelect, onEditMessage, onlineUsers }: Me
           />
         ))}
       </div>
-      <Popover open={showEmojis} onOpenChange={setShowEmojis}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute bottom-4 right-4"
-          >
-            <Smile className="h-5 w-5" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-full p-0" align="end">
-          <Picker
-            data={data}
-            onEmojiSelect={(emoji: any) => {
-              if (onEmojiSelect) {
-                onEmojiSelect(emoji);
-                setShowEmojis(false);
-              }
-            }}
-          />
-        </PopoverContent>
-      </Popover>
     </ScrollArea>
   );
 };
