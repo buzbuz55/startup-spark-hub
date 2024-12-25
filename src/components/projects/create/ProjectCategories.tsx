@@ -70,6 +70,8 @@ export const ProjectCategories = ({ formData, onChange }: ProjectCategoriesProps
             <SelectContent>
               <SelectItem value="idea">Idea Phase</SelectItem>
               <SelectItem value="mvp">MVP</SelectItem>
+              <SelectItem value="beta">Beta</SelectItem>
+              <SelectItem value="launched">Launched</SelectItem>
               <SelectItem value="growth">Growth</SelectItem>
             </SelectContent>
           </Select>
