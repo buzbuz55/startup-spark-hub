@@ -142,11 +142,11 @@ const ProjectForm = ({ onClose, onSubmitSuccess }: ProjectFormProps) => {
               <SelectValue placeholder="Project Stage" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="concept">Concept</SelectItem>
-              <SelectItem value="prototype">Prototype</SelectItem>
-              <SelectItem value="development">Development</SelectItem>
+              <SelectItem value="idea">Idea Phase</SelectItem>
+              <SelectItem value="mvp">MVP</SelectItem>
+              <SelectItem value="beta">Beta</SelectItem>
               <SelectItem value="launched">Launched</SelectItem>
-              <SelectItem value="scaling">Scaling</SelectItem>
+              <SelectItem value="growth">Growth</SelectItem>
             </SelectContent>
           </Select>
 
