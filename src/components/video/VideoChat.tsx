@@ -22,10 +22,16 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
   useEffect(() => {
     const initializeVideoChat = async () => {
       try {
+        // Request both audio and video permissions upfront
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: {
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+            facingMode: "user"
+          },
           audio: true,
         });
+        
         setLocalStream(stream);
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = stream;
@@ -60,6 +66,7 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
           }
         };
 
+        // Subscribe to the signaling channel
         const channel = supabase
           .channel(`video-${roomId}`)
           .on('broadcast', { event: 'signal' }, ({ payload }) => {
@@ -69,6 +76,7 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
           })
           .subscribe();
 
+        // Create and send offer
         const offer = await pc.createOffer();
         await pc.setLocalDescription(offer);
         sendSignalingData(offer);
@@ -76,9 +84,13 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
         return () => {
           channel.unsubscribe();
         };
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error initializing video chat:", error);
-        toast.error("Failed to initialize video chat");
+        if (error.name === "NotAllowedError") {
+          toast.error("Please allow camera and microphone access to use video chat");
+        } else {
+          toast.error("Failed to initialize video chat");
+        }
       }
     };
 
@@ -150,9 +162,9 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-background/90 backdrop-blur-lg z-50 flex items-center justify-center">
-      <div className="relative w-full max-w-6xl p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 aspect-video">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-xl z-50 flex items-center justify-center">
+      <div className="relative w-full max-w-7xl p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 aspect-video">
           <VideoStream 
             videoRef={remoteVideoRef} 
             isSelf={false} 
@@ -166,13 +178,17 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
             label="You"
           />
         </div>
-        <VideoControls
-          isAudioEnabled={isAudioEnabled}
-          isVideoEnabled={isVideoEnabled}
-          onToggleAudio={toggleAudio}
-          onToggleVideo={toggleVideo}
-          onEndCall={handleEndCall}
-        />
+        <div className="absolute inset-x-0 bottom-12 flex justify-center">
+          <div className="bg-black/20 backdrop-blur-lg rounded-full p-4">
+            <VideoControls
+              isAudioEnabled={isAudioEnabled}
+              isVideoEnabled={isVideoEnabled}
+              onToggleAudio={toggleAudio}
+              onToggleVideo={toggleVideo}
+              onEndCall={handleEndCall}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
