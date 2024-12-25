@@ -1,18 +1,19 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useMeetingForm } from "./MeetingFormContext";
 import { TimeSlot } from "./types";
 
 interface TimeSlotSelectorProps {
   timeSlots: TimeSlot[];
-  selectedTime: string;
-  onTimeSelect: (time: string) => void;
 }
 
-const TimeSlotSelector = ({ timeSlots, selectedTime, onTimeSelect }: TimeSlotSelectorProps) => {
+export function TimeSlotSelector({ timeSlots }: TimeSlotSelectorProps) {
+  const { formData, setFormData } = useMeetingForm();
+
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium">Select Time (EST)</label>
-      <Select value={selectedTime} onValueChange={onTimeSelect}>
+      <Select value={formData.selectedTime} onValueChange={(time) => setFormData({ ...formData, selectedTime: time })}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select time" />
         </SelectTrigger>
@@ -33,6 +34,4 @@ const TimeSlotSelector = ({ timeSlots, selectedTime, onTimeSelect }: TimeSlotSel
       </Select>
     </div>
   );
-};
-
-export default TimeSlotSelector;
+}
