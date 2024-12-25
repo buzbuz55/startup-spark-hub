@@ -34,7 +34,14 @@ const ContactsList = ({
             filteredContacts.map((contact) => (
               <ContactCard
                 key={contact.id}
-                {...contact}
+                id={contact.id}
+                name={contact.name}
+                role={contact.role}
+                avatar={contact.avatar}
+                lastMessage={contact.lastMessage || ""}
+                timestamp={contact.timestamp || ""}
+                unreadCount={contact.unreadCount || 0}
+                online={contact.online || false}
                 isSelected={selectedChat === contact.id}
                 onClick={() => onSelectChat(contact.id)}
               />

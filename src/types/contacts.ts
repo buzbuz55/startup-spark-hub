@@ -2,10 +2,11 @@ export interface Contact {
   id: string;
   name: string;
   role?: string;
-  avatar?: string;
+  avatar: string;
   lastMessage?: string;
   timestamp?: string;
-  unread?: number;
+  unreadCount: number;
+  online: boolean;
 }
 
 export interface ContactsListProps {

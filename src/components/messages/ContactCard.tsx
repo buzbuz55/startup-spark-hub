@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-interface ContactCardProps {
+export interface ContactCardProps {
   id: string;
   name: string;
   role?: string;

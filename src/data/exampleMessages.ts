@@ -58,12 +58,49 @@ export const exampleMessages: Message[] = [
     id: "1",
     senderId: "other-user",
     text: "Hey! How's the project coming along?",
-    timestamp: "10:00 AM"
+    timestamp: "10:00 AM",
+    status: "read"
   },
   {
     id: "2",
     senderId: "current-user",
     text: "Going great! Just finished the main features.",
-    timestamp: "10:05 AM"
+    timestamp: "10:05 AM",
+    status: "delivered"
+  },
+  {
+    id: "3",
+    senderId: "other-user",
+    text: "That's awesome! Can you share some screenshots?",
+    timestamp: "10:07 AM",
+    status: "read"
+  },
+  {
+    id: "4",
+    senderId: "current-user",
+    text: "Sure! I'll prepare them and send them over shortly.",
+    timestamp: "10:10 AM",
+    status: "sent"
+  },
+  {
+    id: "5",
+    senderId: "other-user",
+    text: "Perfect! Also, when are you free for a quick call to discuss the next sprint?",
+    timestamp: "10:12 AM",
+    status: "delivered"
+  },
+  {
+    id: "6",
+    senderId: "current-user",
+    text: "I'm available tomorrow between 2-5 PM. Would that work for you?",
+    timestamp: "10:15 AM",
+    status: "sent"
+  },
+  {
+    id: "7",
+    senderId: "other-user",
+    text: "Yes, let's do 3 PM tomorrow! I'll send a calendar invite.",
+    timestamp: "10:17 AM",
+    status: "delivered"
   }
 ];
