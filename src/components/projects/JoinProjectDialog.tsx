@@ -11,7 +11,7 @@ interface JoinProjectDialogProps {
   isOpen: boolean;
   onClose: () => void;
   projectName: string;
-  projectId: string;
+  projectId: string; // Changed type to string to match UUID
 }
 
 const JoinProjectDialog = ({ isOpen, onClose, projectName, projectId }: JoinProjectDialogProps) => {
@@ -42,7 +42,11 @@ const JoinProjectDialog = ({ isOpen, onClose, projectName, projectId }: JoinProj
         .eq('id', projectId)
         .single();
 
-      if (projectError) throw projectError;
+      if (projectError) {
+        console.error('Project error:', projectError);
+        toast.error("Failed to fetch project details");
+        return;
+      }
 
       // Create the application
       const { error: applicationError } = await supabase
@@ -55,7 +59,11 @@ const JoinProjectDialog = ({ isOpen, onClose, projectName, projectId }: JoinProj
           status: 'pending'
         });
 
-      if (applicationError) throw applicationError;
+      if (applicationError) {
+        console.error('Application error:', applicationError);
+        toast.error("Failed to submit application");
+        return;
+      }
 
       // Create notification for project creator
       const { error: notificationError } = await supabase
@@ -68,7 +76,10 @@ const JoinProjectDialog = ({ isOpen, onClose, projectName, projectId }: JoinProj
           link: `/projects/${projectId}/applications`
         });
 
-      if (notificationError) throw notificationError;
+      if (notificationError) {
+        console.error('Notification error:', notificationError);
+        // Don't return here, as the application was still created successfully
+      }
 
       toast.success("Application submitted successfully!");
       navigate(`/messages?project=${projectId}`);
