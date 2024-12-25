@@ -20,8 +20,8 @@ export function TimeSlotSelector({ timeSlots }: TimeSlotSelectorProps) {
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select time" />
         </SelectTrigger>
-        <SelectContent>
-          <ScrollArea className="h-[280px] rounded-md">
+        <SelectContent className="h-[280px] overflow-hidden">
+          <ScrollArea className="h-full w-full">
             <div className="p-2">
               {timeSlots.map((slot) => (
                 <SelectItem
