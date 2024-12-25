@@ -7,12 +7,12 @@ interface OpportunityCardsProps {
 
 const OpportunityCards = ({ onInternshipsClick }: OpportunityCardsProps) => {
   return (
-    <div className="grid md:grid-cols-3 gap-3 max-w-4xl mx-auto">
+    <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
       <OpportunityCard
         title="Hire Full-time Talent"
         description="For companies looking to build their dream team"
         icon={Briefcase}
-        iconColor="text-purple-600"
+        iconColor="text-primary"
         gradientFrom="purple-100"
         buttonText="Browse Candidates"
         linkTo="/vc-dashboard"

@@ -57,10 +57,10 @@ const TalentPoolHeader = ({ onPostJob, onSubmitProfile }: TalentPoolHeaderProps)
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
+    <div className="flex justify-center items-center gap-4 mb-12 mt-6">
       <Button 
         onClick={handlePostJob}
-        className="w-full sm:w-auto bg-primary hover:bg-primary/90 transition-colors"
+        className="bg-primary hover:bg-primary/90 text-white transition-colors px-6"
         size="lg"
       >
         <PlusCircle className="mr-2 h-5 w-5" />
@@ -71,7 +71,7 @@ const TalentPoolHeader = ({ onPostJob, onSubmitProfile }: TalentPoolHeaderProps)
         onClick={handleSubmitProfile}
         variant="outline"
         size="lg"
-        className="w-full sm:w-auto hover:bg-secondary/80 transition-colors"
+        className="border-2 hover:bg-secondary/80 transition-colors px-6"
       >
         <UserPlus className="mr-2 h-5 w-5" />
         Submit Your Profile
