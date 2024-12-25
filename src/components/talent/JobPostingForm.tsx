@@ -37,10 +37,37 @@ const JobPostingForm = ({ companyFormData, setCompanyFormData, onClose }: JobPos
         return;
       }
 
-      // Create a new team position
+      // First, get or create a company for the user
+      let { data: existingCompany } = await supabase
+        .from('companies')
+        .select('id')
+        .eq('created_by', user.id)
+        .single();
+
+      let companyId;
+
+      if (!existingCompany) {
+        // Create a new company if none exists
+        const { data: newCompany, error: companyError } = await supabase
+          .from('companies')
+          .insert({
+            name: `${user.email}'s Company`, // Default name, can be updated later
+            created_by: user.id
+          })
+          .select('id')
+          .single();
+
+        if (companyError) throw companyError;
+        companyId = newCompany.id;
+      } else {
+        companyId = existingCompany.id;
+      }
+
+      // Create a new team position with the company_id
       const { error } = await supabase
         .from('team_positions')
         .insert({
+          company_id: companyId,
           title: companyFormData.position,
           description: companyFormData.description,
           requirements: companyFormData.requirements.split(',').map(req => req.trim()),
