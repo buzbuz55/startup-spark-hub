@@ -1,5 +1,6 @@
 export interface MeetingFormData {
   guestEmail: string;
+  subject: string;
   selectedDate: Date | undefined;
   selectedTime: string;
 }

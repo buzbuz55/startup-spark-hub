@@ -45,12 +45,12 @@ const HeaderActions = () => {
           Start Video Call
         </span>
       </Button>
+      <MeetingDialog />
       <Link to="/messages">
         <Button variant="ghost" size="icon">
           <MessageSquare className="w-4 h-4" />
         </Button>
       </Link>
-      <MeetingDialog />
 
       {isVideoModalOpen && (
         <VideoChat
