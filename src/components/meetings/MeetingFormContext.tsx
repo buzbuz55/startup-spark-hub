@@ -1,5 +1,13 @@
 import { createContext, useContext, useState } from "react";
-import { MeetingFormData } from "./types";
+
+export interface MeetingFormData {
+  guestEmail: string;
+  subject: string;
+  selectedDate: Date | undefined;
+  selectedTime: string;
+  attachedFile: File | null;
+  message?: string;
+}
 
 interface MeetingFormContextType {
   formData: MeetingFormData;

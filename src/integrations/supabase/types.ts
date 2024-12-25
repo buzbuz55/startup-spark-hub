@@ -237,34 +237,43 @@ export type Database = {
       }
       meetings: {
         Row: {
+          attachment_url: string | null
           created_at: string
           creator_id: string
           guest_email: string | null
           id: string
           meeting_link: string | null
+          message: string | null
           room_id: string
           scheduled_date: string
           status: string | null
+          subject: string | null
         }
         Insert: {
+          attachment_url?: string | null
           created_at?: string
           creator_id: string
           guest_email?: string | null
           id?: string
           meeting_link?: string | null
+          message?: string | null
           room_id: string
           scheduled_date: string
           status?: string | null
+          subject?: string | null
         }
         Update: {
+          attachment_url?: string | null
           created_at?: string
           creator_id?: string
           guest_email?: string | null
           id?: string
           meeting_link?: string | null
+          message?: string | null
           room_id?: string
           scheduled_date?: string
           status?: string | null
+          subject?: string | null
         }
         Relationships: []
       }
