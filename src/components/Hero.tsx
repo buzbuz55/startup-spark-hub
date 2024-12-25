@@ -1,4 +1,4 @@
-import { MessageSquare, Users, Rocket, Discord } from "lucide-react";
+import { MessageSquare, Users, Rocket, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -40,7 +40,7 @@ const Hero = () => {
             size={isMobile ? "default" : "lg"}
             className="bg-[#5865F2] hover:bg-[#4752C4] text-white"
           >
-            <Discord className="mr-2 h-5 w-5" />
+            <MessageCircle className="mr-2 h-5 w-5" />
             Join our Discord
           </Button>
         </a>
