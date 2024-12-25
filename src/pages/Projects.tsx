@@ -72,11 +72,7 @@ const Projects = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-12 md:py-24">
-        <div className="flex justify-between items-center mb-12">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Environmental Impact Projects</h1>
-            <p className="text-xl text-gray-600">Join innovative projects making a difference for our planet</p>
-          </div>
+        <div className="flex justify-end mb-12">
           <Button 
             onClick={() => setIsSubmitDialogOpen(true)}
             className="flex items-center gap-2"
