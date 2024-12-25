@@ -9,10 +9,24 @@ import { PlusCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  team_size: number;
+  stage: string;
+  location?: string;
+  collaboration_type?: string;
+  is_hiring?: boolean;
+  created_at: string;
+  logo_url?: string;
+}
+
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +38,8 @@ const Projects = () => {
       let query = supabase
         .from('projects')
         .select('*')
-        .eq('status', 'active');
+        .eq('status', 'active')
+        .order('created_at', { ascending: false });
 
       if (searchQuery) {
         query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
@@ -32,8 +47,13 @@ const Projects = () => {
 
       const { data, error } = await query;
 
-      if (error) throw error;
-      setProjects(data);
+      if (error) {
+        console.error('Error fetching projects:', error);
+        toast.error("Failed to load projects");
+        return;
+      }
+
+      setProjects(data || []);
     } catch (error) {
       console.error('Error:', error);
       toast.error("Failed to fetch projects");
@@ -42,10 +62,16 @@ const Projects = () => {
     }
   };
 
+  const handleProjectSubmitted = () => {
+    fetchProjects();
+    setIsSubmitDialogOpen(false);
+    toast.success("Project submitted successfully!");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <div className="flex-1 container mx-auto px-4 py-24">
+      <main className="flex-1 container mx-auto px-4 py-12 md:py-24">
         <div className="flex justify-between items-center mb-12">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Environmental Impact Projects</h1>
@@ -81,13 +107,14 @@ const Projects = () => {
             ))}
           </div>
         )}
-      </div>
+      </main>
 
       <Footer />
 
       <SubmitProjectDialog
         isOpen={isSubmitDialogOpen}
         onClose={() => setIsSubmitDialogOpen(false)}
+        onSubmitSuccess={handleProjectSubmitted}
       />
     </div>
   );

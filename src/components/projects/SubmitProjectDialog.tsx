@@ -4,9 +4,10 @@ import ProjectForm from "./submit/ProjectForm";
 interface SubmitProjectDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onSubmitSuccess: () => void;
 }
 
-const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
+const SubmitProjectDialog = ({ isOpen, onClose, onSubmitSuccess }: SubmitProjectDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[600px]">
@@ -16,7 +17,7 @@ const SubmitProjectDialog = ({ isOpen, onClose }: SubmitProjectDialogProps) => {
             Share your environmental impact project with our community.
           </DialogDescription>
         </DialogHeader>
-        <ProjectForm onClose={onClose} />
+        <ProjectForm onClose={onClose} onSubmitSuccess={onSubmitSuccess} />
       </DialogContent>
     </Dialog>
   );
