@@ -10,17 +10,18 @@ interface TimeSlotSelectorProps {
 const TimeSlotSelector = ({ timeSlots, selectedTime, onTimeSelect }: TimeSlotSelectorProps) => {
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">Select Time</label>
+      <label className="text-sm font-medium">Select Time (EST)</label>
       <Select value={selectedTime} onValueChange={onTimeSelect}>
-        <SelectTrigger>
+        <SelectTrigger className="w-full">
           <SelectValue placeholder="Select time" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="max-h-[300px]">
           {timeSlots.map((slot) => (
             <SelectItem
               key={slot.time}
               value={slot.time}
               disabled={slot.disabled}
+              className="py-2"
             >
               {slot.time}
             </SelectItem>

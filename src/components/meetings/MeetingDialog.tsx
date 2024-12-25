@@ -19,14 +19,16 @@ const MeetingDialog = ({ open, onOpenChange }: MeetingDialogProps) => {
     guestEmail: "",
     subject: "",
     selectedDate: undefined,
-    selectedTime: "10:00",
+    selectedTime: "09:00 AM",
   });
 
   const generateTimeSlots = (): TimeSlot[] => {
     const slots: TimeSlot[] = [];
-    for (let hour = 9; hour <= 17; hour++) {
+    for (let hour = 0; hour < 24; hour++) {
       for (let minute of [0, 30]) {
-        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+        const period = hour >= 12 ? 'PM' : 'AM';
+        const timeString = `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${period} EST`;
         const today = startOfToday();
         const slotDate = formData.selectedDate ? 
           new Date(formData.selectedDate.setHours(hour, minute)) : 
@@ -54,10 +56,18 @@ const MeetingDialog = ({ open, onOpenChange }: MeetingDialogProps) => {
         return;
       }
 
+      // Parse the time string to get hours and minutes
+      const [time, period] = formData.selectedTime.split(' ');
+      const [hours, minutes] = time.split(':');
+      let hour = parseInt(hours);
+      
+      // Convert to 24-hour format
+      if (period === 'PM' && hour !== 12) hour += 12;
+      if (period === 'AM' && hour === 12) hour = 0;
+
       // Combine date and time
       const meetingDateTime = new Date(formData.selectedDate);
-      const [hours, minutes] = formData.selectedTime.split(':');
-      meetingDateTime.setHours(parseInt(hours), parseInt(minutes));
+      meetingDateTime.setHours(hour, parseInt(minutes));
 
       // Validate meeting time is in the future
       if (isBefore(meetingDateTime, new Date())) {
@@ -108,9 +118,9 @@ const MeetingDialog = ({ open, onOpenChange }: MeetingDialogProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Schedule a Meeting</DialogTitle>
+          <DialogTitle className="text-2xl font-bold text-center mb-4">Schedule a Meeting</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-6 py-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">Guest Email</label>
             <Input
@@ -118,6 +128,7 @@ const MeetingDialog = ({ open, onOpenChange }: MeetingDialogProps) => {
               placeholder="Enter guest email"
               value={formData.guestEmail}
               onChange={(e) => setFormData({ ...formData, guestEmail: e.target.value })}
+              className="w-full"
             />
           </div>
 
@@ -128,19 +139,22 @@ const MeetingDialog = ({ open, onOpenChange }: MeetingDialogProps) => {
               placeholder="Enter meeting subject"
               value={formData.subject}
               onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+              className="w-full"
             />
           </div>
 
           <div className="space-y-2">
             <label className="text-sm font-medium">Select Date</label>
-            <Calendar
-              mode="single"
-              selected={formData.selectedDate}
-              onSelect={(date) => setFormData({ ...formData, selectedDate: date })}
-              disabled={(date) => isBefore(date, startOfToday())}
-              initialFocus
-              className="rounded-md border"
-            />
+            <div className="flex justify-center">
+              <Calendar
+                mode="single"
+                selected={formData.selectedDate}
+                onSelect={(date) => setFormData({ ...formData, selectedDate: date })}
+                disabled={(date) => isBefore(date, startOfToday())}
+                initialFocus
+                className="rounded-md border"
+              />
+            </div>
           </div>
 
           <TimeSlotSelector
@@ -149,7 +163,7 @@ const MeetingDialog = ({ open, onOpenChange }: MeetingDialogProps) => {
             onTimeSelect={(time) => setFormData({ ...formData, selectedTime: time })}
           />
 
-          <Button onClick={handleScheduleMeeting} className="w-full">
+          <Button onClick={handleScheduleMeeting} className="w-full bg-primary hover:bg-primary/90">
             Schedule Meeting
           </Button>
         </div>
