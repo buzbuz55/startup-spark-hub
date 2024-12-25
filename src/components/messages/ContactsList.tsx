@@ -41,15 +41,34 @@ const ContactsList = ({
         
         if (!user) return;
 
+        // Fetch contacts with their profile information
         const { data: contactsData, error } = await supabase
           .from("contacts")
-          .select("*")
+          .select(`
+            *,
+            contact_profile:profiles!contacts_contact_id_fkey (
+              full_name,
+              avatar_url,
+              email
+            )
+          `)
           .eq("user_id", user.id);
 
         if (error) throw error;
 
         if (contactsData && contactsData.length > 0) {
-          setContacts(contactsData);
+          // Map the Supabase data to our Contact interface
+          const formattedContacts: Contact[] = contactsData.map((contact) => ({
+            id: contact.contact_id,
+            name: contact.contact_profile?.full_name || "Unknown User",
+            avatar: contact.contact_profile?.avatar_url,
+            role: contact.contact_profile?.email,
+            // You can add these fields later when implementing real-time messaging
+            lastMessage: undefined,
+            timestamp: undefined,
+            unread: 0
+          }));
+          setContacts(formattedContacts);
         }
       } catch (error) {
         console.error("Error fetching contacts:", error);
