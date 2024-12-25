@@ -1,4 +1,4 @@
-import { MessageSquare, Users, Rocket } from "lucide-react";
+import { MessageSquare, Users, Rocket, Discord } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -17,7 +17,7 @@ const Hero = () => {
         <p className="text-sm sm:text-base md:text-lg text-purple-100 mb-8 max-w-xl mx-auto px-4">
           Connect with co-founders, build your MVP, and get funded. Start your journey today! 🚀
         </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-3 px-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 px-4 mb-4">
           <Link to="/submit-idea" className="w-full sm:w-auto">
             <Button size={isMobile ? "default" : "lg"} className="w-full sm:w-auto bg-white text-purple-700 hover:bg-purple-100 font-semibold">
               Share Your Idea
@@ -29,6 +29,21 @@ const Hero = () => {
             </Button>
           </Link>
         </div>
+        <a 
+          href="https://discord.gg/4xjVbtNH" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="inline-block mb-8"
+        >
+          <Button 
+            variant="secondary" 
+            size={isMobile ? "default" : "lg"}
+            className="bg-[#5865F2] hover:bg-[#4752C4] text-white"
+          >
+            <Discord className="mr-2 h-5 w-5" />
+            Join our Discord
+          </Button>
+        </a>
         <div className="grid grid-cols-3 gap-2 sm:gap-4 max-w-lg mx-auto">
           <FeatureIcon icon={MessageSquare} text="Chat" />
           <FeatureIcon icon={Users} text="Team Up" />
