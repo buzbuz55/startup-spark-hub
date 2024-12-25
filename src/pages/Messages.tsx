@@ -22,13 +22,9 @@ const Messages = () => {
     roomId: string;
     userId: string;
   } | null>(null);
-  const [currentGroup, setCurrentGroup] = useState<any>(null);
 
   const { messages: realMessages, updateMessage } = useMessaging(selectedChat);
-  const { isTyping, onlineUsers, sendTypingIndicator } = useChatRealtime(
-    selectedChat,
-    !!currentGroup
-  );
+  const { isTyping, onlineUsers, sendTypingIndicator } = useChatRealtime(selectedChat);
 
   // Use example or real messages based on whether a chat is selected
   const messages = selectedChat ? realMessages : exampleMessages;
@@ -53,13 +49,7 @@ const Messages = () => {
         return;
       }
 
-      const messageData = createMessageData(
-        message,
-        user.id,
-        selectedChat,
-        currentGroup?.id
-      );
-
+      const messageData = createMessageData(message, user.id, selectedChat);
       const { error } = await supabase.from("messages").insert(messageData);
 
       if (error) throw error;
@@ -81,34 +71,30 @@ const Messages = () => {
       <Header />
       <div className="container mx-auto px-4 pt-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 h-[calc(100vh-120px)]">
-          <ContactsList
-            selectedChat={selectedChat}
-            onSelectChat={setSelectedChat}
-            onGroupSelect={setCurrentGroup}
-            defaultContacts={exampleContacts}
-          />
+          <div className="md:col-span-1 h-full">
+            <ContactsList
+              selectedChat={selectedChat}
+              onSelectChat={setSelectedChat}
+              defaultContacts={exampleContacts}
+            />
+          </div>
 
-          <div className="md:col-span-2 bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg flex flex-col">
+          <div className="md:col-span-2 bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg flex flex-col h-full">
             {selectedChat ? (
               <>
                 <ChatHeader
                   contact={getSelectedContact()}
-                  group={currentGroup}
                   onStartVideoCall={() => {
                     toast.info("Video calls are not available in demo mode");
                   }}
-                  onLeaveGroup={() => {
-                    toast.info("Group actions are not available in demo mode");
-                  }}
-                  onAddMember={() => {
-                    toast.info("Group actions are not available in demo mode");
-                  }}
                 />
-                <MessageList
-                  messages={messages}
-                  onEditMessage={updateMessage}
-                  onlineUsers={onlineUsers}
-                />
+                <div className="flex-1 overflow-hidden">
+                  <MessageList
+                    messages={messages}
+                    onEditMessage={updateMessage}
+                    onlineUsers={onlineUsers}
+                  />
+                </div>
                 <ChatInput
                   message={message}
                   setMessage={setMessage}
@@ -119,7 +105,7 @@ const Messages = () => {
               </>
             ) : (
               <div className="flex-1 flex items-center justify-center text-muted-foreground">
-                Select a conversation to start messaging with founders and VCs
+                Select a conversation to start messaging
               </div>
             )}
           </div>
