@@ -3,26 +3,26 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const Testimonials = () => {
   return (
-    <div className="py-24 bg-gray-50">
-      <div className="container mx-auto px-4">
+    <div className="py-28 bg-gray-50">
+      <div className="container mx-auto px-4 max-w-6xl">
         <h2 className="text-4xl font-bold text-center mb-16">
           Backed by Top VCs and Founders
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="bg-white">
-              <CardContent className="pt-6">
-                <div className="flex items-center mb-4">
-                  <Avatar className="h-10 w-10">
+            <Card key={index} className="bg-white hover:shadow-lg transition-all">
+              <CardContent className="p-8">
+                <div className="flex items-center mb-6">
+                  <Avatar className="h-12 w-12">
                     <AvatarImage src={testimonial.avatar} />
                     <AvatarFallback>{testimonial.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="ml-4">
-                    <div className="font-semibold">{testimonial.name}</div>
+                    <div className="font-semibold text-lg">{testimonial.name}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                 </div>
-                <p className="text-gray-600">{testimonial.quote}</p>
+                <p className="text-gray-600 text-lg leading-relaxed">{testimonial.quote}</p>
               </CardContent>
             </Card>
           ))}

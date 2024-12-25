@@ -3,22 +3,25 @@ import { Card } from "@/components/ui/card";
 
 const Features = () => {
   return (
-    <div className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
+    <div className="py-20 bg-white">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
           Build Your Startup Fast 🚀
         </h2>
-        <p className="text-lg text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-lg text-center text-gray-600 mb-16 max-w-2xl mx-auto">
           Everything you need to transform your idea into a successful startup
         </p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="p-6 hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-white to-purple-50">
-              <div className="h-12 w-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
+            <Card 
+              key={index} 
+              className="p-8 hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-white to-purple-50/50 group"
+            >
+              <div className="h-12 w-12 rounded-xl bg-purple-100 flex items-center justify-center mb-6 group-hover:bg-purple-200 transition-colors">
                 <feature.icon className="h-6 w-6 text-purple-600" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.description}</p>
+              <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+              <p className="text-gray-600">{feature.description}</p>
             </Card>
           ))}
         </div>
