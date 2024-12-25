@@ -14,6 +14,8 @@ export function MeetingFormProvider({ children }: { children: React.ReactNode })
     subject: "",
     selectedDate: undefined,
     selectedTime: "09:00 AM",
+    attachedFile: null,
+    message: "",
   });
 
   return (

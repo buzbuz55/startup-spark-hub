@@ -3,6 +3,8 @@ export interface MeetingFormData {
   subject: string;
   selectedDate: Date | undefined;
   selectedTime: string;
+  attachedFile?: File | null;
+  message?: string;
 }
 
 export interface TimeSlot {
