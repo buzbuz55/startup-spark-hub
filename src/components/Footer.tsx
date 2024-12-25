@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Info, Facebook, Twitter, Linkedin, Instagram, Youtube, Github } from "lucide-react";
+import { Info, Facebook, Twitter, Linkedin, Instagram, Youtube, Github, MessageCircle } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -105,6 +105,14 @@ const Footer = () => {
                 className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-purple-600 transition-all duration-300 group"
               >
                 <Github className="w-6 h-6 text-gray-400 group-hover:text-white" />
+              </a>
+              <a 
+                href="https://discord.gg/4xjVbtNH" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center justify-center p-3 rounded-lg bg-gray-800 hover:bg-[#5865F2] transition-all duration-300 group"
+              >
+                <MessageCircle className="w-6 h-6 text-gray-400 group-hover:text-white" />
               </a>
             </div>
           </div>
