@@ -17,18 +17,20 @@ export function TimeSlotSelector({ timeSlots }: TimeSlotSelectorProps) {
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select time" />
         </SelectTrigger>
-        <SelectContent className="h-[200px]">
-          <ScrollArea className="h-full overflow-y-auto touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
-            {timeSlots.map((slot) => (
-              <SelectItem
-                key={slot.time}
-                value={slot.time}
-                disabled={slot.disabled}
-                className="py-2 cursor-pointer hover:bg-accent transition-colors"
-              >
-                {slot.time}
-              </SelectItem>
-            ))}
+        <SelectContent>
+          <ScrollArea className="h-[200px] w-full pr-4">
+            <div className="p-1">
+              {timeSlots.map((slot) => (
+                <SelectItem
+                  key={slot.time}
+                  value={slot.time}
+                  disabled={slot.disabled}
+                  className="py-2 cursor-pointer hover:bg-accent transition-colors"
+                >
+                  {slot.time}
+                </SelectItem>
+              ))}
+            </div>
           </ScrollArea>
         </SelectContent>
       </Select>
