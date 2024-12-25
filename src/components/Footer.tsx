@@ -8,18 +8,18 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Startup Nation</h3>
+            <h3 className="text-xl font-semibold mb-4">Startup Spark</h3>
             <p className="text-gray-400">
-              Empowering student entrepreneurs to innovate and succeed.
+              An online community focused on helping entrepreneurs and innovators make the world a better place by sparking their startups.
             </p>
             <div className="mt-4 space-y-2">
-              <Link to="/about-startup-squad">
+              <Link to="/about">
                 <Button 
                   variant="default" 
                   className="bg-purple-600 hover:bg-purple-700 text-white gap-2 w-full"
                 >
                   <Info className="w-4 h-4 mr-2" />
-                  About Startup Squad
+                  About Startup Spark
                 </Button>
               </Link>
             </div>
@@ -49,7 +49,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Contact</h3>
             <ul className="space-y-2 text-gray-400">
-              <li>Email: contact@startupsparkhub.com</li>
+              <li>Email: contact@startupspark.org</li>
               <li>Phone: +1 (555) 123-4567</li>
               <li>Location: 1755 Broadway, New York NYC</li>
             </ul>
@@ -111,7 +111,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2025 Startup Nation. All rights reserved.</p>
+          <p>&copy; 2025 Startup Spark. All rights reserved.</p>
         </div>
       </div>
     </footer>

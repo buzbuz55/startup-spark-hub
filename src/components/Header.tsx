@@ -14,7 +14,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-14 md:h-16">
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-              Spark✨
+              Startup Spark✨
             </span>
           </Link>
           
