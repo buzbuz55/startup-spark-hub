@@ -6,7 +6,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Briefcase, GraduationCap, Network, Rocket, Users, BookOpen, HelpCircle, FileText } from "lucide-react";
 
 const NavigationMenus = () => {
   return (
@@ -15,18 +14,15 @@ const NavigationMenus = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Opportunities</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid gap-2 p-6 w-[280px]">
-              <Link to="/internships" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                <span>Internships</span>
+            <div className="grid gap-2 p-4 w-[200px]">
+              <Link to="/internships" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Internships
               </Link>
-              <Link to="/projects" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <Briefcase className="h-4 w-4 text-muted-foreground" />
-                <span>Projects</span>
+              <Link to="/projects" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Projects
               </Link>
-              <Link to="/startup-opportunities" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <Rocket className="h-4 w-4 text-muted-foreground" />
-                <span>Startup Ideas</span>
+              <Link to="/startup-opportunities" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Startup Ideas
               </Link>
             </div>
           </NavigationMenuContent>
@@ -35,14 +31,12 @@ const NavigationMenus = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Network</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid gap-2 p-6 w-[280px]">
-              <Link to="/talent-pool" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <Users className="h-4 w-4 text-muted-foreground" />
-                <span>Talent Pool</span>
+            <div className="grid gap-2 p-4 w-[200px]">
+              <Link to="/talent-pool" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Talent Pool
               </Link>
-              <Link to="/vc-dashboard" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <Network className="h-4 w-4 text-muted-foreground" />
-                <span>VC Dashboard</span>
+              <Link to="/vc-dashboard" className="block px-4 py-2 hover:bg-accent rounded-md">
+                VC Dashboard
               </Link>
             </div>
           </NavigationMenuContent>
@@ -51,18 +45,15 @@ const NavigationMenus = () => {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <div className="grid gap-2 p-6 w-[280px]">
-              <Link to="/blog" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <FileText className="h-4 w-4 text-muted-foreground" />
-                <span>Blog</span>
+            <div className="grid gap-2 p-4 w-[200px]">
+              <Link to="/blog" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Blog
               </Link>
-              <Link to="/about" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                <span>About Us</span>
+              <Link to="/about" className="block px-4 py-2 hover:bg-accent rounded-md">
+                About Us
               </Link>
-              <Link to="/faq" className="flex items-center gap-3 px-4 py-2 hover:bg-accent rounded-md">
-                <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                <span>FAQ</span>
+              <Link to="/faq" className="block px-4 py-2 hover:bg-accent rounded-md">
+                FAQ
               </Link>
             </div>
           </NavigationMenuContent>
