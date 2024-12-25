@@ -1,4 +1,4 @@
-import { Briefcase, GraduationCap, Code } from "lucide-react";
+import { Briefcase, GraduationCap, Rocket } from "lucide-react";
 import OpportunityCard from "./opportunity/OpportunityCard";
 
 interface OpportunityCardsProps {
@@ -9,13 +9,13 @@ const OpportunityCards = ({ onInternshipsClick }: OpportunityCardsProps) => {
   return (
     <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
       <OpportunityCard
-        title="Hire Full-time Talent"
-        description="For companies looking to build their dream team"
+        title="Browse Companies"
+        description="Explore innovative companies hiring talent"
         icon={Briefcase}
         iconColor="text-primary"
         gradientFrom="purple-100"
-        buttonText="Browse Candidates"
-        linkTo="/vc-dashboard"
+        buttonText="View Directory"
+        linkTo="/companies"
       />
 
       <OpportunityCard
@@ -29,13 +29,13 @@ const OpportunityCards = ({ onInternshipsClick }: OpportunityCardsProps) => {
       />
 
       <OpportunityCard
-        title="Freelance Projects"
-        description="Work on exciting freelance opportunities"
-        icon={Code}
+        title="Startup Opportunities"
+        description="Discover exciting startup opportunities"
+        icon={Rocket}
         iconColor="text-green-600"
         gradientFrom="green-100"
-        buttonText="Browse Projects"
-        linkTo="/projects"
+        buttonText="View Opportunities"
+        linkTo="/startup-opportunities"
       />
     </div>
   );

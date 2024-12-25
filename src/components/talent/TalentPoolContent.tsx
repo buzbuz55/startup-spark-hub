@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import InternGrid from "./InternGrid";
-import StartupIdeas from "./StartupIdeas";
 import JobPostingForm from "./JobPostingForm";
 import CandidateForm from "./CandidateForm";
 import { Button } from "@/components/ui/button";
@@ -76,16 +75,7 @@ const TalentPoolContent = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <JobPostingForm 
-              companyFormData={{
-                position: "",
-                description: "",
-                requirements: "",
-                salary: ""
-              }}
-              setCompanyFormData={() => {}}
-              onClose={onCloseJobForm}
-            />
+            <JobPostingForm onClose={onCloseJobForm} />
           </motion.section>
         )}
       </AnimatePresence>
@@ -105,15 +95,6 @@ const TalentPoolContent = ({
           </motion.section>
         )}
       </AnimatePresence>
-
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-12"
-      >
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Startup Opportunities</h2>
-        <StartupIdeas />
-      </motion.section>
     </>
   );
 };

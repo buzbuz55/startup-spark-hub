@@ -21,6 +21,7 @@ import BlogPost from "./pages/BlogPost";
 import FAQ from "./pages/FAQ";
 import ProfileSettings from "./pages/ProfileSettings";
 import StartupOpportunities from "./pages/StartupOpportunities";
+import CompanyDirectory from "./pages/CompanyDirectory";
 import Internships from "./pages/Internships";
 import Startups from "./pages/Startups";
 import Scraper from "./pages/Scraper";
@@ -67,6 +68,7 @@ const App = () => {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/profile/settings" element={<ProfileSettings />} />
               <Route path="/startup-opportunities" element={<StartupOpportunities />} />
+              <Route path="/companies" element={<CompanyDirectory />} />
               <Route path="/internships" element={<Internships />} />
               <Route path="/startups" element={<Startups />} />
               <Route path="/scraper" element={<Scraper />} />
