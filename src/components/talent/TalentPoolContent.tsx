@@ -3,6 +3,7 @@ import InternGrid from "./InternGrid";
 import JobPostingForm from "./JobPostingForm";
 import CandidateForm from "./CandidateForm";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface TalentPoolContentProps {
   showInterns: boolean;
@@ -41,6 +42,13 @@ const TalentPoolContent = ({
   onCloseJobForm,
   onCloseCandidateForm
 }: TalentPoolContentProps) => {
+  const [companyFormData, setCompanyFormData] = useState({
+    position: "",
+    description: "",
+    requirements: "",
+    salary: ""
+  });
+
   return (
     <>
       <AnimatePresence>
@@ -75,7 +83,11 @@ const TalentPoolContent = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <JobPostingForm onClose={onCloseJobForm} />
+            <JobPostingForm 
+              companyFormData={companyFormData}
+              setCompanyFormData={setCompanyFormData}
+              onClose={onCloseJobForm}
+            />
           </motion.section>
         )}
       </AnimatePresence>
