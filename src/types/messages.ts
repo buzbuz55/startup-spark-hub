@@ -7,3 +7,16 @@ export interface Message {
   timestamp: string;
   status?: MessageStatus;
 }
+
+export const createMessageData = (
+  content: string, 
+  senderId: string, 
+  receiverId: string
+) => {
+  return {
+    content,
+    sender_id: senderId,
+    receiver_id: receiverId,
+    status: 'sent',
+  };
+};
