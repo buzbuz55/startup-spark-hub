@@ -1,6 +1,7 @@
+import { useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -30,8 +31,35 @@ const CreatorFilters = ({
   sortBy,
   onSortChange,
 }: CreatorFiltersProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    const resizeObserver = new ResizeObserver((entries) => {
+      // Debounce the resize handler
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        for (const entry of entries) {
+          if (entry.target === containerRef.current) {
+            // Handle resize if needed
+          }
+        }
+      }, 100); // 100ms debounce
+    });
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+    <div ref={containerRef} className="bg-white rounded-xl shadow-sm p-6 mb-8">
       <div className="flex gap-4 mb-6">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
