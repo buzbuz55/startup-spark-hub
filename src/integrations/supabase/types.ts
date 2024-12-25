@@ -680,6 +680,7 @@ export type Database = {
           applicant_id: string
           cover_letter: string | null
           created_at: string
+          email: string
           id: string
           portfolio_url: string | null
           position_id: string
@@ -691,6 +692,7 @@ export type Database = {
           applicant_id: string
           cover_letter?: string | null
           created_at?: string
+          email: string
           id?: string
           portfolio_url?: string | null
           position_id: string
@@ -702,6 +704,7 @@ export type Database = {
           applicant_id?: string
           cover_letter?: string | null
           created_at?: string
+          email?: string
           id?: string
           portfolio_url?: string | null
           position_id?: string
