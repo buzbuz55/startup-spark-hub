@@ -14,6 +14,7 @@ const JoinTeamForm = ({ positionId, onClose }: JoinTeamFormProps) => {
   const [portfolioUrl, setPortfolioUrl] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
+  const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,14 +31,15 @@ const JoinTeamForm = ({ positionId, onClose }: JoinTeamFormProps) => {
 
       const { error } = await supabase
         .from('team_applications')
-        .insert([{
+        .insert({
           position_id: positionId,
           applicant_id: user.id,
           portfolio_url: portfolioUrl,
           cover_letter: coverLetter,
           resume_url: resumeUrl,
+          email: email,
           status: 'pending'
-        }]);
+        });
 
       if (error) throw error;
 
@@ -53,6 +55,15 @@ const JoinTeamForm = ({ positionId, onClose }: JoinTeamFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <Input
+          type="email"
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
       <div>
         <Input
           type="url"
