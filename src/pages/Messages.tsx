@@ -11,6 +11,7 @@ import MessageList from "@/components/messages/MessageList";
 import { useMessaging } from "@/hooks/use-messaging";
 import { useChatRealtime } from "@/hooks/use-chat-realtime";
 import { createMessageData } from "@/types/messages";
+import { exampleMessages, exampleContacts } from "@/data/exampleMessages";
 
 const Messages = () => {
   const [searchParams] = useSearchParams();
@@ -23,11 +24,14 @@ const Messages = () => {
   } | null>(null);
   const [currentGroup, setCurrentGroup] = useState<any>(null);
 
-  const { messages, updateMessage } = useMessaging(selectedChat);
+  const { messages: realMessages, updateMessage } = useMessaging(selectedChat);
   const { isTyping, onlineUsers, sendTypingIndicator } = useChatRealtime(
     selectedChat,
     !!currentGroup
   );
+
+  // Use example or real messages based on whether a chat is selected
+  const messages = selectedChat ? realMessages : exampleMessages;
 
   useEffect(() => {
     if (projectId) {
@@ -58,10 +62,7 @@ const Messages = () => {
 
       const { error } = await supabase.from("messages").insert(messageData);
 
-      if (error) {
-        console.error("Error details:", error);
-        throw error;
-      }
+      if (error) throw error;
 
       setMessage("");
       toast.success("Message sent!");
@@ -71,85 +72,8 @@ const Messages = () => {
     }
   };
 
-  const handleLeaveGroup = async () => {
-    if (!currentGroup) return;
-
-    try {
-      const { error } = await supabase
-        .from("group_members")
-        .delete()
-        .match({ group_id: currentGroup.id, user_id: (await supabase.auth.getUser()).data.user?.id });
-
-      if (error) throw error;
-
-      setCurrentGroup(null);
-      setSelectedChat(null);
-      toast.success("Left group successfully");
-    } catch (error) {
-      console.error("Error leaving group:", error);
-      toast.error("Failed to leave group");
-    }
-  };
-
-  const handleAddMember = async () => {
-    // This would typically open a dialog to select users
-    toast.info("Add member functionality coming soon!");
-  };
-
-  const startVideoCall = async () => {
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        toast.error("Please sign in to start a video call");
-        return;
-      }
-
-      if (!selectedChat) {
-        toast.error("Please select a contact first");
-        return;
-      }
-
-      const roomId = `video-${Date.now()}`;
-      const { error } = await supabase.from("video_sessions").insert({
-        creator_id: user.id,
-        participant_id: selectedChat,
-        room_id: roomId,
-      });
-
-      if (error) throw error;
-
-      setVideoSession({ roomId, userId: user.id });
-      toast.success("Video call started!");
-    } catch (error) {
-      console.error("Error starting video call:", error);
-      toast.error("Failed to start video call");
-    }
-  };
-
   const getSelectedContact = () => {
-    const contacts = [
-      {
-        id: "d7bed21c-5a38-4c44-87f5-7b8f3f3c2421",
-        name: "Sarah Chen",
-        role: "Software Engineer",
-        avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
-      },
-      {
-        id: "e9be0901-6a77-4b55-9644-3a25b56a90c9",
-        name: "Alex Kumar",
-        role: "Product Designer",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-      },
-      {
-        id: "f1c3a45b-2d89-4e67-8a31-9c45b7c8d3ef",
-        name: "Maria Garcia",
-        role: "VC Associate",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
-      },
-    ];
-    return contacts.find((c) => c.id === selectedChat);
+    return exampleContacts.find((c) => c.id === selectedChat);
   };
 
   return (
@@ -161,6 +85,7 @@ const Messages = () => {
             selectedChat={selectedChat}
             onSelectChat={setSelectedChat}
             onGroupSelect={setCurrentGroup}
+            defaultContacts={exampleContacts}
           />
 
           <div className="md:col-span-2 bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg flex flex-col">
@@ -169,9 +94,15 @@ const Messages = () => {
                 <ChatHeader
                   contact={getSelectedContact()}
                   group={currentGroup}
-                  onStartVideoCall={startVideoCall}
-                  onLeaveGroup={handleLeaveGroup}
-                  onAddMember={handleAddMember}
+                  onStartVideoCall={() => {
+                    toast.info("Video calls are not available in demo mode");
+                  }}
+                  onLeaveGroup={() => {
+                    toast.info("Group actions are not available in demo mode");
+                  }}
+                  onAddMember={() => {
+                    toast.info("Group actions are not available in demo mode");
+                  }}
                 />
                 <MessageList
                   messages={messages}
@@ -188,7 +119,7 @@ const Messages = () => {
               </>
             ) : (
               <div className="flex-1 flex items-center justify-center text-muted-foreground">
-                Select a conversation to start messaging
+                Select a conversation to start messaging with founders and VCs
               </div>
             )}
           </div>

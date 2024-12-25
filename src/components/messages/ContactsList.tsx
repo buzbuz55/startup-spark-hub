@@ -1,58 +1,137 @@
 import { useState, useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Search, Users } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-export interface ContactsListProps {
+interface Contact {
+  id: string;
+  name: string;
+  role?: string;
+  avatar?: string;
+  lastMessage?: string;
+  timestamp?: string;
+  unread?: number;
+}
+
+interface ContactsListProps {
   selectedChat: string | null;
   onSelectChat: (chatId: string) => void;
   onGroupSelect?: (group: any) => void;
+  defaultContacts?: Contact[];
 }
 
-const ContactsList = ({ selectedChat, onSelectChat, onGroupSelect }: ContactsListProps) => {
-  const [contacts, setContacts] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+const ContactsList = ({
+  selectedChat,
+  onSelectChat,
+  onGroupSelect,
+  defaultContacts = [],
+}: ContactsListProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [contacts, setContacts] = useState<Contact[]>(defaultContacts);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch contacts from the API or database
     const fetchContacts = async () => {
-      // Simulated fetch
-      const fetchedContacts = [
-        { id: "1", name: "John Doe", avatar: "https://example.com/john.jpg" },
-        { id: "2", name: "Jane Smith", avatar: "https://example.com/jane.jpg" },
-      ];
-      setContacts(fetchedContacts);
+      try {
+        setLoading(true);
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) return;
+
+        const { data: contactsData, error } = await supabase
+          .from("contacts")
+          .select("*")
+          .eq("user_id", user.id);
+
+        if (error) throw error;
+
+        if (contactsData && contactsData.length > 0) {
+          setContacts(contactsData);
+        }
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchContacts();
-  }, []);
+    if (defaultContacts.length === 0) {
+      fetchContacts();
+    }
+  }, [defaultContacts]);
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="flex flex-col h-full">
-      <Input
-        placeholder="Search contacts..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="mb-2"
-      />
+    <div className="bg-background/95 backdrop-blur-sm rounded-lg border shadow-lg flex flex-col">
+      <div className="p-4 border-b">
+        <div className="flex gap-2">
+          <Input
+            placeholder="Search contacts..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1"
+          />
+          <Button variant="outline" size="icon">
+            <Users className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
       <ScrollArea className="flex-1">
-        <div className="space-y-2">
-          {filteredContacts.map(contact => (
-            <div
-              key={contact.id}
-              className={`flex items-center p-2 rounded-lg cursor-pointer ${
-                selectedChat === contact.id ? "bg-muted" : ""
-              }`}
-              onClick={() => onSelectChat(contact.id)}
-            >
-              <img src={contact.avatar} alt={contact.name} className="h-8 w-8 rounded-full mr-2" />
-              <span>{contact.name}</span>
+        <div className="p-4 space-y-4">
+          {loading ? (
+            <div className="text-center text-muted-foreground">Loading...</div>
+          ) : filteredContacts.length > 0 ? (
+            filteredContacts.map((contact) => (
+              <div
+                key={contact.id}
+                className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                  selectedChat === contact.id
+                    ? "bg-primary/10"
+                    : "hover:bg-muted"
+                }`}
+                onClick={() => onSelectChat(contact.id)}
+              >
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={contact.avatar} />
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-medium">{contact.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {contact.role}
+                      </p>
+                    </div>
+                    {contact.timestamp && (
+                      <span className="text-xs text-muted-foreground whitespace-nowrap">
+                        {contact.timestamp}
+                      </span>
+                    )}
+                  </div>
+                  {contact.lastMessage && (
+                    <p className="text-sm text-muted-foreground truncate mt-1">
+                      {contact.lastMessage}
+                    </p>
+                  )}
+                </div>
+                {contact.unread && contact.unread > 0 && (
+                  <div className="bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {contact.unread}
+                  </div>
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="text-center text-muted-foreground">
+              No contacts found
             </div>
-          ))}
+          )}
         </div>
       </ScrollArea>
     </div>
