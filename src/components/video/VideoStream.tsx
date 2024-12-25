@@ -7,7 +7,7 @@ interface VideoStreamProps {
 
 const VideoStream = ({ videoRef, isSelf = false, isMainStream = false, label }: VideoStreamProps) => {
   return (
-    <div className={`relative rounded-xl overflow-hidden bg-muted ${isMainStream ? 'md:col-span-2' : ''}`}>
+    <div className={`relative rounded-2xl overflow-hidden bg-black/5 ${isMainStream ? 'md:col-span-2' : ''}`}>
       <video
         ref={videoRef}
         autoPlay
@@ -15,7 +15,7 @@ const VideoStream = ({ videoRef, isSelf = false, isMainStream = false, label }: 
         muted={isSelf}
         className="w-full h-full object-cover"
       />
-      <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
+      <div className="absolute bottom-4 left-4 px-4 py-2 bg-black/30 backdrop-blur-md rounded-full">
         <span className="text-white text-sm font-medium">
           {label}
         </span>
