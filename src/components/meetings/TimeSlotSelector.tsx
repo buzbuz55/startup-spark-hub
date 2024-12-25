@@ -18,7 +18,7 @@ export function TimeSlotSelector({ timeSlots }: TimeSlotSelectorProps) {
           <SelectValue placeholder="Select time" />
         </SelectTrigger>
         <SelectContent className="h-[200px]">
-          <ScrollArea className="h-full">
+          <ScrollArea className="h-full overflow-y-auto touch-pan-y" style={{ WebkitOverflowScrolling: 'touch' }}>
             {timeSlots.map((slot) => (
               <SelectItem
                 key={slot.time}
