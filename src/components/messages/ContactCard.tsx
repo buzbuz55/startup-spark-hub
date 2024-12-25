@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 interface ContactCardProps {
   id: string;
   name: string;
+  role?: string;
   avatar: string;
   lastMessage: string;
   timestamp: string;
@@ -16,6 +17,7 @@ interface ContactCardProps {
 
 const ContactCard = ({
   name,
+  role,
   avatar,
   lastMessage,
   timestamp,
@@ -35,7 +37,7 @@ const ContactCard = ({
       <div className="relative">
         <Avatar>
           <AvatarImage src={avatar} alt={name} />
-          <AvatarFallback>{name[0]}</AvatarFallback>
+          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
         </Avatar>
         {online && (
           <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-background rounded-full" />
@@ -43,7 +45,10 @@ const ContactCard = ({
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-start">
-          <h3 className="font-semibold truncate">{name}</h3>
+          <div>
+            <h3 className="font-semibold truncate">{name}</h3>
+            {role && <p className="text-xs text-muted-foreground">{role}</p>}
+          </div>
           <span className="text-xs text-muted-foreground whitespace-nowrap ml-2">
             {timestamp}
           </span>

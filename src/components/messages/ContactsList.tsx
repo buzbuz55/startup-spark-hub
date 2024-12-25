@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Contact, ContactsListProps } from "@/types/contacts";
+import { Contact } from "@/types/contacts";
 import SearchBar from "./SearchBar";
 import ContactCard from "./ContactCard";
+
+interface ContactsListProps {
+  selectedChat: string | null;
+  onSelectChat: (chatId: string) => void;
+  defaultContacts?: Array<Contact>;
+}
 
 const ContactsList = ({
   selectedChat,
@@ -28,7 +34,7 @@ const ContactsList = ({
             filteredContacts.map((contact) => (
               <ContactCard
                 key={contact.id}
-                contact={contact}
+                {...contact}
                 isSelected={selectedChat === contact.id}
                 onClick={() => onSelectChat(contact.id)}
               />

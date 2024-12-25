@@ -4,6 +4,7 @@ export const exampleContacts = [
   {
     id: "1",
     name: "Sarah Miller",
+    role: "Product Designer",
     avatar: "https://ui-avatars.com/api/?name=Sarah+Miller&background=random",
     lastMessage: "Let's discuss the startup proposal",
     timestamp: "18:19",
@@ -13,6 +14,7 @@ export const exampleContacts = [
   {
     id: "2",
     name: "Tech Innovators Group",
+    role: "Project Team",
     avatar: "https://ui-avatars.com/api/?name=Tech+Innovators&background=random",
     lastMessage: "New poll: Meeting time for tomorrow",
     timestamp: "17:42",
@@ -22,6 +24,7 @@ export const exampleContacts = [
   {
     id: "3",
     name: "Alex Chen",
+    role: "Developer",
     avatar: "https://ui-avatars.com/api/?name=Alex+Chen&background=random",
     lastMessage: "Shared project files",
     timestamp: "Yesterday",
@@ -31,6 +34,7 @@ export const exampleContacts = [
   {
     id: "4",
     name: "Startup Mentors",
+    role: "Advisory Group",
     avatar: "https://ui-avatars.com/api/?name=Startup+Mentors&background=random",
     lastMessage: "Check out the latest resources",
     timestamp: "Yesterday",
@@ -40,6 +44,7 @@ export const exampleContacts = [
   {
     id: "5",
     name: "Jessica Wong",
+    role: "UX Researcher",
     avatar: "https://ui-avatars.com/api/?name=Jessica+Wong&background=random",
     lastMessage: "Thanks for the feedback!",
     timestamp: "19/8/2024",
