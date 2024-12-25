@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Video, Calendar } from "lucide-react";
+import { MessageSquare, Video } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import VideoChat from "../video/VideoChat";
+import MeetingDialog from "../meetings/MeetingDialog";
 
 const HeaderActions = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -49,14 +50,7 @@ const HeaderActions = () => {
           <MessageSquare className="w-4 h-4" />
         </Button>
       </Link>
-      <Link to="/meetings">
-        <Button variant="ghost" size="icon" className="relative group">
-          <Calendar className="w-4 h-4" />
-          <span className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
-            Calendar
-          </span>
-        </Button>
-      </Link>
+      <MeetingDialog />
 
       {isVideoModalOpen && (
         <VideoChat
