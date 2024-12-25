@@ -1,3 +1,4 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TimeSlot } from "./types";
 
@@ -15,17 +16,19 @@ const TimeSlotSelector = ({ timeSlots, selectedTime, onTimeSelect }: TimeSlotSel
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select time" />
         </SelectTrigger>
-        <SelectContent className="max-h-[300px]">
-          {timeSlots.map((slot) => (
-            <SelectItem
-              key={slot.time}
-              value={slot.time}
-              disabled={slot.disabled}
-              className="py-2"
-            >
-              {slot.time}
-            </SelectItem>
-          ))}
+        <SelectContent className="h-[200px]">
+          <ScrollArea className="h-full">
+            {timeSlots.map((slot) => (
+              <SelectItem
+                key={slot.time}
+                value={slot.time}
+                disabled={slot.disabled}
+                className="py-2 cursor-pointer hover:bg-accent transition-colors"
+              >
+                {slot.time}
+              </SelectItem>
+            ))}
+          </ScrollArea>
         </SelectContent>
       </Select>
     </div>
