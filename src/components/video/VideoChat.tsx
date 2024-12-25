@@ -150,11 +150,21 @@ const VideoChat = ({ roomId, userId, onClose }: VideoChatProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-      <div className="relative w-full max-w-4xl p-4">
-        <div className="grid grid-cols-2 gap-4">
-          <VideoStream videoRef={localVideoRef} isSelf={true} />
-          <VideoStream videoRef={remoteVideoRef} />
+    <div className="fixed inset-0 bg-background/95 backdrop-blur-sm z-50 flex items-center justify-center">
+      <div className="relative w-full max-w-5xl p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 aspect-video">
+          <VideoStream 
+            videoRef={remoteVideoRef} 
+            isSelf={false} 
+            isMainStream={!remoteStream}
+            label="Remote User"
+          />
+          <VideoStream 
+            videoRef={localVideoRef} 
+            isSelf={true} 
+            isMainStream={!!remoteStream}
+            label="You"
+          />
         </div>
         <VideoControls
           isAudioEnabled={isAudioEnabled}

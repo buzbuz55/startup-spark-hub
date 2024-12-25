@@ -1,21 +1,25 @@
 interface VideoStreamProps {
   videoRef: React.RefObject<HTMLVideoElement>;
   isSelf?: boolean;
+  isMainStream?: boolean;
+  label?: string;
 }
 
-const VideoStream = ({ videoRef, isSelf = false }: VideoStreamProps) => {
+const VideoStream = ({ videoRef, isSelf = false, isMainStream = false, label }: VideoStreamProps) => {
   return (
-    <div className="relative">
+    <div className={`relative rounded-xl overflow-hidden bg-muted ${isMainStream ? 'md:col-span-2' : ''}`}>
       <video
         ref={videoRef}
         autoPlay
         playsInline
         muted={isSelf}
-        className="w-full rounded-lg bg-black"
+        className="w-full h-full object-cover"
       />
-      <span className="absolute bottom-2 left-2 text-white text-sm bg-black/50 px-2 py-1 rounded">
-        {isSelf ? "You" : "Remote User"}
-      </span>
+      <div className="absolute bottom-4 left-4 px-3 py-1.5 bg-black/50 backdrop-blur-sm rounded-lg">
+        <span className="text-white text-sm font-medium">
+          {label}
+        </span>
+      </div>
     </div>
   );
 };
