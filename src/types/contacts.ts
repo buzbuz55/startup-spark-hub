@@ -12,6 +12,5 @@ export interface Contact {
 export interface ContactsListProps {
   selectedChat: string | null;
   onSelectChat: (chatId: string) => void;
-  onGroupSelect?: (group: any) => void;
   defaultContacts?: Contact[];
 }
