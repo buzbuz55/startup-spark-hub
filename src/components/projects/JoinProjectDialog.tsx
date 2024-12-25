@@ -35,7 +35,17 @@ const JoinProjectDialog = ({ isOpen, onClose, projectName, projectId }: JoinProj
         return;
       }
 
-      const { error } = await supabase
+      // Get project creator's ID
+      const { data: projectData, error: projectError } = await supabase
+        .from('projects')
+        .select('user_id')
+        .eq('id', projectId)
+        .single();
+
+      if (projectError) throw projectError;
+
+      // Create the application
+      const { error: applicationError } = await supabase
         .from('team_applications')
         .insert({
           position_id: projectId,
@@ -45,7 +55,20 @@ const JoinProjectDialog = ({ isOpen, onClose, projectName, projectId }: JoinProj
           status: 'pending'
         });
 
-      if (error) throw error;
+      if (applicationError) throw applicationError;
+
+      // Create notification for project creator
+      const { error: notificationError } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: projectData.user_id,
+          type: 'application',
+          title: 'New Project Application',
+          message: `Someone has applied to join ${projectName}`,
+          link: `/projects/${projectId}/applications`
+        });
+
+      if (notificationError) throw notificationError;
 
       toast.success("Application submitted successfully!");
       navigate(`/messages?project=${projectId}`);
