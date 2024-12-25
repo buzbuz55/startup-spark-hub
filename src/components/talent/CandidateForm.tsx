@@ -1,12 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { X, Upload, Briefcase, Mail, Globe, Github, DollarSign } from "lucide-react";
+import { X } from "lucide-react";
 import { toast } from "sonner";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import CandidateFormFields from "./candidate/CandidateFormFields";
 
 interface CandidateFormProps {
   candidateFormData: {
@@ -63,10 +61,42 @@ const CandidateForm = ({ candidateFormData, setCandidateFormData, onClose }: Can
         .from('resumes')
         .getPublicUrl(fileName);
 
+      // First, get or create a default position for general applications
+      const { data: positions, error: positionError } = await supabase
+        .from('team_positions')
+        .select('id')
+        .eq('title', 'General Application')
+        .single();
+
+      if (positionError && positionError.code !== 'PGRST116') {
+        throw positionError;
+      }
+
+      let positionId;
+      if (!positions) {
+        // Create a default position for general applications
+        const { data: newPosition, error: createError } = await supabase
+          .from('team_positions')
+          .insert({
+            title: 'General Application',
+            description: 'General talent pool application',
+            company_id: process.env.PLATFORM_COMPANY_ID || '00000000-0000-0000-0000-000000000000',
+            status: 'open'
+          })
+          .select()
+          .single();
+
+        if (createError) throw createError;
+        positionId = newPosition.id;
+      } else {
+        positionId = positions.id;
+      }
+
       // Create application
       const { error: applicationError } = await supabase
         .from('team_applications')
         .insert({
+          position_id: positionId,
           applicant_id: user.id,
           email: candidateFormData.email,
           resume_url: resumeUrl,
@@ -115,128 +145,10 @@ const CandidateForm = ({ candidateFormData, setCandidateFormData, onClose }: Can
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <div className="relative">
-                  <Input
-                    id="fullName"
-                    value={candidateFormData.fullName}
-                    onChange={(e) => setCandidateFormData({...candidateFormData, fullName: e.target.value})}
-                    placeholder="John Doe"
-                    required
-                    className="pl-10"
-                  />
-                  <Briefcase className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <Input
-                    id="email"
-                    type="email"
-                    value={candidateFormData.email}
-                    onChange={(e) => setCandidateFormData({...candidateFormData, email: e.target.value})}
-                    placeholder="john@example.com"
-                    required
-                    className="pl-10"
-                  />
-                  <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="experience">Professional Experience</Label>
-              <Textarea
-                id="experience"
-                value={candidateFormData.experience}
-                onChange={(e) => setCandidateFormData({...candidateFormData, experience: e.target.value})}
-                placeholder="Share your relevant experience, skills, and achievements..."
-                required
-                className="min-h-[120px]"
-              />
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="portfolio">Portfolio URL</Label>
-                <div className="relative">
-                  <Input
-                    id="portfolio"
-                    type="url"
-                    value={candidateFormData.portfolio}
-                    onChange={(e) => setCandidateFormData({...candidateFormData, portfolio: e.target.value})}
-                    placeholder="https://yourportfolio.com"
-                    className="pl-10"
-                  />
-                  <Globe className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="githubUrl">GitHub URL</Label>
-                <div className="relative">
-                  <Input
-                    id="githubUrl"
-                    type="url"
-                    value={candidateFormData.githubUrl}
-                    onChange={(e) => setCandidateFormData({...candidateFormData, githubUrl: e.target.value})}
-                    placeholder="https://github.com/yourusername"
-                    className="pl-10"
-                  />
-                  <Github className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="expectedSalary">Expected Salary</Label>
-              <div className="relative">
-                <Input
-                  id="expectedSalary"
-                  value={candidateFormData.expectedSalary}
-                  onChange={(e) => setCandidateFormData({...candidateFormData, expectedSalary: e.target.value})}
-                  placeholder="e.g., $60,000 - $80,000"
-                  required
-                  className="pl-10"
-                />
-                <DollarSign className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="resume">Resume</Label>
-              <div className="flex items-center gap-4">
-                <Input
-                  id="resume"
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0] || null;
-                    setCandidateFormData({...candidateFormData, resume: file});
-                  }}
-                  accept=".pdf,.doc,.docx"
-                  required
-                  className="cursor-pointer"
-                />
-                {candidateFormData.resume && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setCandidateFormData({...candidateFormData, resume: null})}
-                    className="hover:bg-red-50 hover:text-red-600"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Upload your resume (PDF, DOC, or DOCX format)
-              </p>
-            </div>
-          </div>
+          <CandidateFormFields 
+            candidateFormData={candidateFormData}
+            setCandidateFormData={setCandidateFormData}
+          />
 
           <div className="flex justify-end gap-4">
             <Button
