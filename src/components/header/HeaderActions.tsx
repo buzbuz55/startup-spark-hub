@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Video } from "lucide-react";
+import { MessageSquare, Video, Calendar } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -9,6 +9,7 @@ import MeetingDialog from "../meetings/MeetingDialog";
 
 const HeaderActions = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isMeetingDialogOpen, setIsMeetingDialogOpen] = useState(false);
 
   const handleStartVideoChat = async () => {
     try {
@@ -38,6 +39,18 @@ const HeaderActions = () => {
         variant="ghost" 
         size="icon"
         className="hidden md:flex relative group"
+        onClick={() => setIsMeetingDialogOpen(true)}
+      >
+        <Calendar className="w-4 h-4" />
+        <span className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
+          Schedule Meeting
+        </span>
+      </Button>
+
+      <Button 
+        variant="ghost" 
+        size="icon"
+        className="hidden md:flex relative group"
         onClick={handleStartVideoChat}
       >
         <Video className="w-4 h-4" />
@@ -45,7 +58,14 @@ const HeaderActions = () => {
           Start Video Call
         </span>
       </Button>
-      <MeetingDialog />
+
+      {isMeetingDialogOpen && (
+        <MeetingDialog
+          open={isMeetingDialogOpen}
+          onOpenChange={setIsMeetingDialogOpen}
+        />
+      )}
+
       <Link to="/messages">
         <Button variant="ghost" size="icon">
           <MessageSquare className="w-4 h-4" />

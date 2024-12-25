@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -9,8 +9,12 @@ import { supabase } from "@/integrations/supabase/client";
 import TimeSlotSelector from "./TimeSlotSelector";
 import type { MeetingFormData, TimeSlot } from "./types";
 
-const MeetingDialog = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface MeetingDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const MeetingDialog = ({ open, onOpenChange }: MeetingDialogProps) => {
   const [formData, setFormData] = useState<MeetingFormData>({
     guestEmail: "",
     subject: "",
@@ -93,7 +97,7 @@ const MeetingDialog = () => {
       if (emailError) throw emailError;
 
       toast.success("Meeting scheduled and invitation sent!");
-      setIsOpen(false);
+      onOpenChange(false);
     } catch (error) {
       console.error("Error scheduling meeting:", error);
       toast.error("Failed to schedule meeting");
@@ -101,21 +105,10 @@ const MeetingDialog = () => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative group">
-          <Calendar className="w-4 h-4" />
-          <span className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
-            Schedule Meeting
-          </span>
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Schedule a Meeting</DialogTitle>
-          <DialogDescription>
-            Fill in the details below to schedule a meeting and send an invitation.
-          </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="space-y-2">
