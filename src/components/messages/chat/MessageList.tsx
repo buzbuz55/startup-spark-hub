@@ -5,9 +5,10 @@ import type { Message as MessageType } from "@/types/messages";
 export interface MessageListProps {
   messages: MessageType[];
   onEditMessage?: (id: string, newText: string) => void;
+  onlineUsers?: string[]; // Add this prop definition
 }
 
-const MessageList = ({ messages, onEditMessage }: MessageListProps) => {
+const MessageList = ({ messages, onEditMessage, onlineUsers }: MessageListProps) => {
   return (
     <ScrollArea className="flex-1 p-4">
       <div className="space-y-4">
