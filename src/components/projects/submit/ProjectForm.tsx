@@ -48,7 +48,10 @@ const ProjectForm = ({ onClose, onSubmitSuccess }: ProjectFormProps) => {
           .from('project_images')
           .upload(filePath, projectImage);
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw uploadError;
+        }
 
         const { data: { publicUrl } } = supabase.storage
           .from('project_images')
@@ -66,9 +69,14 @@ const ProjectForm = ({ onClose, onSubmitSuccess }: ProjectFormProps) => {
           status: 'active'
         });
 
-      if (projectError) throw projectError;
+      if (projectError) {
+        console.error('Project error:', projectError);
+        throw projectError;
+      }
 
+      toast.success("Project submitted successfully!");
       onSubmitSuccess();
+      onClose();
     } catch (error) {
       console.error('Error:', error);
       toast.error("Failed to submit project");
@@ -118,7 +126,7 @@ const ProjectForm = ({ onClose, onSubmitSuccess }: ProjectFormProps) => {
             type="number"
             placeholder="Team Size"
             value={formData.team_size}
-            onChange={(e) => setFormData({ ...formData, team_size: parseInt(e.target.value) })}
+            onChange={(e) => setFormData({ ...formData, team_size: parseInt(e.target.value) || 1 })}
             required
             min="1"
           />
