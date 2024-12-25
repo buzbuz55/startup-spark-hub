@@ -8,17 +8,22 @@ const Features = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           Build Your Startup Fast 🚀
         </h2>
-        <p className="text-lg text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-lg text-center text-gray-600 mb-12 max-w-2xl mx-auto px-6">
           Everything you need to transform your idea into a successful startup
         </p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-sm md:max-w-none mx-auto">
           {features.map((feature, index) => (
-            <Card key={index} className="p-6 hover:shadow-lg transition-all duration-300 border-none bg-gradient-to-br from-white to-purple-50">
-              <div className="h-12 w-12 rounded-xl bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
-                <feature.icon className="h-6 w-6 text-purple-600" />
+            <Card 
+              key={index} 
+              className="p-6 hover:shadow-lg transition-all duration-300 border border-gray-100 bg-gradient-to-br from-white to-gray-50/50 backdrop-blur-sm"
+            >
+              <div className="flex flex-col items-center text-center">
+                <div className="h-12 w-12 rounded-2xl bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
+                  <feature.icon className="h-6 w-6 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{feature.description}</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-600 text-sm">{feature.description}</p>
             </Card>
           ))}
         </div>
