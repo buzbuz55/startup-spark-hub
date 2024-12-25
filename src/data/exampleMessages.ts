@@ -57,50 +57,57 @@ export const exampleMessages: Message[] = [
   {
     id: "1",
     senderId: "other-user",
-    text: "Hey! How's the project coming along?",
+    text: "Hi! I reviewed the startup proposal you sent. The market analysis looks solid, but I have a few suggestions about the revenue model.",
     timestamp: "10:00 AM",
     status: "read"
   },
   {
     id: "2",
     senderId: "current-user",
-    text: "Going great! Just finished the main features.",
-    timestamp: "10:05 AM",
+    text: "Thanks for looking it over! What aspects of the revenue model need work?",
+    timestamp: "10:02 AM",
     status: "delivered"
   },
   {
     id: "3",
     senderId: "other-user",
-    text: "That's awesome! Can you share some screenshots?",
-    timestamp: "10:07 AM",
+    text: "I think we should consider a freemium approach instead of pure subscription. Most successful SaaS startups in our space start with a free tier to build user base.",
+    timestamp: "10:05 AM",
     status: "read"
   },
   {
     id: "4",
     senderId: "current-user",
-    text: "Sure! I'll prepare them and send them over shortly.",
-    timestamp: "10:10 AM",
+    text: "That's a great point! We could offer basic features for free and premium features like advanced analytics and team collaboration in paid tiers.",
+    timestamp: "10:07 AM",
     status: "sent"
   },
   {
     id: "5",
     senderId: "other-user",
-    text: "Perfect! Also, when are you free for a quick call to discuss the next sprint?",
-    timestamp: "10:12 AM",
+    text: "Exactly! And we should highlight these premium features in the pitch deck. I've seen similar models work well for early-stage startups.",
+    timestamp: "10:10 AM",
     status: "delivered"
   },
   {
     id: "6",
     senderId: "current-user",
-    text: "I'm available tomorrow between 2-5 PM. Would that work for you?",
-    timestamp: "10:15 AM",
+    text: "Could you share some examples of successful freemium models in our industry? It would help with the competitive analysis section.",
+    timestamp: "10:12 AM",
     status: "sent"
   },
   {
     id: "7",
     senderId: "other-user",
-    text: "Yes, let's do 3 PM tomorrow! I'll send a calendar invite.",
+    text: "Sure! I'll put together a quick analysis of 3-4 competitors and their pricing tiers. Should have it ready by tomorrow morning. Would you be free for a call at 11 AM to discuss?",
+    timestamp: "10:15 AM",
+    status: "read"
+  },
+  {
+    id: "8",
+    senderId: "current-user",
+    text: "Perfect timing! 11 AM works great. I'll also invite our technical lead to get their input on implementation feasibility.",
     timestamp: "10:17 AM",
-    status: "delivered"
+    status: "sent"
   }
 ];
