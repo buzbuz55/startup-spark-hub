@@ -1,14 +1,12 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SignaturePad from 'react-signature-canvas';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Printer, Share2, ZoomIn, ZoomOut } from "lucide-react";
+import { ContractHeader } from "@/components/contract/ContractHeader";
+import { ContractContent } from "@/components/contract/ContractContent";
+import { SignatureSection } from "@/components/contract/SignatureSection";
 
 const DigitalContract = () => {
   const [fullName, setFullName] = useState("");
@@ -72,7 +70,6 @@ const DigitalContract = () => {
 
         if (contractError) throw contractError;
 
-        // Send email with signature
         const { error: emailError } = await supabase.functions.invoke('send-contract-email', {
           body: {
             to: [email],
@@ -106,126 +103,25 @@ const DigitalContract = () => {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="bg-white p-8 rounded-lg shadow-md">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-bold">Non-Disclosure Agreement</h1>
-              <div className="flex gap-2">
-                <Button variant="outline" size="icon" onClick={handlePrint}>
-                  <Printer className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleShare}>
-                  <Share2 className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleZoomOut}>
-                  <ZoomOut className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" size="icon" onClick={handleZoomIn}>
-                  <ZoomIn className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
+            <ContractHeader
+              handlePrint={handlePrint}
+              handleShare={handleShare}
+              handleZoomIn={handleZoomIn}
+              handleZoomOut={handleZoomOut}
+            />
             
-            <ScrollArea className="h-[500px] rounded-md border p-4">
-              <div style={{ zoom: `${zoomLevel}%` }}>
-                <div className="prose max-w-none">
-                  <p className="mb-4">This Non-Disclosure Agreement (the "Agreement") is entered into as of {new Date().toLocaleDateString()}, by and between:</p>
-                  
-                  <p className="mb-4">Startup Spark, Inc. (the "Company"), and the undersigned individual ("Intern").</p>
-
-                  <h2 className="text-xl font-semibold mt-6 mb-3">1. Purpose</h2>
-                  <p>The Company intends to provide the Intern with access to certain confidential and proprietary information in connection with the Intern's engagement as an intern with the Company.</p>
-
-                  <h2 className="text-xl font-semibold mt-6 mb-3">2. Confidential Information</h2>
-                  <p>Includes but is not limited to:</p>
-                  <ul className="list-disc pl-6 mb-4">
-                    <li>Business strategies, plans, and forecasts</li>
-                    <li>Financial information, pricing, and budgets</li>
-                    <li>Client lists and contact information</li>
-                    <li>Product designs, prototypes, and technical data</li>
-                    <li>Marketing strategies and customer data</li>
-                  </ul>
-
-                  <h2 className="text-xl font-semibold mt-6 mb-3">3. Non-Disclosure</h2>
-                  <p>The Intern agrees to:</p>
-                  <ul className="list-disc pl-6 mb-4">
-                    <li>Maintain the confidentiality of all Confidential Information</li>
-                    <li>Not disclose any Confidential Information to any third party</li>
-                    <li>Use Confidential Information solely for the purpose of the internship</li>
-                    <li>Return all Confidential Information upon completion of the internship</li>
-                  </ul>
-
-                  <h2 className="text-xl font-semibold mt-6 mb-3">4. Term</h2>
-                  <p>This Agreement shall remain in effect for a period of two (2) years from the date of signing.</p>
-
-                  <h2 className="text-xl font-semibold mt-6 mb-3">5. Governing Law</h2>
-                  <p>This Agreement shall be governed by and construed in accordance with the laws of the State of California.</p>
-                </div>
-              </div>
-            </ScrollArea>
-              
-            <div className="mt-8 border-t pt-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-                    Full Legal Name
-                  </label>
-                  <Input
-                    id="fullName"
-                    type="text"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                    className="mt-1"
-                    placeholder="Enter your full legal name"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    Email Address
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="mt-1"
-                    placeholder="Enter your email address"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Digital Signature
-                  </label>
-                  <div className="border rounded-lg p-2 bg-white">
-                    <SignaturePad
-                      ref={signaturePadRef}
-                      canvasProps={{
-                        className: "signature-canvas w-full h-40 border rounded",
-                      }}
-                    />
-                  </div>
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={clearSignature}
-                    className="mt-2"
-                  >
-                    Clear Signature
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <Button type="button" variant="outline" onClick={() => navigate("/")}>
-                    Cancel
-                  </Button>
-                  <Button type="submit">
-                    Sign Agreement
-                  </Button>
-                </div>
-              </form>
-            </div>
+            <ContractContent zoomLevel={zoomLevel} />
+            
+            <SignatureSection
+              fullName={fullName}
+              setFullName={setFullName}
+              email={email}
+              setEmail={setEmail}
+              signaturePadRef={signaturePadRef}
+              clearSignature={clearSignature}
+              handleSubmit={handleSubmit}
+              navigate={navigate}
+            />
           </div>
         </div>
       </main>
