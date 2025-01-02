@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { ProjectBasicInfo } from "./create/ProjectBasicInfo";
-import { ProjectLogoUpload } from "./create/ProjectLogoUpload";
-import { ProjectCategories } from "./create/ProjectCategories";
-import { ProjectGoals } from "./create/ProjectGoals";
 import { useNavigate } from "react-router-dom";
+import { Upload, Plus } from "lucide-react";
 
 interface CreateProjectDialogProps {
   open: boolean;
@@ -22,14 +22,11 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
     title: "",
     description: "",
     category: "",
-    teamSize: "",
     stage: "",
-    location: "",
-    goal: "",
-    targetAudience: "",
-    timeline: "",
-    fundingNeeded: "",
+    website_url: "",
   });
+  const [currentStep] = useState(1);
+  const [characterCount, setCharacterCount] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,19 +38,6 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
       if (userError || !user) {
         toast.error("Please sign in to create a project");
         navigate("/login");
-        return;
-      }
-
-      // First check if user has a profile
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('id', user.id)
-        .single();
-
-      if (profileError) {
-        console.error('Profile error:', profileError);
-        toast.error("Error accessing user profile");
         return;
       }
 
@@ -82,15 +66,9 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
           title: formData.title,
           description: formData.description,
           category: formData.category,
-          team_size: parseInt(formData.teamSize),
           stage: formData.stage,
-          location: formData.location,
           logo_url: logoUrl,
-          goal: formData.goal,
-          target_audience: formData.targetAudience,
-          timeline: formData.timeline,
-          funding_needed: parseFloat(formData.fundingNeeded),
-          is_hiring: true,
+          website_url: formData.website_url,
           status: 'active'
         });
 
@@ -106,44 +84,168 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
     }
   };
 
-  const updateFormData = (newData: Partial<typeof formData>) => {
-    setFormData(prev => ({ ...prev, ...newData }));
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Logo size should be less than 5MB");
+        return;
+      }
+      setProjectLogo(file);
+      toast.success("Logo uploaded successfully!");
+    }
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    setCharacterCount(text.length);
+    setFormData(prev => ({ ...prev, description: text }));
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] bg-[#1a1a1a] text-white border-gray-800">
         <DialogHeader>
-          <DialogTitle>Create New Project</DialogTitle>
+          <DialogTitle className="text-white">Create Project</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          <ProjectLogoUpload
-            projectLogo={projectLogo}
-            onLogoUpload={setProjectLogo}
-          />
-          
-          <ProjectBasicInfo
-            formData={formData}
-            onChange={updateFormData}
-          />
-          
-          <ProjectCategories
-            formData={formData}
-            onChange={updateFormData}
-          />
-          
-          <ProjectGoals
-            formData={formData}
-            onChange={updateFormData}
-          />
+          <div className="space-y-4">
+            {/* Logo Upload */}
+            <div className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer hover:border-purple-500 transition-colors">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleLogoUpload}
+                className="hidden"
+                id="logo-upload"
+              />
+              <label htmlFor="logo-upload" className="flex flex-col items-center cursor-pointer">
+                <Upload className="w-8 h-8 text-gray-400" />
+                <span className="mt-2 text-sm text-gray-400">Drop or upload your banner image here</span>
+              </label>
+            </div>
 
-          <div className="flex justify-end gap-4">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+            {/* Project Title with Character Count */}
+            <Input
+              value={formData.title}
+              onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+              placeholder="Startup Spark"
+              className="bg-[#2a2a2a] border-gray-700 text-white"
+              maxLength={40}
+            />
+            <div className="text-right text-sm text-gray-400">
+              {formData.title.length}/40
+            </div>
+
+            {/* Progress Steps */}
+            <div className="flex items-center justify-between px-4 py-2">
+              {[1, 2, 3, 4, 5].map((step) => (
+                <div key={step} className="flex items-center">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    step === currentStep ? 'bg-purple-600' : 'bg-gray-700'
+                  }`}>
+                    {step}
+                  </div>
+                  {step < 5 && (
+                    <div className="w-12 h-[2px] bg-gray-700 mx-2" />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Description */}
+            <Textarea
+              value={formData.description}
+              onChange={handleDescriptionChange}
+              placeholder="Description"
+              className="min-h-[100px] bg-[#2a2a2a] border-gray-700 text-white"
+              maxLength={200}
+            />
+            <div className="text-right text-sm text-gray-400">
+              {characterCount}/200
+            </div>
+
+            {/* Stage & Category */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm text-gray-400">Stage:</label>
+                <Select
+                  value={formData.stage}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, stage: value }))}
+                >
+                  <SelectTrigger className="bg-[#2a2a2a] border-gray-700 text-white">
+                    <SelectValue placeholder="Growth Stage" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="idea">Idea Phase</SelectItem>
+                    <SelectItem value="mvp">MVP</SelectItem>
+                    <SelectItem value="beta">Beta</SelectItem>
+                    <SelectItem value="growth">Growth</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm text-gray-400">Category:</label>
+                <Select
+                  value={formData.category}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
+                >
+                  <SelectTrigger className="bg-[#2a2a2a] border-gray-700 text-white">
+                    <SelectValue placeholder="Software" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="software">Software</SelectItem>
+                    <SelectItem value="hardware">Hardware</SelectItem>
+                    <SelectItem value="ai">AI & ML</SelectItem>
+                    <SelectItem value="marketplace">Marketplace</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Website URL */}
+            <div className="space-y-2">
+              <label className="text-sm text-gray-400">Website URL (optional)</label>
+              <div className="flex items-center space-x-2 bg-[#2a2a2a] border border-gray-700 rounded-md p-2">
+                <span className="text-gray-400">🔗</span>
+                <Input
+                  value={formData.website_url}
+                  onChange={(e) => setFormData(prev => ({ ...prev, website_url: e.target.value }))}
+                  placeholder="https://example.com"
+                  className="bg-transparent border-0 focus-visible:ring-0 text-white"
+                />
+              </div>
+            </div>
+
+            {/* Add Team Position Button */}
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full border-purple-500 text-purple-500 hover:bg-purple-500/10"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add open positions on your team
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Project"}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              className="border-gray-700 text-gray-400 hover:bg-gray-800"
+            >
+              CANCEL
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-purple-600 text-white hover:bg-purple-700"
+            >
+              PUBLISH
             </Button>
           </div>
         </form>
