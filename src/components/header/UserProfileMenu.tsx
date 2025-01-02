@@ -123,6 +123,12 @@ const UserProfileMenu = () => {
             Profile Settings
           </DropdownMenuItem>
         </Link>
+        <Link to="/digital-contract">
+          <DropdownMenuItem>
+            <UserCircle className="mr-2 h-4 w-4" />
+            Digital Contract
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
