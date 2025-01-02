@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -31,23 +31,34 @@ const ProjectFilters = ({
   onSortChange 
 }: ProjectFiltersProps) => {
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-      <div className="flex flex-wrap gap-4">
-        <div className="flex-1 min-w-[200px]">
-          <Input 
-            placeholder="Search projects..." 
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full"
-          />
-        </div>
+    <div className="bg-[#0D1117] text-white p-6 rounded-lg mb-8">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">Featured Projects</h1>
+        <Button className="bg-purple-600 hover:bg-purple-700">
+          <Plus className="w-4 h-4 mr-2" />
+          Create Project
+        </Button>
+      </div>
 
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+        <Input 
+          placeholder="Search for a specific project..." 
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="pl-10 bg-[#161B22] border-gray-700 text-white placeholder:text-gray-400"
+        />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="text-sm text-gray-400">Filter by:</div>
+        
         {selectedCategory !== undefined && (
           <Select value={selectedCategory} onValueChange={onCategoryChange}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[150px] bg-[#161B22] border-gray-700 text-white">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#161B22] border-gray-700">
               <SelectItem value="tech">Technology</SelectItem>
               <SelectItem value="health">Healthcare</SelectItem>
               <SelectItem value="education">Education</SelectItem>
@@ -58,33 +69,40 @@ const ProjectFilters = ({
 
         {selectedStage !== undefined && (
           <Select value={selectedStage} onValueChange={onStageChange}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[150px] bg-[#161B22] border-gray-700 text-white">
               <SelectValue placeholder="Stage" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="idea">Idea Phase</SelectItem>
-              <SelectItem value="mvp">MVP</SelectItem>
-              <SelectItem value="growth">Growth</SelectItem>
+            <SelectContent className="bg-[#161B22] border-gray-700">
+              <SelectItem value="idea">Idea Stage</SelectItem>
+              <SelectItem value="mvp">MVP Stage</SelectItem>
+              <SelectItem value="growth">Growth Stage</SelectItem>
+              <SelectItem value="fundraising">Fundraising Stage</SelectItem>
             </SelectContent>
           </Select>
         )}
 
+        <Select>
+          <SelectTrigger className="w-[150px] bg-[#161B22] border-gray-700 text-white">
+            <SelectValue placeholder="Team Size" />
+          </SelectTrigger>
+          <SelectContent className="bg-[#161B22] border-gray-700">
+            <SelectItem value="1-5">1-5 members</SelectItem>
+            <SelectItem value="6-10">6-10 members</SelectItem>
+            <SelectItem value="11+">11+ members</SelectItem>
+          </SelectContent>
+        </Select>
+
         {sortBy !== undefined && (
           <Select value={sortBy} onValueChange={onSortChange}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[150px] bg-[#161B22] border-gray-700 text-white">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-[#161B22] border-gray-700">
               <SelectItem value="newest">Newest First</SelectItem>
               <SelectItem value="oldest">Oldest First</SelectItem>
             </SelectContent>
           </Select>
         )}
-
-        <Button>
-          <Search className="w-4 h-4 mr-2" />
-          Search
-        </Button>
       </div>
     </div>
   );
