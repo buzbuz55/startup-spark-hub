@@ -55,6 +55,9 @@ const NavigationMenus = () => {
               <Link to="/faq" className="block px-4 py-2 hover:bg-accent rounded-md">
                 FAQ
               </Link>
+              <Link to="/digital-contract" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Digital Contract
+              </Link>
             </div>
           </NavigationMenuContent>
         </NavigationMenuItem>

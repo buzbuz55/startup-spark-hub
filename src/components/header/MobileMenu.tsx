@@ -53,6 +53,9 @@ const MobileMenu = ({ profile }: MobileMenuProps) => {
           <Link to="/faq" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
             FAQ
           </Link>
+          <Link to="/digital-contract" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+            Digital Contract
+          </Link>
           <div className="border-t my-4"></div>
           {profile ? (
             <>
