@@ -643,6 +643,36 @@ export type Database = {
         }
         Relationships: []
       }
+      signed_contracts: {
+        Row: {
+          contract_type: string
+          contract_version: string
+          full_name: string
+          id: string
+          signature: string
+          signed_at: string
+          user_id: string
+        }
+        Insert: {
+          contract_type: string
+          contract_version: string
+          full_name: string
+          id?: string
+          signature: string
+          signed_at?: string
+          user_id: string
+        }
+        Update: {
+          contract_type?: string
+          contract_version?: string
+          full_name?: string
+          id?: string
+          signature?: string
+          signed_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       startup_ideas: {
         Row: {
           created_at: string

@@ -31,6 +31,7 @@ import CofounderMatching from "./pages/CofounderMatching";
 import Jobs from "./pages/Jobs";
 import Apply from "./pages/Apply";
 import Interviews from "./pages/Interviews";
+import DigitalContract from "./pages/DigitalContract";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
@@ -77,6 +78,7 @@ const App = () => {
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/apply" element={<Apply />} />
               <Route path="/interviews" element={<Interviews />} />
+              <Route path="/digital-contract" element={<DigitalContract />} />
             </Routes>
           </BrowserRouter>
         </div>
