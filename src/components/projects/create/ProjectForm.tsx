@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Link as LinkIcon } from "lucide-react";
 
 interface ProjectFormData {
   title: string;
@@ -26,7 +26,7 @@ export const ProjectForm = ({ formData, characterCount, onFormChange, onDescript
       <Input
         value={formData.title}
         onChange={(e) => onFormChange({ title: e.target.value })}
-        placeholder="Project Name"
+        placeholder="Enter Startup Project Name Here"
         className="bg-[#2a2a2a] border-gray-700 text-white"
         maxLength={40}
       />
@@ -60,6 +60,7 @@ export const ProjectForm = ({ formData, characterCount, onFormChange, onDescript
               <SelectItem value="mvp">MVP</SelectItem>
               <SelectItem value="beta">Beta</SelectItem>
               <SelectItem value="growth">Growth</SelectItem>
+              <SelectItem value="scale">Scale</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -71,13 +72,23 @@ export const ProjectForm = ({ formData, characterCount, onFormChange, onDescript
             onValueChange={(value) => onFormChange({ category: value })}
           >
             <SelectTrigger className="bg-[#2a2a2a] border-gray-700 text-white">
-              <SelectValue placeholder="Software" />
+              <SelectValue placeholder="Select Category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="software">Software</SelectItem>
               <SelectItem value="hardware">Hardware</SelectItem>
               <SelectItem value="ai">AI & ML</SelectItem>
+              <SelectItem value="blockchain">Blockchain</SelectItem>
               <SelectItem value="marketplace">Marketplace</SelectItem>
+              <SelectItem value="ecommerce">E-commerce</SelectItem>
+              <SelectItem value="fintech">Fintech</SelectItem>
+              <SelectItem value="healthtech">Healthtech</SelectItem>
+              <SelectItem value="edtech">Edtech</SelectItem>
+              <SelectItem value="cleantech">Cleantech</SelectItem>
+              <SelectItem value="iot">IoT</SelectItem>
+              <SelectItem value="gaming">Gaming</SelectItem>
+              <SelectItem value="social">Social Media</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -85,13 +96,16 @@ export const ProjectForm = ({ formData, characterCount, onFormChange, onDescript
 
       <div className="space-y-2">
         <label className="text-sm text-gray-400">Website URL (optional)</label>
-        <Input
-          value={formData.website_url}
-          onChange={(e) => onFormChange({ website_url: e.target.value })}
-          placeholder="https://example.com"
-          className="bg-[#2a2a2a] border-gray-700 text-white"
-          type="url"
-        />
+        <div className="relative">
+          <LinkIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            value={formData.website_url}
+            onChange={(e) => onFormChange({ website_url: e.target.value })}
+            placeholder="https://example.com"
+            className="bg-[#2a2a2a] border-gray-700 text-white pl-10"
+            type="url"
+          />
+        </div>
       </div>
 
       <Button
