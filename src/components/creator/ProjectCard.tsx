@@ -15,6 +15,7 @@ interface ProjectCardProps {
     creator: string;
     date: string;
     isHiring: boolean;
+    website_url?: string; // Added website_url
   };
 }
 
@@ -69,6 +70,16 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             <Calendar className="w-4 h-4 mr-1" />
             <span>{project.date}</span>
           </div>
+          {project.website_url && (
+            <a 
+              href={project.website_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-600 hover:text-purple-700 underline"
+            >
+              Visit Website
+            </a>
+          )}
         </div>
 
         <div className="border-t border-gray-100 pt-4">
