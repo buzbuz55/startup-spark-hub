@@ -39,6 +39,7 @@ const Projects = () => {
         );
         setProjects(filteredProjects);
       } else {
+        // If no projects in database, use sample projects
         const filteredProjects = sampleProjects.filter(project =>
           project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           project.description.toLowerCase().includes(searchQuery.toLowerCase())
