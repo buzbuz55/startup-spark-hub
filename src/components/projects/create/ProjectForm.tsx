@@ -3,6 +3,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Plus, Link as LinkIcon } from "lucide-react";
+import { useState } from "react";
+import { PositionsModal } from "./PositionsModal";
 
 interface ProjectFormData {
   title: string;
@@ -21,6 +23,8 @@ interface ProjectFormProps {
 }
 
 export const ProjectForm = ({ formData, characterCount, onFormChange, onDescriptionChange }: ProjectFormProps) => {
+  const [isPositionsModalOpen, setIsPositionsModalOpen] = useState(false);
+
   return (
     <div className="space-y-4">
       <Input
@@ -53,7 +57,7 @@ export const ProjectForm = ({ formData, characterCount, onFormChange, onDescript
             onValueChange={(value) => onFormChange({ stage: value })}
           >
             <SelectTrigger className="bg-[#2a2a2a] border-gray-700 text-white">
-              <SelectValue placeholder="Growth Stage" />
+              <SelectValue placeholder="Select Stage" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="idea">Idea Phase</SelectItem>
@@ -88,6 +92,9 @@ export const ProjectForm = ({ formData, characterCount, onFormChange, onDescript
               <SelectItem value="iot">IoT</SelectItem>
               <SelectItem value="gaming">Gaming</SelectItem>
               <SelectItem value="social">Social Media</SelectItem>
+              <SelectItem value="saas">SaaS</SelectItem>
+              <SelectItem value="defi">DeFi</SelectItem>
+              <SelectItem value="web3">Web3</SelectItem>
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
@@ -111,11 +118,21 @@ export const ProjectForm = ({ formData, characterCount, onFormChange, onDescript
       <Button
         type="button"
         variant="outline"
+        onClick={() => setIsPositionsModalOpen(true)}
         className="w-full border-purple-500 text-purple-500 hover:bg-purple-500/10"
       >
         <Plus className="w-4 h-4 mr-2" />
         Add open positions on your team
       </Button>
+
+      <PositionsModal
+        open={isPositionsModalOpen}
+        onOpenChange={setIsPositionsModalOpen}
+        onUpdatePositions={(positions) => {
+          console.log("Updated positions:", positions);
+          // Here you can handle the positions data as needed
+        }}
+      />
     </div>
   );
 };
