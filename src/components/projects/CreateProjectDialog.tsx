@@ -24,6 +24,7 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
     category: "",
     stage: "",
     website_url: "",
+    team_size: 1, // Added default team size
   });
   const [currentStep] = useState(1);
   const [characterCount, setCharacterCount] = useState(0);
@@ -69,6 +70,7 @@ const CreateProjectDialog = ({ open, onOpenChange }: CreateProjectDialogProps) =
           stage: formData.stage,
           logo_url: logoUrl,
           website_url: formData.website_url,
+          team_size: formData.team_size, // Include team_size in the insert
           status: 'active'
         });
 
