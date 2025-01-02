@@ -57,7 +57,7 @@ const CreatorFilters = ({
 
       <div className="flex flex-wrap gap-4">
         <Select value={selectedCategory} onValueChange={onCategoryChange}>
-          <SelectTrigger className="w-[180px] border-gray-200">
+          <SelectTrigger className="w-[180px] border-gray-200" hideIcon>
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -70,7 +70,7 @@ const CreatorFilters = ({
         </Select>
 
         <Select value={selectedStage} onValueChange={onStageChange}>
-          <SelectTrigger className="w-[180px] border-gray-200">
+          <SelectTrigger className="w-[180px] border-gray-200" hideIcon>
             <SelectValue placeholder="Stage" />
           </SelectTrigger>
           <SelectContent>
@@ -82,7 +82,7 @@ const CreatorFilters = ({
         </Select>
 
         <Select>
-          <SelectTrigger className="w-[180px] border-gray-200">
+          <SelectTrigger className="w-[180px] border-gray-200" hideIcon>
             <SelectValue placeholder="Team Size" />
           </SelectTrigger>
           <SelectContent>
@@ -93,7 +93,7 @@ const CreatorFilters = ({
         </Select>
 
         <Select value={sortBy} onValueChange={onSortChange}>
-          <SelectTrigger className="w-[180px] border-gray-200">
+          <SelectTrigger className="w-[180px] border-gray-200" hideIcon>
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
           <SelectContent>
