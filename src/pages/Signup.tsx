@@ -48,27 +48,6 @@ const Signup = () => {
     }
   };
 
-  const handleError = (error: AuthError) => {
-    let message = "An error occurred during sign up.";
-    
-    switch (error.message) {
-      case "User already registered":
-        message = "An account with this email already exists.";
-        break;
-      case "Password should be at least 6 characters":
-        message = "Please use a password with at least 6 characters.";
-        break;
-      case "Unable to validate email address":
-        message = "Please enter a valid email address.";
-        break;
-      default:
-        message = error.message;
-    }
-    
-    setError(message);
-    toast.error(message);
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-800 to-indigo-900">

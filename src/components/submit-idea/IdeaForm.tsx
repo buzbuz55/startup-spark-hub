@@ -82,10 +82,14 @@ const IdeaForm = () => {
 
       const { error: messageError } = await supabase
         .from('startup_ideas')
-        .insert([{
+        .insert({
           user_id: user.id,
-          ...validatedData,
-        }]);
+          title: validatedData.title,
+          description: validatedData.description,
+          market: validatedData.market,
+          team: validatedData.team,
+          email: validatedData.email,
+        });
 
       if (messageError) throw messageError;
 
