@@ -15,8 +15,8 @@ const NavigationMenus = () => {
           <NavigationMenuTrigger>Opportunities</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid gap-2 p-4 w-[200px]">
-              <Link to="/internships" className="block px-4 py-2 hover:bg-accent rounded-md">
-                Internships
+              <Link to="/jobs" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Jobs
               </Link>
               <Link to="/projects" className="block px-4 py-2 hover:bg-accent rounded-md">
                 Projects
@@ -35,8 +35,11 @@ const NavigationMenus = () => {
               <Link to="/talent-pool" className="block px-4 py-2 hover:bg-accent rounded-md">
                 Talent Pool
               </Link>
-              <Link to="/vc-dashboard" className="block px-4 py-2 hover:bg-accent rounded-md">
-                VC Network
+              <Link to="/companies" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Companies
+              </Link>
+              <Link to="/cofounder-matching" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Find Co-founder
               </Link>
             </div>
           </NavigationMenuContent>
@@ -46,6 +49,9 @@ const NavigationMenus = () => {
           <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid gap-2 p-4 w-[200px]">
+              <Link to="/library" className="block px-4 py-2 hover:bg-accent rounded-md">
+                Resource Library
+              </Link>
               <Link to="/blog" className="block px-4 py-2 hover:bg-accent rounded-md">
                 Blog
               </Link>
@@ -54,9 +60,6 @@ const NavigationMenus = () => {
               </Link>
               <Link to="/faq" className="block px-4 py-2 hover:bg-accent rounded-md">
                 FAQ
-              </Link>
-              <Link to="/digital-contract" className="block px-4 py-2 hover:bg-accent rounded-md">
-                Digital Contract
               </Link>
             </div>
           </NavigationMenuContent>

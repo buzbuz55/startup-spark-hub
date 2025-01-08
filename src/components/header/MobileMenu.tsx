@@ -40,8 +40,8 @@ const MobileMenu = ({ profile }: MobileMenuProps) => {
         <nav className="flex flex-col gap-4">
           <div className="space-y-2">
             <h4 className="font-medium text-sm px-2">Opportunities</h4>
-            <Link to="/internships" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-              Internships
+            <Link to="/jobs" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Jobs
             </Link>
             <Link to="/projects" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
               Projects
@@ -56,13 +56,19 @@ const MobileMenu = ({ profile }: MobileMenuProps) => {
             <Link to="/talent-pool" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
               Talent Pool
             </Link>
-            <Link to="/vc-dashboard" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-              VC Network
+            <Link to="/companies" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Companies
+            </Link>
+            <Link to="/cofounder-matching" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Find Co-founder
             </Link>
           </div>
 
           <div className="space-y-2">
             <h4 className="font-medium text-sm px-2">Resources</h4>
+            <Link to="/library" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Resource Library
+            </Link>
             <Link to="/blog" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
               Blog
             </Link>
@@ -72,18 +78,17 @@ const MobileMenu = ({ profile }: MobileMenuProps) => {
             <Link to="/faq" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
               FAQ
             </Link>
-            <Link to="/digital-contract" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-              Digital Contract
-            </Link>
           </div>
 
           <div className="border-t my-4"></div>
           {profile ? (
             <>
-              <Button variant="ghost" className="justify-start" onClick={() => setIsOpen(false)}>
-                <UserCircle className="mr-2 h-4 w-4" />
-                Profile Settings
-              </Button>
+              <Link to="/profile/settings" onClick={() => setIsOpen(false)}>
+                <Button variant="ghost" className="w-full justify-start">
+                  <UserCircle className="mr-2 h-4 w-4" />
+                  Profile Settings
+                </Button>
+              </Link>
               <Button variant="ghost" className="justify-start" onClick={handleSignOut}>
                 Sign Out
               </Button>
