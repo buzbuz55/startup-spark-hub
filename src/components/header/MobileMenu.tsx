@@ -38,24 +38,45 @@ const MobileMenu = ({ profile }: MobileMenuProps) => {
       </SheetTrigger>
       <SheetContent side="right" className="w-[300px] sm:w-[400px]">
         <nav className="flex flex-col gap-4">
-          <Link to="/talent-pool" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-            Talent Pool
-          </Link>
-          <Link to="/projects" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-            Projects
-          </Link>
-          <Link to="/vc-dashboard" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-            VC Network
-          </Link>
-          <Link to="/blog" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-            Blog
-          </Link>
-          <Link to="/faq" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-            FAQ
-          </Link>
-          <Link to="/digital-contract" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
-            Digital Contract
-          </Link>
+          <div className="space-y-2">
+            <h4 className="font-medium text-sm px-2">Opportunities</h4>
+            <Link to="/internships" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Internships
+            </Link>
+            <Link to="/projects" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Projects
+            </Link>
+            <Link to="/startup-opportunities" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Startup Ideas
+            </Link>
+          </div>
+
+          <div className="space-y-2">
+            <h4 className="font-medium text-sm px-2">Network</h4>
+            <Link to="/talent-pool" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Talent Pool
+            </Link>
+            <Link to="/vc-dashboard" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              VC Network
+            </Link>
+          </div>
+
+          <div className="space-y-2">
+            <h4 className="font-medium text-sm px-2">Resources</h4>
+            <Link to="/blog" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Blog
+            </Link>
+            <Link to="/about" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              About Us
+            </Link>
+            <Link to="/faq" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              FAQ
+            </Link>
+            <Link to="/digital-contract" className="block p-2 hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+              Digital Contract
+            </Link>
+          </div>
+
           <div className="border-t my-4"></div>
           {profile ? (
             <>

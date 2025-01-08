@@ -36,7 +36,7 @@ const NavigationMenus = () => {
                 Talent Pool
               </Link>
               <Link to="/vc-dashboard" className="block px-4 py-2 hover:bg-accent rounded-md">
-                VC Dashboard
+                VC Network
               </Link>
             </div>
           </NavigationMenuContent>
