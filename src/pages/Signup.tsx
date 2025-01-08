@@ -5,19 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AuthError } from "@supabase/supabase-js";
 import ScheduleMeeting from "@/components/meetings/ScheduleMeeting";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     checkUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
-        toast.success("Successfully signed up! Welcome aboard! 🚀");
+      if (event === "SIGNED_UP") {
+        toast.success("Account created successfully! Please check your email to verify your account.");
+      } else if (event === "SIGNED_IN") {
+        toast.success("Successfully signed in! Welcome aboard! 🚀");
         navigate("/");
+      } else if (event === "USER_UPDATED") {
+        toast.success("Email verified successfully!");
+        navigate("/");
+      } else if (event === "SIGNED_OUT") {
+        setError(null);
       }
     });
 
@@ -32,9 +42,31 @@ const Signup = () => {
       }
     } catch (error) {
       console.error("Error checking auth status:", error);
+      setError("An error occurred while checking authentication status.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleError = (error: AuthError) => {
+    let message = "An error occurred during sign up.";
+    
+    switch (error.message) {
+      case "User already registered":
+        message = "An account with this email already exists.";
+        break;
+      case "Password should be at least 6 characters":
+        message = "Please use a password with at least 6 characters.";
+        break;
+      case "Unable to validate email address":
+        message = "Please enter a valid email address.";
+        break;
+      default:
+        message = error.message;
+    }
+    
+    setError(message);
+    toast.error(message);
   };
 
   if (isLoading) {
@@ -56,6 +88,13 @@ const Signup = () => {
       <div className="container mx-auto px-4 pt-24">
         <div className="max-w-md mx-auto bg-white rounded-xl shadow-xl p-8">
           <h1 className="text-2xl font-bold text-center mb-6">Create Account ✨</h1>
+          
+          {error && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
           <Auth
             supabaseClient={supabase}
             appearance={{
@@ -79,9 +118,10 @@ const Signup = () => {
             <ScheduleMeeting />
           </div>
         </div>
+        
         <div className="mt-8 text-center">
           <a 
-            href="https://docs.startup-nation.com" 
+            href="https://docs.startup-spark-hub.com" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-block px-6 py-3 bg-white text-purple-700 rounded-lg shadow-lg hover:bg-purple-50 transition-colors"
