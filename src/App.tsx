@@ -32,6 +32,7 @@ import Jobs from "./pages/Jobs";
 import Apply from "./pages/Apply";
 import Interviews from "./pages/Interviews";
 import DigitalContract from "./pages/DigitalContract";
+import Raise from "./pages/Raise";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient({
@@ -79,6 +80,7 @@ const App = () => {
               <Route path="/apply" element={<Apply />} />
               <Route path="/interviews" element={<Interviews />} />
               <Route path="/digital-contract" element={<DigitalContract />} />
+              <Route path="/raise" element={<Raise />} />
             </Routes>
           </BrowserRouter>
         </div>
