@@ -1,3 +1,4 @@
+
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,7 +7,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AuthError, AuthChangeEvent } from "@supabase/supabase-js";
+import { AuthError } from "@supabase/supabase-js";
 import ScheduleMeeting from "@/components/meetings/ScheduleMeeting";
 
 const Signup = () => {
@@ -17,16 +18,16 @@ const Signup = () => {
   useEffect(() => {
     checkUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent) => {
-      if (event === "SIGNED_UP") {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_UP') {
         toast.success("Account created successfully! Please check your email to verify your account.");
-      } else if (event === "SIGNED_IN") {
+      } else if (event === 'SIGNED_IN') {
         toast.success("Successfully signed in! Welcome aboard! 🚀");
         navigate("/");
-      } else if (event === "USER_UPDATED") {
+      } else if (event === 'USER_UPDATED') {
         toast.success("Email verified successfully!");
         navigate("/");
-      } else if (event === "SIGNED_OUT") {
+      } else if (event === 'SIGNED_OUT') {
         setError(null);
       }
     });
