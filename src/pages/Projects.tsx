@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,7 +7,7 @@ import ProjectsGrid from "@/components/projects/ProjectsGrid";
 import ProjectsLoading from "@/components/projects/ProjectsLoading";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { sampleProjects } from "@/data/sampleProjects";
+import { projectsData } from "@/data/projectsData";
 import type { Project } from "@/components/projects/ProjectCard";
 
 const Projects = () => {
@@ -27,7 +28,23 @@ const Projects = () => {
 
       if (error) {
         console.error('Error fetching from Supabase:', error);
-        const filteredProjects = sampleProjects.filter(project =>
+        // Convert projectsData to match Project type
+        const formattedProjects = projectsData.map(p => ({
+          id: p.id,
+          title: p.name,
+          description: p.description,
+          category: p.category,
+          team_size: 5, // Default value
+          stage: "Idea Stage",
+          is_hiring: true,
+          created_at: new Date().toISOString(),
+          image: p.image,
+          impact: p.impact,
+          funding: p.funding,
+          seeking: p.seeking
+        }));
+        
+        const filteredProjects = formattedProjects.filter(project =>
           project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           project.description.toLowerCase().includes(searchQuery.toLowerCase())
         );
@@ -39,8 +56,23 @@ const Projects = () => {
         );
         setProjects(filteredProjects);
       } else {
-        // If no projects in database, use sample projects
-        const filteredProjects = sampleProjects.filter(project =>
+        // If no projects in database, use formatted projects data
+        const formattedProjects = projectsData.map(p => ({
+          id: p.id,
+          title: p.name,
+          description: p.description,
+          category: p.category,
+          team_size: 5, // Default value
+          stage: "Idea Stage",
+          is_hiring: true,
+          created_at: new Date().toISOString(),
+          image: p.image,
+          impact: p.impact,
+          funding: p.funding,
+          seeking: p.seeking
+        }));
+        
+        const filteredProjects = formattedProjects.filter(project =>
           project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           project.description.toLowerCase().includes(searchQuery.toLowerCase())
         );
