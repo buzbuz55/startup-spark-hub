@@ -557,14 +557,17 @@ export type Database = {
           funding_needed: number | null
           goal: string | null
           id: string
+          impact_area: string | null
           is_hiring: boolean | null
           location: string | null
           logo_url: string | null
           stage: string
           status: string | null
+          sustainability_goals: string[] | null
           target_audience: string | null
           team_roles: Json | null
           team_size: number
+          tech_stack: string[] | null
           timeline: string | null
           title: string
           user_id: string
@@ -579,14 +582,17 @@ export type Database = {
           funding_needed?: number | null
           goal?: string | null
           id?: string
+          impact_area?: string | null
           is_hiring?: boolean | null
           location?: string | null
           logo_url?: string | null
           stage: string
           status?: string | null
+          sustainability_goals?: string[] | null
           target_audience?: string | null
           team_roles?: Json | null
           team_size: number
+          tech_stack?: string[] | null
           timeline?: string | null
           title: string
           user_id: string
@@ -601,14 +607,17 @@ export type Database = {
           funding_needed?: number | null
           goal?: string | null
           id?: string
+          impact_area?: string | null
           is_hiring?: boolean | null
           location?: string | null
           logo_url?: string | null
           stage?: string
           status?: string | null
+          sustainability_goals?: string[] | null
           target_audience?: string | null
           team_roles?: Json | null
           team_size?: number
+          tech_stack?: string[] | null
           timeline?: string | null
           title?: string
           user_id?: string
