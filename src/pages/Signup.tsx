@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AuthError, AuthChangeEvent, Session } from "@supabase/supabase-js";
+import { AuthError } from "@supabase/supabase-js";
 import ScheduleMeeting from "@/components/meetings/ScheduleMeeting";
 
 const Signup = () => {
@@ -18,23 +18,15 @@ const Signup = () => {
   useEffect(() => {
     checkUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
-      switch (event) {
-        case "SIGNED_UP":
-          toast.success("Account created successfully! Please check your email to verify your account.");
-          break;
-        case "SIGNED_IN":
-          toast.success("Successfully signed in! Welcome aboard! 🚀");
-          navigate("/");
-          break;
-        case "USER_UPDATED":
-          toast.success("Email verified successfully!");
-          navigate("/");
-          break;
-        case "SIGNED_OUT":
-          setError(null);
-          break;
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        setError(null);
+        return;
       }
+
+      // Handle successful authentication events
+      toast.success("Successfully signed in! Welcome aboard! 🚀");
+      navigate("/");
     });
 
     return () => subscription.unsubscribe();
