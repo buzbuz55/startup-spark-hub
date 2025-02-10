@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,13 +37,13 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
 
   const getStageColor = (stage: string) => {
     switch (stage.toLowerCase()) {
-      case 'idea stage':
+      case 'idea':
         return 'bg-purple-500/10 text-purple-500';
-      case 'mvp stage':
+      case 'mvp':
         return 'bg-blue-500/10 text-blue-500';
-      case 'growth stage':
+      case 'growth':
         return 'bg-green-500/10 text-green-500';
-      case 'fundraising stage':
+      case 'fundraising':
         return 'bg-orange-500/10 text-orange-500';
       default:
         return 'bg-gray-500/10 text-gray-500';
@@ -104,7 +105,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           <div className="flex items-center">
             <div className="w-8 h-8 rounded-full bg-gray-700 mr-3"></div>
             <div>
-              <p className="text-sm font-medium">{project.created_by_username}</p>
+              <p className="text-sm font-medium">{project.created_by_username || 'Anonymous'}</p>
               <p className="text-xs text-gray-400">Created by</p>
             </div>
           </div>

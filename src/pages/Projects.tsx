@@ -7,7 +7,6 @@ import ProjectsGrid from "@/components/projects/ProjectsGrid";
 import ProjectsLoading from "@/components/projects/ProjectsLoading";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { projectsData } from "@/data/projectsData";
 import type { Project } from "@/components/projects/ProjectCard";
 
 const Projects = () => {
@@ -21,62 +20,40 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      let { data: dbProjects, error } = await supabase
+      let query = supabase
         .from('projects')
         .select('*')
         .eq('status', 'active');
 
+      if (searchQuery) {
+        query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+      }
+
+      const { data: dbProjects, error } = await query;
+
       if (error) {
-        console.error('Error fetching from Supabase:', error);
-        // Convert projectsData to match Project type
-        const formattedProjects = projectsData.map(p => ({
+        console.error('Error fetching projects:', error);
+        toast.error("Failed to fetch projects");
+        return;
+      }
+
+      if (dbProjects) {
+        const formattedProjects = dbProjects.map(p => ({
           id: p.id,
-          title: p.name,
+          title: p.title,
           description: p.description,
           category: p.category,
-          team_size: 5, // Default value
-          stage: "Idea Stage",
-          is_hiring: true,
-          created_at: new Date().toISOString(),
+          team_size: p.team_size,
+          stage: p.stage,
+          is_hiring: p.is_hiring,
+          created_at: p.created_at,
+          created_by_username: p.created_by_username,
+          website_url: p.website_url,
           image: p.image,
-          impact: p.impact,
-          funding: p.funding,
-          seeking: p.seeking
+          location: p.location,
+          collaboration_type: p.collaboration_type
         }));
-        
-        const filteredProjects = formattedProjects.filter(project =>
-          project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setProjects(filteredProjects);
-      } else if (dbProjects && dbProjects.length > 0) {
-        const filteredProjects = dbProjects.filter(project =>
-          project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setProjects(filteredProjects);
-      } else {
-        // If no projects in database, use formatted projects data
-        const formattedProjects = projectsData.map(p => ({
-          id: p.id,
-          title: p.name,
-          description: p.description,
-          category: p.category,
-          team_size: 5, // Default value
-          stage: "Idea Stage",
-          is_hiring: true,
-          created_at: new Date().toISOString(),
-          image: p.image,
-          impact: p.impact,
-          funding: p.funding,
-          seeking: p.seeking
-        }));
-        
-        const filteredProjects = formattedProjects.filter(project =>
-          project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setProjects(filteredProjects);
+        setProjects(formattedProjects);
       }
     } catch (error) {
       console.error('Error:', error);
