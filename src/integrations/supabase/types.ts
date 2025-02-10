@@ -557,6 +557,8 @@ export type Database = {
           funding_needed: number | null
           goal: string | null
           id: string
+          image: string | null
+          impact: string | null
           impact_area: string | null
           is_hiring: boolean | null
           location: string | null
@@ -582,6 +584,8 @@ export type Database = {
           funding_needed?: number | null
           goal?: string | null
           id?: string
+          image?: string | null
+          impact?: string | null
           impact_area?: string | null
           is_hiring?: boolean | null
           location?: string | null
@@ -607,6 +611,8 @@ export type Database = {
           funding_needed?: number | null
           goal?: string | null
           id?: string
+          image?: string | null
+          impact?: string | null
           impact_area?: string | null
           is_hiring?: boolean | null
           location?: string | null
