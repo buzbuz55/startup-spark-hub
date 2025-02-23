@@ -1,24 +1,11 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Search, MapPin, Building2, DollarSign } from "lucide-react";
+import JobFilters from "@/components/jobs/JobFilters";
+import JobCard from "@/components/jobs/JobCard";
+import type { Job } from "@/components/jobs/types";
 
-interface Job {
-  id: number;
-  title: string;
-  company: string;
-  location: string;
-  salary: string;
-  type: string;
-  level: string;
-  description: string;
-}
-
+// Move jobs data to a separate file later if needed
 const jobs: Job[] = [
   {
     id: 1,
@@ -224,7 +211,7 @@ const jobs: Job[] = [
 
 const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedLevel, setSelectedLevel] = useState<string>("");
+  const [selectedLevel, setSelectedLevel] = useState<string>("all");
 
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -243,58 +230,16 @@ const Jobs = () => {
           Find exciting opportunities at fast-growing startups.
         </p>
 
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-            <Input
-              placeholder="Search jobs by title, company, or keywords"
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <Select value={selectedLevel} onValueChange={setSelectedLevel}>
-            <SelectTrigger className="w-full md:w-[200px]">
-              <SelectValue placeholder="Experience Level" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Levels</SelectItem>
-              <SelectItem value="Entry-Level">Entry Level</SelectItem>
-              <SelectItem value="Mid-Level">Mid Level</SelectItem>
-              <SelectItem value="Senior">Senior</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <JobFilters
+          searchQuery={searchQuery}
+          selectedLevel={selectedLevel}
+          onSearchChange={setSearchQuery}
+          onLevelChange={setSelectedLevel}
+        />
 
         <div className="grid gap-4">
           {filteredJobs.map(job => (
-            <Card key={job.id} className="p-6 hover:shadow-lg transition-shadow">
-              <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                <div>
-                  <h2 className="text-xl font-semibold mb-2">{job.title}</h2>
-                  <div className="flex items-center gap-4 text-muted-foreground">
-                    <div className="flex items-center">
-                      <Building2 className="h-4 w-4 mr-1" />
-                      {job.company}
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="h-4 w-4 mr-1" />
-                      {job.location}
-                    </div>
-                    <div className="flex items-center">
-                      <DollarSign className="h-4 w-4 mr-1" />
-                      {job.salary}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-2 mt-4 md:mt-0">
-                  <Badge variant="secondary">{job.type}</Badge>
-                  <Badge>{job.level}</Badge>
-                </div>
-              </div>
-              <p className="text-muted-foreground mb-4">{job.description}</p>
-              <Button>Apply Now</Button>
-            </Card>
+            <JobCard key={job.id} job={job} />
           ))}
         </div>
       </main>
