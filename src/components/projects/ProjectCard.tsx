@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,27 +28,30 @@ interface ProjectCardProps {
   project: Project;
 }
 
-const ProjectCard = ({ project }: ProjectCardProps) => {
+const getStageColor = (stage: string): string => {
+  switch (stage.toLowerCase()) {
+    case 'idea':
+      return 'bg-purple-500/10 text-purple-500';
+    case 'mvp':
+      return 'bg-blue-500/10 text-blue-500';
+    case 'growth':
+      return 'bg-green-500/10 text-green-500';
+    case 'fundraising':
+      return 'bg-orange-500/10 text-orange-500';
+    default:
+      return 'bg-gray-500/10 text-gray-500';
+  }
+};
+
+const ProjectCard = memo(({ project }: ProjectCardProps) => {
   const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
 
   const handleJoinClick = () => {
     setIsJoinDialogOpen(true);
   };
 
-  const getStageColor = (stage: string) => {
-    switch (stage.toLowerCase()) {
-      case 'idea':
-        return 'bg-purple-500/10 text-purple-500';
-      case 'mvp':
-        return 'bg-blue-500/10 text-blue-500';
-      case 'growth':
-        return 'bg-green-500/10 text-green-500';
-      case 'fundraising':
-        return 'bg-orange-500/10 text-orange-500';
-      default:
-        return 'bg-gray-500/10 text-gray-500';
-    }
-  };
+  const formattedDate = formatDistanceToNow(new Date(project.created_at), { addSuffix: true });
+  const stageColorClass = getStageColor(project.stage);
 
   return (
     <Card className="overflow-hidden bg-[#161B22] border-gray-700 text-white hover:border-gray-600 transition-all">
@@ -60,7 +63,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       <div className="p-4">
         <div className="flex items-start justify-between mb-4">
           <div className="flex flex-wrap gap-2">
-            <Badge className={getStageColor(project.stage)}>
+            <Badge className={stageColorClass}>
               {project.stage}
             </Badge>
             {project.is_hiring && (
@@ -97,7 +100,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           )}
           <div className="flex items-center">
             <Calendar className="w-4 h-4 mr-1" />
-            {formatDistanceToNow(new Date(project.created_at), { addSuffix: true })}
+            {formattedDate}
           </div>
         </div>
 
@@ -127,6 +130,8 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       />
     </Card>
   );
-};
+});
+
+ProjectCard.displayName = 'ProjectCard';
 
 export default ProjectCard;

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProjectFilters from "@/components/projects/ProjectFilters";
@@ -8,25 +8,24 @@ import ProjectsLoading from "@/components/projects/ProjectsLoading";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { Project } from "@/components/projects/ProjectCard";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const Projects = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const debouncedSearch = useDebounce(searchQuery, 300);
 
-  useEffect(() => {
-    fetchProjects();
-  }, [searchQuery]);
-
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
+      setIsLoading(true);
       let query = supabase
         .from('projects')
         .select('*')
         .eq('status', 'active');
 
-      if (searchQuery) {
-        query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+      if (debouncedSearch) {
+        query = query.or(`title.ilike.%${debouncedSearch}%,description.ilike.%${debouncedSearch}%`);
       }
 
       const { data: dbProjects, error } = await query;
@@ -61,7 +60,11 @@ const Projects = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0D1117]">
@@ -71,7 +74,6 @@ const Projects = () => {
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
         />
-
         {isLoading ? (
           <ProjectsLoading />
         ) : (
