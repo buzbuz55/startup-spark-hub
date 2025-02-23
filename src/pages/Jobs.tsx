@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -231,7 +230,7 @@ const Jobs = () => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          job.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesLevel = !selectedLevel || job.level === selectedLevel;
+    const matchesLevel = selectedLevel === 'all' || job.level === selectedLevel;
     return matchesSearch && matchesLevel;
   });
 
@@ -259,7 +258,7 @@ const Jobs = () => {
               <SelectValue placeholder="Experience Level" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Levels</SelectItem>
+              <SelectItem value="all">All Levels</SelectItem>
               <SelectItem value="Entry-Level">Entry Level</SelectItem>
               <SelectItem value="Mid-Level">Mid Level</SelectItem>
               <SelectItem value="Senior">Senior</SelectItem>
